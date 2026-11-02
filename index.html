@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f3ec" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="description" content="오늘의 감정에 어울리는 일본 고전 와카를 만나고, 마음을 일기로 기록하는 감성 카드 웹앱 데모" />
+  <title>오늘의 와카 오라클 | 마음을 비추는 한 수의 시</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--paper:#f8f5ef;--paper2:#f2ece2;--washi:#fffdfa;--ink:#262631;--sub:#77747b;--rose:#c75f79;--rose2:#e8abb8;--roseLight:#fbedef;--border:#e8dfd5;--gold:#b5965d;--shadow:0 22px 70px rgba(82,58,59,.105);--serif:'Gowun Batang','Noto Serif KR',serif;--sans:'Noto Sans KR',sans-serif}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font-family:var(--sans);background:var(--paper);-webkit-font-smoothing:antialiased}
+    body::before{content:'';pointer-events:none;position:fixed;inset:0;z-index:-1;background-image:radial-gradient(#a88e7d 0.55px,transparent .65px);background-size:13px 13px;opacity:.10}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid #efb8c8;outline-offset:3px}
+    .shell{max-width:1170px;margin:auto;padding:0 32px}
+    .site-header{position:sticky;top:0;z-index:50;background:rgba(248,245,239,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(174,150,139,.23)}
+    .header-inner{min-height:83px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:12px;text-align:left;border:0;background:none;color:inherit;padding:0}
+    .brand-mark{width:45px;height:45px;display:grid;place-items:center;border:1px solid #dfabb1;border-radius:50%;background:#fbeef0;color:var(--rose);font:700 22px var(--serif);box-shadow:inset 0 0 0 4px #fff8f9}
+    .brand-name{display:block;font:700 19px var(--serif);letter-spacing:-.06em}
+    .brand-desc{display:block;font-size:10px;letter-spacing:.05em;color:var(--rose);margin-top:3px}
+    .nav{display:flex;gap:5px;align-items:center;border:1px solid #f0dce0;border-radius:999px;padding:5px;background:#f9e9ed}
+    .nav-btn{border:0;padding:10px 19px;border-radius:999px;font-size:12px;font-weight:600;color:#966671;background:transparent;transition:.2s}
+    .nav-btn.active{background:white;color:#be536b;box-shadow:0 2px 10px #ab728627}
+    .nav-btn:hover:not(.active){color:#9f344b;background:#ffffff65}
+    .view{display:none;animation:appear .4s ease}
+    .view.active{display:block}
+    @keyframes appear{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+    .eyebrow{display:flex;gap:10px;align-items:center;color:#ad6f79;letter-spacing:.22em;text-transform:uppercase;font-size:11px;font-weight:700}
+    .eyebrow:before{content:'';display:block;width:28px;height:1px;background:#be8a91}
+    .hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.94fr);align-items:center;min-height:610px;gap:50px;padding-top:58px;padding-bottom:80px}
+    .hero-copy{position:relative;z-index:1}
+    .hero-title{font:700 clamp(40px,4.9vw,67px)/1.42 var(--serif);letter-spacing:-.085em;margin:25px 0 26px;white-space:nowrap}
+    .hero-title em{font-style:normal;color:var(--rose);position:relative}
+    .hero-lead{font-size:15px;line-height:2.12;color:#6b6970;word-break:keep-all;margin:0 0 34px}
+    .btn{border:1px solid transparent;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:47px;padding:12px 21px;font-weight:700;font-size:13px;text-decoration:none;transition:transform .18s,background .18s,box-shadow .18s;white-space:nowrap}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:#bd6079;color:#fff;box-shadow:0 8px 25px #bf7e8c40}
+    .btn-primary:hover{background:#ad4d67}
+    .btn-outline{color:#886571;border-color:#e4cbd1;background:transparent}
+    .btn-outline:hover{background:#fff4f6}
+    .btn-light{color:#936776;background:#fff;border-color:#ead9dc}
+    .btn-small{min-height:37px;padding:8px 13px;font-size:11px;border-radius:8px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-foot{display:flex;align-items:center;gap:10px;margin-top:40px;font-size:11px;color:#9a8f8c;flex-wrap:wrap}
+    .tiny-dot{width:4px;height:4px;border-radius:50%;background:#c8b9af}
+    .art-stage{height:490px;position:relative;display:flex;align-items:center;justify-content:center}
+    .art-stage:before{content:'';width:390px;height:390px;border-radius:50%;position:absolute;background:radial-gradient(circle at 48% 48%,#fbe4e4 0,#f7e6e6 53%,#f7eeea 72%,transparent 73%);filter:blur(.4px)}
+    .art-stage:after{content:'';position:absolute;z-index:0;width:385px;height:385px;border:1px solid #dfc9bd;border-radius:50%;transform:translate(14px,-3px)}
+    .art-card{position:relative;z-index:1;width:270px;height:390px;background:linear-gradient(157deg,#fffefa,#f5ede1);box-shadow:4px 10px 40px #8f70663d,0 0 0 8px #ffffff83;transform:rotate(8deg);border:1px solid #ded2c4;border-radius:8px;padding:20px;display:flex;flex-direction:column;align-items:center}
+    .art-card:before,.card-paper:before{content:'';pointer-events:none;position:absolute;inset:0;opacity:.23;background-image:radial-gradient(#b69f7e .7px,transparent .9px);background-size:11px 11px}
+    .art-card-inner{border:1px solid #d8b5a6;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:17px}
+    .art-jp{writing-mode:vertical-rl;font-family:'Noto Sans JP',serif;font-size:28px;line-height:1.7;letter-spacing:.16em;color:#544146;max-height:270px}
+    .art-mini{font-size:10px;letter-spacing:.24em;color:#b1807c;writing-mode:vertical-rl}
+    .seal{display:grid;place-items:center;width:31px;height:31px;background:#bf6773;color:white;font:15px var(--serif);border-radius:3px;position:absolute;bottom:40px;left:43px;transform:rotate(-8deg)}
+    .falling{position:absolute;z-index:2;font-size:36px;color:#db9ea8;opacity:.78;font-family:serif;user-select:none}
+    .fall-1{top:34px;left:25px;transform:rotate(18deg)}.fall-2{right:29px;bottom:45px;transform:rotate(-25deg);font-size:23px}.fall-3{top:135px;right:5px;transform:rotate(-15deg);font-size:18px}
+    .jp-decor{position:absolute;top:5px;right:16px;writing-mode:vertical-rl;letter-spacing:.35em;color:#b6a9a3;font:12px var(--serif)}
+    .section-line{height:1px;background:linear-gradient(90deg,transparent,#e4d8cc 15%,#e4d8cc 85%,transparent)}
+    .section-title{text-align:center;margin:0;font:700 31px/1.55 var(--serif);letter-spacing:-.065em}
+    .section-kicker{text-align:center;font-size:10px;letter-spacing:.25em;font-weight:700;color:var(--rose);margin:0 0 13px}
+    .section-sub{text-align:center;line-height:1.9;color:#817b7b;font-size:13px;margin:13px 0 35px}
+    .how{padding:70px 0 82px}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+    .feature-card{background:#fffcf8;border:1px solid #eadfd5;border-radius:15px;padding:30px 27px 29px;min-height:219px;position:relative}
+    .feature-num{font:700 11px var(--serif);color:#c1848b;letter-spacing:.17em}
+    .feature-icon{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;margin:20px 0 14px;background:#f8eaeb;color:#b45b72;font-size:21px}
+    .feature-card h3{font:700 18px var(--serif);margin:0 0 10px}
+    .feature-card p{font-size:12px;line-height:1.9;color:#817a7c;margin:0;word-break:keep-all}
+    .bottom-cta{margin:0 0 85px;background:#f5e8e6;border:1px solid #e9cecc;border-radius:18px;padding:34px 42px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .bottom-cta h3{font:700 23px var(--serif);margin:0 0 9px}
+    .bottom-cta p{font-size:12px;color:#8a7274;line-height:1.8;margin:0}
+    .demo-intro{text-align:center;padding:68px 0 32px}
+    .demo-intro .eyebrow{justify-content:center}.demo-intro .eyebrow:before{display:none}
+    .demo-intro h2{font:700 39px/1.4 var(--serif);letter-spacing:-.07em;margin:18px 0 12px}
+    .demo-intro p{font-size:13px;color:#827d7f;line-height:2}
+    .app-layout{display:grid;grid-template-columns:330px minmax(0,1fr);align-items:start;gap:24px;padding-bottom:45px}
+    .panel{background:#fffefa;border:1px solid #ebe0d7;border-radius:16px;box-shadow:0 5px 28px #9070610a}
+    .control-panel{padding:29px;position:relative}
+    .small-label{display:block;text-transform:uppercase;font-size:10px;letter-spacing:.17em;color:#bb7c86;font-weight:700}
+    .control-panel h3{font:700 23px var(--serif);margin:14px 0 8px}
+    .control-panel .helper{font-size:12px;line-height:1.95;color:#817a7a;word-break:keep-all;margin:0 0 28px}
+    .mood-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}
+    .mood-btn{display:flex;align-items:center;gap:9px;text-align:left;padding:15px 13px;border-radius:11px;border:1px solid #e9ded9;background:#fffdfa;color:#746d72;transition:.2s;font-size:13px;font-weight:600}
+    .mood-btn:hover{border-color:#d6a4ae;background:#fff5f7}
+    .mood-btn.selected{border-color:#c6768a;background:#fdf0f3;color:#b0506b;box-shadow:inset 0 0 0 1px #c6768a}
+    .mood-emoji{font-size:18px}
+    .oracle-start{width:100%;margin:3px 0 13px}
+    .tip-box{border-top:1px dashed #e7dcd4;padding-top:19px;color:#95878a;font-size:11px;line-height:1.85}
+    .result-panel{min-height:552px;padding:24px 36px 33px;display:flex;flex-direction:column;align-items:center;background:radial-gradient(ellipse at top,#fffdfa,#fff8f6 73%,#fffdf9);overflow:hidden}
+    .result-top{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .result-heading{font-size:12px;letter-spacing:.14em;color:#ac8087;font-weight:700}
+    .date-label{font-size:11px;color:#a99b9a}
+    .card-scene{width:258px;height:345px;perspective:1300px;margin:30px auto 15px;cursor:pointer;user-select:none}
+    .oracle-card{height:100%;width:100%;position:relative;transform-style:preserve-3d;transition:transform .86s cubic-bezier(.2,.7,.22,1);border-radius:9px}
+    .oracle-card.flipped{transform:rotateY(180deg)}
+    .card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:9px;overflow:hidden;box-shadow:0 16px 38px #76575229}
+    .card-back{background:#fff1f2;padding:13px;border:1px solid #e6b8bd}
+    .card-back-design{height:100%;width:100%;border:1px solid #ce9ca6;background:repeating-linear-gradient(45deg,#fff5f5 0,#fff5f5 15px,#fce9eb 15px,#fce9eb 16px);display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative}
+    .card-back-design:before{content:'';position:absolute;inset:13px;border:1px solid #dbb4b6}
+    .back-flower{display:grid;place-items:center;width:110px;height:110px;border:1px solid #d5a3ad;border-radius:50%;background:#fdf9f4;color:#b9697f;font:700 67px var(--serif);box-shadow:0 0 0 7px #f8edeb,0 0 0 8px #d5a3ad}
+    .card-back-design small{margin-top:35px;font:12px var(--serif);letter-spacing:.28em;color:#b98592}
+    .card-front{transform:rotateY(180deg);padding:13px;border:1px solid #decbc1;background:#faf5ed}
+    .card-paper{height:100%;position:relative;border:1px solid #d5b9a6;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px 23px;background:linear-gradient(130deg,#fffefa,#f8f1e6)}
+    .card-paper>*{position:relative}
+    .card-top{position:absolute;top:18px;left:0;width:100%;text-align:center;color:#ba8684;font-size:9px;letter-spacing:.27em}
+    .card-poem{writing-mode:vertical-rl;font-family:'Noto Sans JP',var(--serif);font-size:18px;line-height:1.8;letter-spacing:.12em;color:#403a3c;max-height:210px;white-space:pre-line}
+    .card-author{position:absolute;bottom:17px;right:15px;color:#9d8580;font:11px var(--serif);letter-spacing:.08em}
+    .card-corner{position:absolute;bottom:18px;left:19px;background:#b6656d;color:#fff;font:13px var(--serif);padding:5px 4px}
+    .flip-hint{font-size:11px;color:#9a8788;min-height:22px}
+    .oracle-placeholder{text-align:center;color:#95898a;font-size:12px;line-height:1.9;max-width:340px;word-break:keep-all;margin:16px auto 0}
+    .interpretation{width:100%;display:none;margin-top:10px;animation:appear .45s ease}
+    .interpretation.visible{display:block}
+    .poem-meta{display:flex;align-items:center;gap:9px;margin-bottom:12px;flex-wrap:wrap}
+    .chip{border-radius:999px;padding:5px 11px;font-size:10px;background:#fae8eb;color:#a94f67;font-weight:700}
+    .author-txt{font-size:11px;color:#96888a}
+    .translated{font:700 16px/2 var(--serif);letter-spacing:-.03em;margin:8px 0 17px;word-break:keep-all}
+    .advice{padding:18px 20px;border-left:2px solid #c78a96;background:#f9eef0;border-radius:0 10px 10px 0;font-size:12px;line-height:2;color:#725b62;word-break:keep-all}
+    .advice strong{display:block;color:#aa6276;margin-bottom:4px;font-size:11px}
+    .result-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px}
+    .diary-section{padding-bottom:90px}
+    .diary-header{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:0 0 22px}
+    .diary-header h2{font:700 28px var(--serif);margin:9px 0 0}
+    .diary-header p{font-size:12px;color:#9a8585;margin:9px 0 0}
+    .diary-layout{display:grid;grid-template-columns:1.08fr .92fr;gap:24px;align-items:start}
+    .diary-editor{padding:27px 30px}
+    .input-label{display:block;font-size:11px;font-weight:700;color:#8a7778;margin-bottom:9px}
+    .diary-editor input,.diary-editor textarea{width:100%;border:1px solid #e9ded6;background:#fffcfa;border-radius:9px;padding:13px 15px;color:var(--ink);font-size:12px;outline:none;transition:border .18s}
+    .diary-editor input:focus,.diary-editor textarea:focus{border-color:#ce8497;outline:2px solid #f9dfe6;outline-offset:0}
+    .diary-editor textarea{resize:vertical;min-height:142px;line-height:1.9}
+    .field{margin-bottom:18px}
+    .editor-bottom{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+    .field-hint{font-size:10px;color:#aa9a98;line-height:1.8}
+    .diary-list-panel{padding:27px;min-height:345px}
+    .diary-list-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .diary-list-head h3{font:700 18px var(--serif);margin:0}
+    .diary-count{font-size:11px;color:#bd6f7e;background:#f9e7ea;border-radius:99px;padding:4px 10px}
+    .empty-diary{text-align:center;padding:42px 10px 26px;color:#a19192}
+    .empty-icon{font-size:35px;display:block;margin:0 0 11px}
+    .empty-diary p{font:700 15px var(--serif);color:#7a6b70;margin:0 0 8px}
+    .empty-diary small{font-size:11px;line-height:1.8}
+    .entries{display:flex;flex-direction:column;gap:12px;max-height:490px;overflow:auto}
+    .entry{border:1px solid #ede3dc;border-radius:10px;padding:17px;background:#fffbf8}
+    .entry-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .entry-date{font-size:10px;color:#a28e92}
+    .entry h4{font:700 15px var(--serif);margin:9px 0 6px;word-break:break-word}
+    .entry p{font-size:11px;color:#82797c;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 11px;max-height:76px;overflow:auto}
+    .entry-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .entry-waka{font-size:10px;color:#b07582}
+    .text-btn{border:0;background:transparent;color:#b47986;font-size:11px;padding:4px 0}
+    .text-btn:hover{text-decoration:underline}
+    .storage-note{color:#9c9291;font-size:11px;line-height:1.9;margin-top:17px;display:flex;align-items:start;gap:7px}
+    .info-banner{margin-bottom:80px;padding:18px 22px;border-radius:12px;background:#f1ebe1;color:#81746e;line-height:1.9;font-size:11px;border:1px solid #e9dfd4;word-break:keep-all}
+    .info-banner strong{color:#76645f}
+    footer{border-top:1px solid #e6dad0;padding:28px 0;color:#948985}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;gap:15px;font-size:11px;flex-wrap:wrap}
+    .footer-brand{font:700 15px var(--serif);color:#a1777c}
+    .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);padding:12px 20px;background:#3f353c;color:white;font-size:12px;border-radius:9px;box-shadow:0 7px 20px #1114;opacity:0;transition:.2s;z-index:100;pointer-events:none;text-align:center;max-width:calc(100vw - 28px)}
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:900px){.hero{gap:10px;grid-template-columns:1.05fr .95fr;min-height:520px}.hero-title{font-size:45px}.art-stage{transform:scale(.84)}.app-layout{grid-template-columns:300px minmax(0,1fr);gap:15px}.result-panel{padding:24px}.diary-layout{gap:15px}}
+    @media(max-width:730px){.shell{padding:0 19px}.header-inner{min-height:73px}.brand-name{font-size:16px}.brand-desc{font-size:8px}.brand-mark{width:39px;height:39px;flex:none}.nav{padding:3px;gap:0}.nav-btn{font-size:10px;padding:9px 10px}.hero{grid-template-columns:1fr;gap:0;padding:55px 0 95px;text-align:center;min-height:0}.eyebrow{justify-content:center}.hero-title{font-size:clamp(39px,8.5vw,54px);margin:21px 0}.hero-lead{font-size:13px}.hero-actions,.hero-foot{justify-content:center}.hero-foot{margin-top:23px}.art-stage{height:350px;transform:scale(.78);margin-top:-6px;margin-bottom:46px}.feature-grid,.app-layout,.diary-layout{grid-template-columns:1fr}.feature-card{min-height:0}.how{padding:54px 0}.feature-grid{gap:12px}.feature-card{padding:22px}.feature-icon{margin:12px 0}.bottom-cta{padding:25px;flex-direction:column;align-items:start;margin-bottom:60px}.bottom-cta h3{font-size:21px}.demo-intro{padding:48px 0 20px}.demo-intro h2{font-size:30px}.control-panel{padding:24px}.result-panel{min-height:540px}.diary-layout{gap:14px}.diary-section{padding-bottom:42px}.info-banner{margin-bottom:50px}}
+    @media(max-width:400px){.shell{padding:0 13px}.brand{gap:7px}.brand-name{font-size:13px}.brand-mark{width:35px;height:35px}.nav-btn{padding:8px 7px;font-size:9px}.hero-title{font-size:36px}.result-panel{padding:20px 17px}.diary-editor,.diary-list-panel{padding:20px}}
+    /* Mobile-first presentation polish: 320px–730px. Desktop styling is retained. */
+    @media (max-width:730px){
+      html{scroll-padding-top:128px}
+      body{overflow-x:hidden}
+      #how-it-works,#diary-section,.result-panel{scroll-margin-top:128px}
+      .site-header{padding-top:env(safe-area-inset-top,0px)}
+      .header-inner{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-height:0;padding-top:10px;padding-bottom:10px}
+      .brand{gap:10px;width:max-content;max-width:100%;margin-left:2px}
+      .brand-mark{width:39px;height:39px;font-size:20px}
+      .brand-name{font-size:17px}
+      .brand-desc{font-size:9px}
+      .nav{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%;gap:4px;padding:4px}
+      .nav-btn{min-height:42px;font-size:13px;padding:9px 7px;white-space:nowrap}
+      .shell{padding-right:18px;padding-left:18px}
+      .hero{padding-top:36px;padding-bottom:34px;gap:0}
+      .hero-title{font-size:clamp(34px,9.1vw,47px);line-height:1.42;white-space:normal;margin:17px 0 17px}
+      .hero-lead{font-size:13px;line-height:1.95;margin-bottom:24px}
+      .hero-actions{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:9px}
+      .hero-actions .btn{min-width:0;min-height:48px;padding:10px 7px;font-size:12px;white-space:normal;line-height:1.45}
+      .hero-foot{margin-top:20px;gap:8px;font-size:10px}
+      .art-stage{width:100%;height:342px;transform:none;margin:14px auto 0}
+      .art-stage:before{width:265px;height:265px}
+      .art-stage:after{width:274px;height:274px;transform:translate(7px,0)}
+      .art-card{width:210px;height:300px;padding:12px;transform:rotate(7deg);border-radius:7px;box-shadow:4px 8px 29px #8f706635,0 0 0 6px #ffffff83}
+      .art-card-inner{gap:11px}
+      .art-jp{font-size:20px;max-height:210px;line-height:1.65}
+      .art-mini{font-size:9px}
+      .seal{left:28px;bottom:28px;width:26px;height:26px;font-size:13px}
+      .fall-1{left:6%;top:30px;font-size:29px}
+      .fall-2{right:6%;bottom:28px;font-size:21px}
+      .fall-3{right:6%;top:100px;font-size:17px}
+      .jp-decor{right:3%;font-size:10px}
+      .how{padding-top:43px;padding-bottom:36px}
+      .section-title{font-size:clamp(24px,6.5vw,29px);line-height:1.5}
+      .section-sub{font-size:12px;line-height:1.8;margin:10px 0 24px;word-break:keep-all}
+      .feature-grid{gap:10px}
+      .feature-card{display:grid;grid-template-columns:44px minmax(0,1fr);grid-template-areas:'number number' 'icon heading' 'description description';column-gap:13px;row-gap:9px;padding:19px 20px;min-height:0}
+      .feature-num{grid-area:number}
+      .feature-icon{grid-area:icon;width:42px;height:42px;margin:0}
+      .feature-card h3{grid-area:heading;font-size:17px;line-height:1.5;margin:0;align-self:center}
+      .feature-card p{grid-area:description;font-size:12px;line-height:1.85}
+      .bottom-cta{padding:23px;margin-bottom:45px;gap:18px}
+      .bottom-cta h3{font-size:20px;line-height:1.5}
+      .bottom-cta p{font-size:12px}
+      .bottom-cta .btn{min-height:46px}
+      .demo-intro{padding:34px 0 18px}
+      .demo-intro h2{font-size:clamp(26px,7vw,31px);margin:12px 0 9px}
+      .demo-intro p{font-size:12px;line-height:1.85;margin:0}
+      .app-layout{gap:13px;padding-bottom:32px}
+      .panel{border-radius:14px}
+      .control-panel{padding:21px}
+      .control-panel h3{font-size:21px;margin:11px 0 6px}
+      .control-panel .helper{font-size:12px;line-height:1.85;margin-bottom:18px}
+      .mood-list{gap:9px;margin-bottom:15px}
+      .mood-btn{min-width:0;min-height:54px;padding:13px 12px;font-size:14px;justify-content:center}
+      .mood-emoji{font-size:18px}
+      .oracle-start{min-height:48px;font-size:14px}
+      .tip-box{padding-top:13px;font-size:11px;line-height:1.9}
+      .result-panel{padding:22px 18px 25px;min-height:0}
+      .result-heading{font-size:11px;letter-spacing:.1em}
+      .date-label{font-size:10px;white-space:nowrap}
+      .card-scene{width:min(258px,100%);height:auto;aspect-ratio:258/345;margin-top:22px;margin-bottom:13px;-webkit-tap-highlight-color:transparent}
+      .flip-hint{font-size:12px;text-align:center}
+      .oracle-placeholder{font-size:12px;margin-top:10px}
+      .interpretation{margin-top:11px}
+      .translated{font-size:16px;line-height:1.9}
+      .advice{padding:15px 16px;font-size:12px;line-height:1.9}
+      .result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+      .result-actions .btn{min-width:0;min-height:46px;padding:9px 7px;white-space:normal;line-height:1.45;text-align:center;font-size:11px}
+      .diary-section{padding-bottom:32px}
+      .diary-header{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;align-items:start;gap:14px;margin-bottom:17px}
+      .diary-header h2{font-size:24px;line-height:1.55}
+      .diary-header p{font-size:12px;line-height:1.7}
+      .diary-header .btn{min-height:44px}
+      .diary-layout{gap:12px}
+      .diary-editor,.diary-list-panel{padding:20px}
+      .input-label{font-size:12px}
+      .diary-editor input,.diary-editor textarea{font-size:16px;line-height:1.6;min-height:46px;padding:12px 14px}
+      .diary-editor textarea{min-height:142px;line-height:1.75}
+      .editor-bottom{display:grid;gap:11px}
+      .editor-bottom .btn{min-height:48px;width:100%;font-size:14px}
+      .entry{padding:14px}
+      .entry p{font-size:12px}
+      .entry .text-btn{min-height:42px;min-width:42px}
+      .storage-note{font-size:11px;line-height:1.8}
+      .info-banner{margin-bottom:40px;padding:16px 17px;font-size:11px}
+      .footer-inner{font-size:11px;line-height:1.7;gap:7px}
+      footer{padding:22px 0 calc(22px + env(safe-area-inset-bottom,0px))}
+      .toast{bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+    }
+    @media(max-width:360px){
+      .shell{padding-left:14px;padding-right:14px}
+      .hero-title{font-size:34px}
+      .hero-actions .btn{font-size:11px}
+      .hero-foot{font-size:9px;gap:6px}
+      .art-stage{height:325px}
+      .result-panel{padding-left:14px;padding-right:14px}
+      .diary-editor,.diary-list-panel{padding:17px}
+      .mood-btn{gap:5px;padding:11px 6px}
+      .feature-card{padding:17px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <button class="brand" type="button" data-goto="presentation" aria-label="처음 화면으로 이동">
+        <span class="brand-mark" aria-hidden="true">和</span>
+        <span><span class="brand-name">오늘의 와카 오라클</span><span class="brand-desc">AI 感性 CARD & DIARY</span></span>
+      </button>
+      <nav class="nav" aria-label="화면 선택">
+        <button id="tab-btn-presentation" class="nav-btn active" type="button" data-goto="presentation" aria-current="page">아이디어 소개</button>
+        <button id="tab-btn-demo" class="nav-btn" type="button" data-goto="demo">직접 체험하기</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="view-presentation" class="view active" aria-label="아이디어 소개">
+      <div class="shell hero">
+        <div class="hero-copy">
+          <p class="eyebrow">A POEM FOR YOUR HEART</p>
+          <h1 class="hero-title">오늘의 마음에,<br><em>한 수의 와카.</em></h1>
+          <p class="hero-lead">말로 표현하기 어려운 오늘의 감정이 있나요?<br>천 년 전 일본의 시인이 남긴 짧은 노래에서<br>지금의 나에게 필요한 한마디를 발견해 보세요.</p>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-primary" data-goto="demo">오늘의 와카 뽑기 <span aria-hidden="true">↗</span></button>
+            <button type="button" class="btn btn-outline" id="learn-more">어떻게 사용하나요? <span aria-hidden="true">↓</span></button>
+          </div>
+          <div class="hero-foot"><span>✿ 오늘의 감정 선택</span><span class="tiny-dot"></span><span>와카 카드 뽑기</span><span class="tiny-dot"></span><span>나만의 일기</span></div>
+        </div>
+        <div class="art-stage" aria-hidden="true">
+          <span class="jp-decor">心に咲く言葉</span><span class="falling fall-1">✿</span><span class="falling fall-2">✿</span><span class="falling fall-3">✿</span>
+          <div class="art-card"><div class="art-card-inner"><span class="art-mini">百人一首</span><span class="art-jp">花ぞ昔の<br>香ににひける</span><span class="seal">和</span></div></div>
+        </div>
+      </div>
+      <div class="shell"><div class="section-line"></div></div>
+      <section class="how shell" id="how-it-works">
+        <p class="section-kicker">HOW IT WORKS</p>
+        <h2 class="section-title">마음을 읽는 세 가지 순간</h2>
+        <p class="section-sub">복잡한 설명 없이, 누구나 쉽고 편안하게 즐기는 문학적 마음 기록</p>
+        <div class="feature-grid">
+          <article class="feature-card"><span class="feature-num">STEP 01</span><div class="feature-icon" aria-hidden="true">♡</div><h3>오늘의 감정 고르기</h3><p>지금 내 마음과 가장 가까운 감정을 골라 보세요. 감정에 맞는 일본 고전 와카를 연결합니다.</p></article>
+          <article class="feature-card"><span class="feature-num">STEP 02</span><div class="feature-icon" aria-hidden="true">✿</div><h3>와카 카드 뒤집기</h3><p>카드를 뒤집으면 고전 원문과 우리말 해석, 그리고 마음을 위한 짧은 메시지가 나타납니다.</p></article>
+          <article class="feature-card"><span class="feature-num">STEP 03</span><div class="feature-icon" aria-hidden="true">✎</div><h3>나만의 마음 일기</h3><p>시를 읽고 떠오른 생각을 남겨 보세요. 기록은 사용하는 브라우저에 안전하게 보관됩니다.</p></article>
+        </div>
+      </section>
+      <div class="shell"><div class="bottom-cta"><div><h3>당신의 오늘은 어떤 시와 닮았나요?</h3><p>한 장의 카드가 오늘의 감정을 다시 바라보는 계기가 될지도 모릅니다.</p></div><button class="btn btn-primary" type="button" data-goto="demo">체험 시작하기 ↗</button></div></div>
+    </section>
+
+    <section id="view-demo" class="view" aria-label="와카 오라클 직접 체험">
+      <div class="shell">
+        <div class="demo-intro"><p class="eyebrow">YOUR DAILY WAKA</p><h2>오늘의 와카, 오늘의 나</h2><p>마음에 가까운 감정을 선택하고 카드를 뽑아 보세요.<br>작은 시 한 수가 당신에게 말을 건넵니다.</p></div>
+        <div class="app-layout">
+          <section class="panel control-panel" aria-label="감정 선택">
+            <span class="small-label">01 / CHOOSE YOUR FEELING</span><h3>지금 어떤 마음인가요?</h3><p class="helper">오늘의 기분과 가장 가까운 감정 하나를 선택해 주세요. 두 가지 감정 카드가 준비되어 있어요.</p>
+            <div class="mood-list" role="group" aria-label="감정 종류">
+              <button type="button" class="mood-btn selected" data-mood="그리움" aria-pressed="true"><span class="mood-emoji" aria-hidden="true">🌙</span>그리움</button>
+              <button type="button" class="mood-btn" data-mood="설렘" aria-pressed="false"><span class="mood-emoji" aria-hidden="true">🌸</span>설렘</button>
+            </div>
+            <button class="btn btn-primary oracle-start" type="button" id="draw-btn">나의 와카 카드 뽑기 <span aria-hidden="true">✦</span></button>
+            <div class="tip-box">✧ 카드를 뽑은 뒤 카드를 눌러 앞뒤로 넘길 수 있어요.<br>✧ 각 감정에 연결된 고전 와카가 제공됩니다.<br>✧ 다시 뽑으면 선택한 감정의 카드가 나타나요.</div>
+          </section>
+          <section class="panel result-panel" aria-label="와카 카드와 해설">
+            <div class="result-top"><span class="result-heading">✿ WAKA ORACLE CARD</span><span class="date-label" id="today-label"></span></div>
+            <div class="card-scene" role="button" tabindex="0" aria-label="카드 뒤집기" aria-pressed="false" id="card-scene">
+              <div class="oracle-card" id="oracle-card">
+                <div class="card-face card-back"><div class="card-back-design"><span class="back-flower">和</span><small>今日の和歌</small></div></div>
+                <div class="card-face card-front"><div class="card-paper"><div class="card-top">百人一首 · WAKA</div><div class="card-poem" id="card-poem">아직 와카를 선택하지 않았어요</div><span class="card-corner">和</span><span class="card-author" id="card-author"></span></div></div>
+              </div>
+            </div>
+            <span class="flip-hint" id="flip-hint">✧ 감정을 고르고 카드를 뽑아 보세요</span>
+            <p class="oracle-placeholder" id="oracle-placeholder">오래된 시의 한 구절에 오늘의 이야기를 담아 보세요.<br>당신에게 어울리는 한 수를 준비했습니다.</p>
+            <div class="interpretation" id="interpretation" aria-live="polite">
+              <div class="poem-meta"><span class="chip" id="poem-category"></span><span class="author-txt" id="poem-author"></span></div>
+              <p class="translated" id="poem-translation"></p>
+              <div class="advice"><strong>✦ 오늘의 마음 메시지</strong><span id="poem-advice"></span></div>
+              <div class="result-actions"><button type="button" class="btn btn-small btn-outline" id="copy-poem">와카 내용 복사</button><button type="button" class="btn btn-small btn-light" id="write-diary">이 마음 일기로 남기기 ↗</button></div>
+            </div>
+          </section>
+        </div>
+        <section class="diary-section" id="diary-section" aria-label="마음 일기">
+          <div class="diary-header"><div><span class="small-label">02 / YOUR WAKA DIARY</span><h2>마음을 남기는 작은 기록</h2><p>시를 읽고 난 뒤의 감정을 내 언어로 적어 보세요.</p></div><button type="button" class="btn btn-small btn-outline" id="export-diary">기록 내보내기 ↓</button></div>
+          <div class="diary-layout">
+            <form class="panel diary-editor" id="diary-form">
+              <div class="field"><label class="input-label" for="diary-title">오늘의 일기 제목</label><input id="diary-title" name="title" maxlength="70" placeholder="예: 다시 떠오른 그리움" required /></div>
+              <div class="field"><label class="input-label" for="diary-body">나에게 남긴 말</label><textarea id="diary-body" name="body" maxlength="1500" placeholder="오늘의 와카는 어떤 마음을 떠올리게 했나요? 자유롭게 적어 보세요." required></textarea></div>
+              <div class="editor-bottom"><span class="field-hint" id="diary-association">와카를 뽑으면 그 시와 함께 저장됩니다.</span><button class="btn btn-primary" type="submit">일기 저장하기 ✎</button></div>
+            </form>
+            <div class="panel diary-list-panel"><div class="diary-list-head"><h3>나의 와카 일기</h3><span class="diary-count" id="diary-count">0개의 기록</span></div><div class="entries" id="diary-entries"></div><div class="empty-diary" id="empty-diary"><span class="empty-icon">✧</span><p>아직 남긴 기록이 없어요</p><small>오늘의 마음 한 줄을 남겨 보세요.<br>이곳에 차곡차곡 쌓이게 됩니다.</small></div></div>
+          </div>
+          <p class="storage-note">♧ 이 데모의 일기는 별도 서버로 전송되지 않고 현재 브라우저의 저장 공간(localStorage)에만 저장됩니다. 브라우저 데이터를 지우거나 다른 기기를 사용하면 기록이 보이지 않을 수 있어요.</p>
+        </section>
+        <div class="info-banner"><strong>데모 안내 ·</strong> 이 페이지는 첨부된 「오늘의 와카 오라클」 자료를 바탕으로 빠진 기능을 보완한 실행형 시제품입니다. 원본 PDF에 있는 와카 2수와 제공된 조언을 사용하며, <strong>실제 생성형 AI 분석·로그인·클라우드 동기화는 연결되어 있지 않습니다.</strong></div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="shell footer-inner"><span class="footer-brand">和 · 오늘의 와카 오라클</span><span>일본 고전 문학 × 감정 기록 · 경진대회 시연용 웹앱</span><span>Made with a little poetry ✿</span></div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    'use strict';
+    // 첨부 PDF에 포함된 두 작품과 해설 데이터. 임의의 작품을 추가하지 않습니다.
+    const wakaDatabase = [
+      {tag:'그리움',category:'관계 / 그리움',author:'기노 쓰라유키',original:'人はいさ 心も知らず ふるさとの 花ぞ昔の 香ににひける',translation:'사람 마음은 알 수 없지만, 예전 고향의 꽃향기만큼은 변함없이 날 반겨주네.',advice:'서먹해진 관계 때문에 헛헛하다면, 변치 않는 주변의 익숙한 풍경과 스스로에게 집중해 보세요.'},
+      {tag:'설렘',category:'사랑 / 설렘',author:'아리와라 노 나리히라',original:'ちはやぶる 神代も聞かず 竜田川 からくれなゐに 水くくるとは',translation:'신들의 시대에도 들어본 적 없어라. 타츠타 강물이 단풍빛 붉은 비단처럼 물드는 풍경을...',advice:'당신의 마음에도 붉은 단풍 같은 설렘이 가득하네요! 그 벅찬 감정을 소중히 기록해두세요.'}
+    ];
+    const STORAGE_KEY='waka-oracle-diary-v1';
+    const $=(selector)=>document.querySelector(selector);
+    let currentMood='그리움';
+    let currentWaka=null;
+    let toastTimer;
+    function notify(message){const node=$('#toast');node.textContent=message;node.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>node.classList.remove('show'),2900)}
+    function switchTab(tab){
+      const target=tab==='demo'?'demo':'presentation';
+      document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+target));
+      document.querySelectorAll('.nav-btn').forEach(el=>{const active=el.dataset.goto===target;el.classList.toggle('active',active);if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current')});
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    document.querySelectorAll('[data-goto]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.goto)));
+    $('#learn-more').addEventListener('click',()=>$('#how-it-works').scrollIntoView({behavior:'smooth'}));
+    document.querySelectorAll('[data-mood]').forEach(btn=>btn.addEventListener('click',()=>{
+      currentMood=btn.dataset.mood;
+      document.querySelectorAll('[data-mood]').forEach(item=>{const chosen=item===btn;item.classList.toggle('selected',chosen);item.setAttribute('aria-pressed',String(chosen))});
+    }));
+    function setFlip(isFlipped){$('#oracle-card').classList.toggle('flipped',isFlipped);$('#card-scene').setAttribute('aria-pressed',String(isFlipped));$('#flip-hint').textContent=currentWaka?'✧ 카드를 눌러 다시 '+(isFlipped?'뒤집기':'열어 보기'):'✧ 감정을 고르고 카드를 뽑아 보세요'}
+    function toggleCardFlip(){if(!currentWaka){notify('먼저 감정을 선택하고 와카 카드를 뽑아 주세요.');return}setFlip(!$('#oracle-card').classList.contains('flipped'))}
+    $('#card-scene').addEventListener('click',toggleCardFlip);
+    $('#card-scene').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleCardFlip()}});
+    $('#draw-btn').addEventListener('click',()=>{
+      currentWaka=wakaDatabase.find(item=>item.tag===currentMood);
+      if(!currentWaka)return;
+      setFlip(false);
+      $('#card-poem').textContent=currentWaka.original.replaceAll(' ','\n');
+      $('#card-author').textContent=currentWaka.author;
+      $('#poem-category').textContent=currentWaka.category;
+      $('#poem-author').textContent='✎ '+currentWaka.author;
+      $('#poem-translation').textContent='“'+currentWaka.translation+'”';
+      $('#poem-advice').textContent=currentWaka.advice;
+      $('#oracle-placeholder').hidden=true;
+      $('#interpretation').classList.add('visible');
+      $('#diary-association').textContent='✿ 현재 선택된 와카: '+currentWaka.author+' · '+currentWaka.tag;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>setFlip(true)));
+      // On phones the card sits below the emotion picker; bring it into view.
+      if(window.matchMedia('(max-width:730px)').matches){
+        const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        $('#card-scene').scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'center'});
+      }
+    });
+    $('#today-label').textContent=new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(new Date());
+    $('#copy-poem').addEventListener('click',async()=>{
+      if(!currentWaka)return;
+      const value=`오늘의 와카 오라클 · ${currentWaka.category}\n${currentWaka.original}\n— ${currentWaka.author}\n${currentWaka.translation}\n${currentWaka.advice}`;
+      try{
+        if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value)}else{const field=document.createElement('textarea');field.value=value;field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();const copied=document.execCommand('copy');field.remove();if(!copied)throw Error('no clipboard access')}
+        notify('와카 내용이 복사되었어요.');
+      }catch(err){notify('복사를 지원하지 않는 환경이에요. 내용을 직접 선택해 주세요.')}
+    });
+    $('#write-diary').addEventListener('click',()=>{$('#diary-section').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>$('#diary-title').focus({preventScroll:true}),420)});
+    function getEntries(){try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(data)?data.filter(e=>e&&typeof e.id==='string'):[]}catch{return []}}
+    function saveEntries(entries){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));return true}catch{notify('브라우저 저장 공간을 사용할 수 없어요.');return false}}
+    function formatEntryDate(value){const d=new Date(value);return Number.isNaN(+d)?'날짜 정보 없음':new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d)}
+    function renderEntries(){
+      const entries=getEntries();const list=$('#diary-entries');list.replaceChildren();$('#diary-count').textContent=entries.length+'개의 기록';$('#empty-diary').hidden=entries.length>0;
+      entries.forEach(entry=>{
+        const node=document.createElement('article');node.className='entry';
+        const top=document.createElement('div');top.className='entry-top';
+        const time=document.createElement('time');time.className='entry-date';time.textContent=formatEntryDate(entry.createdAt);top.appendChild(time);
+        const title=document.createElement('h4');title.textContent=entry.title;
+        const body=document.createElement('p');body.textContent=entry.body;
+        const bottom=document.createElement('div');bottom.className='entry-bottom';
+        const link=document.createElement('span');link.className='entry-waka';link.textContent=entry.waka?`✿ ${entry.waka.tag} · ${entry.waka.author}`:'✎ 자유 기록';
+        const remove=document.createElement('button');remove.type='button';remove.className='text-btn';remove.textContent='삭제';remove.setAttribute('aria-label',entry.title+' 일기 삭제');remove.addEventListener('click',()=>{if(!confirm('이 일기를 삭제할까요?'))return;const filtered=getEntries().filter(item=>item.id!==entry.id);if(saveEntries(filtered)){renderEntries();notify('일기를 삭제했어요.')}});
+        bottom.append(link,remove);node.append(top,title,body,bottom);list.appendChild(node);
+      });
+    }
+    $('#diary-form').addEventListener('submit',e=>{
+      e.preventDefault();
+      const title=$('#diary-title').value.trim(),body=$('#diary-body').value.trim();
+      if(!title||!body){notify('제목과 일기 내용을 모두 작성해 주세요.');return}
+      const entries=getEntries();const id=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2);
+      entries.unshift({id,title,body,createdAt:new Date().toISOString(),waka:currentWaka?{tag:currentWaka.tag,author:currentWaka.author,original:currentWaka.original}:null});
+      if(saveEntries(entries)){e.target.reset();renderEntries();notify('오늘의 마음을 저장했어요. ✿')}
+    });
+    $('#export-diary').addEventListener('click',()=>{
+      const entries=getEntries();if(!entries.length){notify('내보낼 일기가 아직 없어요.');return}
+      const blob=new Blob([JSON.stringify({app:'오늘의 와카 오라클',exportedAt:new Date().toISOString(),entries},null,2)],{type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='waka-diary-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);notify('일기 파일을 내보냈어요.');
+    });
+    renderEntries();
+  </script>
+</body>
+</html>
