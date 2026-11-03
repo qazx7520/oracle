@@ -102,11 +102,9 @@
     .oracle-card{height:100%;width:100%;position:relative;transform-style:preserve-3d;transition:transform .86s cubic-bezier(.2,.7,.22,1);border-radius:9px}
     .oracle-card.flipped{transform:rotateY(180deg)}
     .card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:9px;overflow:hidden;box-shadow:0 16px 38px #76575229}
-    .card-back{background:#fff1f2;padding:13px;border:1px solid #e6b8bd}
-    .card-back-design{height:100%;width:100%;border:1px solid #ce9ca6;background:repeating-linear-gradient(45deg,#fff5f5 0,#fff5f5 15px,#fce9eb 15px,#fce9eb 16px);display:flex;align-items:center;justify-content:center;flex-direction:column;position:relative}
-    .card-back-design:before{content:'';position:absolute;inset:13px;border:1px solid #dbb4b6}
-    .back-flower{display:grid;place-items:center;width:110px;height:110px;border:1px solid #d5a3ad;border-radius:50%;background:#fdf9f4;color:#b9697f;font:700 67px var(--serif);box-shadow:0 0 0 7px #f8edeb,0 0 0 8px #d5a3ad}
-    .card-back-design small{margin-top:35px;font:12px var(--serif);letter-spacing:.28em;color:#b98592}
+    /* 카드 공통 뒷면: cards/back.webp 한 파일만 교체하면 디자인이 바뀝니다. */
+    .card-back{background:#f9e6e7;padding:0;border:1px solid #d9b47e}
+    .card-back-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;user-select:none;-webkit-user-drag:none}
     .card-front{transform:rotateY(180deg);padding:13px;border:1px solid #decbc1;background:#faf5ed}
     .card-paper{height:100%;position:relative;border:1px solid #d5b9a6;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px 23px;background:linear-gradient(130deg,#fffefa,#f8f1e6)}
     .card-paper>*{position:relative}
@@ -512,6 +510,128 @@
     }
     @media(max-width:360px){.nav-btn{font-size:10px}.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-card{gap:10px}.overview-card p{font-size:11px}.mini-meter{width:70px}.achievement-grid{grid-template-columns:1fr}}
 
+    /* WAKA ORACLE 4.0 — collection, fortunes, card illustrations */
+    .nav{flex-wrap:nowrap}
+    .nav-btn{white-space:nowrap}
+    .mood-btn{border-width:1.5px}
+    .mood-confirm-area{margin:16px auto 12px;max-width:610px;padding:19px;border:1px solid #ebd5d8;border-radius:14px;background:linear-gradient(130deg,#fff8f6,#fcf3f0)}
+    .mood-confirm-area .small-label{margin-bottom:8px}
+    .selected-mood{display:inline-block;margin:5px 0 12px;color:#b35d76;font:700 20px var(--serif)}
+    .mood-status{font-size:12px;color:#8f7a7d;line-height:1.75;margin:7px 0 0}
+    .mood-note-label{text-align:left;display:block;font-size:12px;font-weight:700;color:#846f72;margin:14px 0 8px}
+    .mood-note{width:100%;resize:vertical;min-height:78px;padding:13px 15px;border:1px solid #e2cfd0;border-radius:9px;background:#fffefa;color:#40393d;font-size:14px;line-height:1.65}
+    .mood-confirm{width:100%;margin-top:13px;min-height:52px;font-size:14px}
+    .mood-confirm:disabled{opacity:.46;cursor:not-allowed;transform:none;box-shadow:none}
+    .demo-subcaption{font-size:11px;color:#a08387;line-height:1.7;margin-top:9px}
+    .overview-card{background:linear-gradient(125deg,#fffaf7,#f6eae9);border:1px solid #e9d3d2;border-radius:14px;padding:20px 23px;margin:15px auto 21px;max-width:870px;display:flex;justify-content:space-between;align-items:center;gap:18px}
+    .overview-card strong{display:block;font:700 18px var(--serif);color:#77505e}
+    .overview-card p{color:#96777e;font-size:12px;line-height:1.9;margin:7px 0 0}
+    .overview-right{flex:none;display:flex;flex-direction:column;align-items:end;gap:7px}
+    .mini-meter{width:180px;height:7px;border-radius:99px;overflow:hidden;background:#e9d2d6}
+    .mini-meter-fill{height:100%;width:0;background:linear-gradient(90deg,#c7848c,#ad667f);transition:width .45s}
+    .collection-big{font:700 23px var(--serif);color:#a9536b}
+    .mood-invitation{margin:14px 0}
+    .ritual-note{font-size:12px;line-height:1.8;padding:10px 16px;background:#fcf2ef;border:1px solid #ead7d2;border-radius:12px;max-width:500px;margin:0 auto 18px;white-space:pre-wrap;overflow-wrap:anywhere;color:#9a6b75}
+    .ritual-page .card-scene{width:256px;height:392px;aspect-ratio:256/392}
+    .card-front{padding:0;background:#f8eee3;border:1px solid #c6a079}
+    .front-illustration{width:100%;height:100%;position:relative;background:#f1dfd0;overflow:hidden}
+    .front-illustration img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:auto}
+    .front-illustration:after{content:'';position:absolute;inset:57% 0 0;background:linear-gradient(transparent 0,rgba(34,25,28,.13) 42%,rgba(30,20,24,.79) 100%);pointer-events:none}
+    .card-overlay-caption{position:absolute;z-index:1;bottom:12px;left:13px;right:13px;display:flex;flex-direction:column;gap:5px;text-align:left;text-shadow:0 1px 8px #18131a99}
+    .card-overlay-caption strong{font:700 18px var(--serif);color:#fff5eb}
+    .card-overlay-caption small{font:11px/1.6 var(--serif);color:#f5e7da;overflow-wrap:anywhere}
+    .poem-original{font:500 16px/2.2 'Noto Sans JP',var(--serif);color:#6e4f59;background:#f9f2ef;border-radius:10px;border-left:3px solid #d5a0ab;padding:16px;margin:10px 0 14px;word-break:keep-all}
+    .fortune-panel{margin:17px 0 11px;padding:22px 20px;background:linear-gradient(145deg,#fbf2e4,#fffaf2);border:1px solid #e6d0b0;border-radius:14px;text-align:left;box-shadow:0 8px 25px #99825216}
+    .fortune-eyebrow{color:#a18352;font-size:10px;font-weight:700;letter-spacing:.18em}
+    .fortune-panel h4{font:700 22px var(--serif);color:#6b4a4a;margin:7px 0 11px}
+    .fortune-message{font-size:13px;line-height:2;color:#6a5453;word-break:keep-all;margin:0 0 14px}
+    .luck-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+    .luck-item{background:#fffefa;border:1px solid #eedfcd;border-radius:10px;padding:13px}
+    .luck-item small{display:block;color:#a18a7d;font-size:10px;margin-bottom:9px}
+    .luck-item strong{display:block;color:#6f5553;font-size:12px;line-height:1.65;word-break:keep-all}
+    .color-dot{display:inline-block;vertical-align:middle;width:16px;height:16px;border-radius:50%;border:1px solid #ddd;box-shadow:0 1px 6px #0001;margin-right:5px}
+    .fortune-note{color:#9b8b78;font-size:10px;line-height:1.85;margin:13px 0 0}
+    .collection-added{font-size:12px;color:#a4696a;background:#f9ebec;padding:10px 13px;border-radius:9px;margin:14px 0 0;font-weight:700}
+    .archive-wrap{padding-top:61px;padding-bottom:90px}
+    .archive-header{text-align:center;margin-bottom:27px}
+    .archive-header h2{font:700 34px/1.5 var(--serif);margin:8px 0 10px}
+    .archive-header p{font-size:12px;color:#8d7c7d;line-height:1.9;margin:0}
+    .archive-summary{padding:24px 26px;border:1px solid #e9dbd5;background:#fffcf9;border-radius:16px;margin:21px auto 18px;max-width:900px}
+    .archive-counts{display:flex;align-items:baseline;justify-content:space-between;gap:10px;color:#97737c}
+    .archive-counts strong{font:700 30px var(--serif);color:#a0526b}
+    .archive-counts small{font-size:12px}
+    .archive-meter{height:10px;border-radius:99px;background:#f0e1df;overflow:hidden;margin-top:13px}
+    .archive-meter-fill{height:100%;width:0;background:linear-gradient(90deg,#e3a2b1,#ba6880);transition:width .5s}
+    .archive-explainer{font-size:12px;color:#8a7a78;line-height:1.8;margin:12px 0 0}
+    .archive-actions{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:13px;margin:23px 0 17px}
+    .archive-actions select{border:1px solid #dfccd0;border-radius:10px;padding:10px 15px;background:#fffaf8;font-size:12px;color:#705e65;min-height:44px;max-width:100%}
+    .archive-tools{display:flex;gap:8px;flex-wrap:wrap}
+    .archive-found{font-size:11px;color:#98878a;margin:0 0 13px}
+    .collection-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:15px}
+    .archive-card{padding:0;border:1px solid #e3d6ce;background:#f9f0e6;text-align:left;border-radius:11px;overflow:hidden;display:block;transition:transform .2s,box-shadow .2s;min-width:0}
+    .archive-card:hover{transform:translateY(-3px);box-shadow:0 10px 25px #8c64602b}
+    .archive-image{aspect-ratio:600/920;background:linear-gradient(150deg,#eee6df,#e5d3d1);position:relative;display:grid;place-items:center;overflow:hidden}
+    .archive-image img{width:100%;height:100%;object-fit:cover;display:block}
+    .archive-card.locked .archive-image{background:radial-gradient(circle,#ead7db,#c7afb6);}
+    .archive-card.locked .archive-image:before{content:'';position:absolute;inset:8px;border:1px solid #f7eceb;outline:1px solid #b18e9a;border-radius:5px}
+    .archive-lock{font:700 42px var(--serif);color:#f7efea;box-shadow:none;text-shadow:0 1px 16px #a67790}
+    .archive-card-footer{display:flex;justify-content:space-between;gap:4px;align-items:center;padding:9px 8px;color:#816d74;font-size:10px;background:#fffcf9}
+    .archive-card.locked .archive-card-footer{color:#a9a0a0}
+    .achievement-section{padding:56px 0 0}
+    .achievement-heading{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:17px}
+    .achievement-heading h3{font:700 24px var(--serif);margin:0}
+    .achievement-heading span{font-size:12px;color:#a17a84}
+    .achievement-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .achievement{padding:17px;border:1px solid #e7dad4;border-radius:12px;display:flex;align-items:center;gap:11px;background:#f5f0ea;opacity:.56}
+    .achievement.is-unlocked{opacity:1;background:#fffbf2;border-color:#dfc9a1}
+    .achievement-icon{font-size:27px;min-width:34px;text-align:center}
+    .achievement strong{display:block;color:#645457;font-size:13px;margin-bottom:6px}
+    .achievement small{display:block;color:#9b8385;font-size:11px;line-height:1.5}
+    .archive-notice{color:#95878c;font-size:11px;line-height:1.95;margin-top:24px}
+    .detail-dialog{border:1px solid #e1cfbf;box-shadow:0 30px 110px #2219236b;border-radius:18px;padding:0;max-width:min(740px,calc(100vw - 28px));width:100%;max-height:min(90dvh,880px);overflow:auto;background:#fffaf3;color:#453b3c}
+    .detail-dialog::backdrop{background:#17131dc4;backdrop-filter:blur(6px)}
+    .detail-inner{padding:25px;display:grid;grid-template-columns:minmax(150px,240px) minmax(0,1fr);gap:25px;align-items:start}
+    .detail-img{width:100%;border-radius:9px;box-shadow:0 11px 30px #6b575642}
+    .detail-info h3{font:700 22px var(--serif);margin:5px 0 12px}
+    .detail-info p{font-size:12px;line-height:1.9;word-break:keep-all}
+    .detail-number{font-size:11px;color:#a57778}
+    .detail-original{font:500 14px/2 'Noto Sans JP',sans-serif;color:#885669}
+    .detail-meta{font-size:11px;color:#9c8d7e;line-height:1.8}
+    .detail-footer{margin-top:15px;border-top:1px solid #eadbd2;padding-top:12px}
+    .detail-close-bar{display:flex;justify-content:flex-end;padding:12px 15px 0}
+    .detail-close-bar button{border:1px solid #e6d8d4;background:#fff;border-radius:8px;padding:7px 13px;color:#845e6b;font-size:12px}
+    @media(max-width:900px){.collection-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:730px){
+      .nav{grid-template-columns:repeat(3,minmax(0,1fr))}.nav-btn{font-size:11px;padding:10px 4px;min-height:43px}
+      .mood-confirm-area{padding:15px}
+      .mood-note{font-size:16px}
+      .overview-card{padding:16px 18px;align-items:flex-start}
+      .overview-card strong{font-size:16px}
+      .overview-right{align-items:end}
+      .mini-meter{width:100px}
+      .collection-big{font-size:19px}
+      .ritual-note{font-size:12px}
+      .ritual-page .card-scene{width:min(256px,86vw);height:auto;aspect-ratio:256/392}
+      .fortune-panel{padding:19px 16px}
+      .luck-grid{grid-template-columns:1fr 1fr}
+      .archive-wrap{padding-top:36px;padding-bottom:52px}
+      .archive-header h2{font-size:27px}
+      .archive-summary{padding:18px}
+      .collection-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+      .archive-card-footer{font-size:9px;padding:8px 5px}
+      .archive-actions{align-items:flex-start;gap:10px}
+      .archive-tools .btn{padding:9px 10px}
+      .achievement-grid{grid-template-columns:1fr 1fr;gap:9px}
+      .achievement{padding:12px;gap:7px}
+      .achievement-icon{font-size:22px;min-width:25px}
+      .achievement strong{font-size:11px}
+      .achievement small{font-size:10px}
+      .detail-inner{grid-template-columns:1fr;gap:14px;padding:16px}
+      .detail-img{max-height:360px;width:auto;max-width:100%;display:block;margin:auto}
+      .detail-info h3{font-size:20px}
+    }
+    @media(max-width:360px){.nav-btn{font-size:10px}.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.overview-card{gap:10px}.overview-card p{font-size:11px}.mini-meter{width:70px}.achievement-grid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -619,7 +739,7 @@
             <div class="result-top"><span class="result-heading">✿ 百人一首 · 80 WAKA</span><span class="date-label" id="today-label"></span></div>
             <div class="card-scene" role="button" tabindex="0" aria-label="카드 뒤집기" aria-pressed="false" id="card-scene">
               <div class="oracle-card" id="oracle-card">
-                <div class="card-face card-back" aria-hidden="false"><div class="card-back-design"><span class="back-flower">和</span><small>今日の和歌</small></div></div>
+                <div class="card-face card-back" aria-hidden="false"><img class="card-back-image" src="cards/back.webp" alt="" draggable="false"></div>
                 <div class="card-face card-front" aria-hidden="true"><div class="front-illustration"><img id="card-illustration" src="" alt="와카 카드 일러스트"><div class="card-overlay-caption"><strong id="card-overlay-title"></strong><small id="card-overlay-author"></small></div></div></div>
               </div>
             </div>
