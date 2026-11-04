@@ -662,7 +662,30 @@
     .card-download-btn{white-space:normal}
     @media(max-width:460px){.unlock-panel{padding:26px 19px 20px}.unlock-art{width:88px;height:130px}.unlock-eyebrow{margin-top:16px}}
     @media(prefers-reduced-motion:reduce){.unlock-overlay,.unlock-panel,.unlock-petals span{animation:none!important}}
-  </style>
+  
+    /* LANGUAGE / MUSIC CONTROLS & readable furigana — 2026 edition */
+    .header-inner{flex-wrap:wrap;gap:10px 14px;padding-block:9px}
+    .site-controls{display:flex;align-items:center;gap:9px;flex-shrink:0}
+    .language-switch{display:inline-flex;align-items:center;gap:2px;background:#fff6f6;border:1px solid #efd8d8;border-radius:999px;padding:3px;box-shadow:0 1px 5px #75535a12}
+    .language-choice{border:0;border-radius:999px;background:transparent;font-weight:750;font-size:12px;color:#8c7477;padding:7px 10px;white-space:nowrap}
+    .language-choice.selected{background:#bd6a7d;color:#fff;box-shadow:0 2px 8px #98657128}
+    .bgm-control{white-space:nowrap;border:1px solid #dfc7cc;color:#9b6675;background:#fff9f9;border-radius:999px;font-weight:700;font-size:12px;padding:9px 10px;cursor:pointer}
+    .bgm-control[aria-pressed="false"]{opacity:.7}
+    .ritual-controls{display:flex;align-items:center;gap:6px}
+    .ritual-page.arrived .bgm-control,.ritual-page.reading .bgm-control{background:#f8e8f01d;color:#fbe9eb;border-color:#fff6}
+    .ritual-page.arrived .language-switch,.ritual-page.reading .language-switch{background:#f8e8f01d;border-color:#fff6}
+    .ritual-page.arrived .language-choice:not(.selected),.ritual-page.reading .language-choice:not(.selected){color:#f6dce6}
+    .ritual-page.arrived .language-choice.selected,.ritual-page.reading .language-choice.selected{background:#e8b6c8;color:#4e2e3e}
+    .term-chip{font-size:15px;line-height:2;vertical-align:middle;padding:12px 14px}
+    .term-chip ruby, #detail-term ruby{ruby-position:over;font-weight:700;white-space:nowrap}
+    .term-chip rt,#detail-term rt{font-size:10px;line-height:1.1;color:#a86c80;letter-spacing:.04em;font-weight:500}
+    .term-divider{padding:0 3px}
+    .kana-term{white-space:nowrap}
+    html[lang="ja"] body{font-family:'Noto Sans JP','Noto Sans KR',sans-serif}
+    html[lang="ja"] .hero-title,html[lang="ja"] .section-title,html[lang="ja"] .brand-name{letter-spacing:-.035em}
+    @media(max-width:1040px){.header-inner{justify-content:center}.site-controls{order:3}.nav{order:2}}
+    @media(max-width:650px){.header-inner{gap:7px;padding:7px 4px}.brand-name{font-size:15px}.brand-desc{font-size:8px}.nav-btn{padding:8px 11px;font-size:11px}.site-controls{width:100%;justify-content:center;order:3}.ritual-topbar{flex-wrap:wrap;justify-content:center;gap:7px}.ritual-back{order:1;margin-right:auto;padding:8px 9px}.ritual-brand{display:none}.ritual-step{order:2}.ritual-controls{width:100%;order:3;justify-content:center}.language-choice{padding:6px 9px;font-size:11px}.bgm-control{padding:7px 9px;font-size:11px}.ritual-ready{min-height:calc(100dvh - 205px)}}
+</style>
 </head>
 <body>
   <header class="site-header">
@@ -675,6 +698,10 @@
         <button id="tab-btn-presentation" class="nav-btn active" type="button" data-goto="presentation" aria-current="page">아이디어 소개</button>
         <button id="tab-btn-demo" class="nav-btn" type="button" data-goto="demo">와카 뽑기</button><button id="tab-btn-collection" class="nav-btn" type="button" data-goto="collection">나의 도감</button>
       </nav>
+      <div class="site-controls" aria-label="언어 및 음악 / 言語・音楽">
+        <div class="language-switch" role="group" aria-label="언어 선택 / 言語選択"><button type="button" class="language-choice selected" data-select-lang="ko" aria-pressed="true">한국어</button><button type="button" class="language-choice" data-select-lang="ja" aria-pressed="false">日本語</button></div>
+        <button type="button" class="bgm-control" data-bgm-toggle aria-pressed="true">♫ BGM 켜짐</button>
+      </div>
     </div>
   </header>
   <main>
@@ -749,6 +776,7 @@
               <button id="ritual-back" class="ritual-back" type="button" aria-label="감정 선택으로 돌아가기"><span aria-hidden="true">←</span> 마음 선택으로</button>
               <span class="ritual-brand">和 · TODAY'S WAKA</span>
               <span class="ritual-step" id="ritual-step">STEP 02 / 03</span>
+              <div class="ritual-controls"><div class="language-switch" role="group" aria-label="언어 선택 / 言語選択"><button type="button" class="language-choice selected" data-select-lang="ko" aria-pressed="true">한국어</button><button type="button" class="language-choice" data-select-lang="ja" aria-pressed="false">日本語</button></div><button type="button" class="bgm-control" data-bgm-toggle aria-pressed="true">♫ BGM 켜짐</button></div>
             </div>
             <div id="ritual-ready" class="ritual-ready">
               <div class="ready-seal" aria-hidden="true"><span>和</span></div>
@@ -850,6 +878,184 @@
     // 『小倉百人一首』에서 선별한 실재 80수. 한국어 번역과 해설은 시연용 자체 작성.
     // 감정 분류는 현대 사용자 경험을 위한 해석이며, 원작의 역사적 분류와 다를 수 있음.
     const wakaDatabase = [{"tag":"설렘","number":12,"category":"설렘 · 백인일수 제12수","original":"天つ風 雲の通ひ路 吹きとぢよ をとめの姿 しばしとどめむ","author":"僧正遍昭","translation":"하늘의 바람이여, 구름 사이 길을 막아 다오. 춤추는 소녀들의 모습을 잠시라도 더 머물게 하고 싶구나.","term":"天つ風(あまつかぜ)","usage":"‘하늘의 바람’을 부르는 말. 구름길은 하늘과 땅을 잇는 상상 속 통로다.","background":"궁중 오절무(五節舞)의 무희를 천녀에 빗대어 그 아름다움이 더 오래 머물기를 바란 노래.","advice":"아름다운 순간이 끝나지 않았으면 하는 두근거림을 떠올려 보세요.","deckId":1,"image":"cards/card_001.webp","fortune":"바람에게 순간을 붙잡아 달라던 시처럼, 설렘이 찾아온 장면을 오늘은 조금 천천히 즐겨 보세요.","luckyItem":"작은 바람개비","luckyColor":"연분홍","luckyHex":"#eaa6b1","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":13,"category":"설렘 · 백인일수 제13수","original":"筑波嶺の 峰より落つる 男女川 恋ぞつもりて 淵となりぬる","author":"陽成院","translation":"쓰쿠바산 봉우리에서 흘러내린 미나노강이 깊은 못이 되듯, 나의 사랑도 쌓이고 쌓여 깊어졌구나.","term":"男女川(みなのがわ)","usage":"쓰쿠바산에서 내려오는 강 이름. 작은 물줄기가 깊은 못이 되는 과정이 연심의 비유다.","background":"고대 일본 궁정의 증답가 전통 속에서 감정이 점점 깊어지는 모습을 자연 풍경으로 표현했다.","advice":"작은 호감이 큰 마음으로 자라는 순간에 어울리는 시예요.","deckId":2,"image":"cards/card_002.webp","fortune":"산에서 시작한 물줄기가 깊어지듯, 가벼운 관심도 꾸준한 대화로 자랄 수 있어요. 오늘은 안부 한마디를 건네 보세요.","luckyItem":"강물 무늬 책갈피","luckyColor":"청록","luckyHex":"#5f9f9e","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":14,"category":"설렘 · 백인일수 제14수","original":"陸奥の しのぶもぢずり 誰ゆゑに 乱れそめにし われならなくに","author":"河原左大臣","translation":"미치노쿠의 시노부 무늬처럼 어지러워진 이 마음, 그 누구 때문이겠는가. 오직 당신 때문이지.","term":"しのぶもぢずり","usage":"옛 미치노쿠 지방의 비틀린 무늬 염색천. ‘しのぶ’는 몰래 그리워하다라는 뜻도 연상시킨다.","background":"일본 고전 와카는 지역 특산품과 소리의 중첩을 이용해 직접 말하기 어려운 연정을 드러냈다.","advice":"설명할 수 없이 마음이 흔들리는 설렘을 비유해 보세요.","deckId":3,"image":"cards/card_003.webp","fortune":"시노부 무늬처럼 복잡한 마음도 누군가를 좋아한다는 단순한 사실에서 시작돼요. 자신의 진심을 조용히 인정해 보세요.","luckyItem":"무늬 손수건","luckyColor":"라벤더","luckyHex":"#aa93c8","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":25,"category":"설렘 · 백인일수 제25수","original":"名にし負はば 逢坂山の さねかづら 人に知られで くるよしもがな","author":"三条右大臣","translation":"이름 그대로라면 오사카산의 사네카즈라 덩굴이여, 남몰래 그 사람에게 다가갈 길을 알려다오.","term":"逢坂・さねかづら","usage":"‘逢坂’의 逢는 ‘만나다’, ‘さね’는 ‘함께 자다’를 떠올리게 하는 언어유희다.","background":"교토와 동쪽을 잇던 오사카 고개의 지명과 덩굴식물 이름을 사랑의 비밀스러운 통로로 겹쳐 표현했다.","advice":"누군가에게 다가갈 용기를 내기 직전의 마음을 담았어요.","deckId":4,"image":"cards/card_004.webp","fortune":"덩굴이 뻗어 길을 찾듯, 오늘은 먼저 다가갈 작은 기회를 발견해 보세요. 부담 없는 인사부터 시작해도 좋아요.","luckyItem":"초록 리본","luckyColor":"연두","luckyHex":"#8fb98c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":27,"category":"설렘 · 백인일수 제27수","original":"みかの原 わきて流るる 泉川 いつ見きとてか 恋しかるらむ","author":"中納言兼輔","translation":"미카노 들을 가르며 흐르는 이즈미강아, 나는 그 사람을 언제 보았기에 이렇게 그리운 걸까.","term":"泉川・いつ見","usage":"‘いづみ(샘·이즈미)’와 ‘いつ見(언제 보았나)’의 유사한 소리를 활용한 말장난이다.","background":"강 이름을 이용하는 서사가(序詞) 형식으로 실제로 만나지도 않은 상대에 대한 연심을 노래한다.","advice":"아직 잘 모르는 사람인데도 자꾸 생각날 때가 있죠.","deckId":5,"image":"cards/card_005.webp","fortune":"한 번 만난 기억이 자꾸 떠오른다면 그 마음을 서둘러 정의하지 말아 보세요. 설렘을 관찰하는 하루도 소중해요.","luckyItem":"작은 유리병","luckyColor":"하늘색","luckyHex":"#90b8d7","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":39,"category":"설렘 · 백인일수 제39수","original":"浅茅生の 小野の篠原 しのぶれど あまりてなどか 人の恋しき","author":"参議等","translation":"띠풀이 자라는 시노하라처럼 마음을 숨겨 보아도, 어째서 이토록 그 사람이 그리운 걸까.","term":"篠原・しのぶ","usage":"‘篠(시노)’와 ‘忍ぶ(시노부, 숨기다)’의 소리를 연결해 감정의 은폐를 드러낸다.","background":"자연 묘사를 먼저 두어 뒤의 연정을 이끄는 고전 와카의 서사가 기법을 보여준다.","advice":"마음속에만 감춰 둔 호감이 커지는 장면에 어울려요.","deckId":6,"image":"cards/card_006.webp","fortune":"감추어도 자라나는 마음처럼, 오늘은 무엇이 내 얼굴을 웃게 하는지 알아차려 보세요.","luckyItem":"풀잎 모양 펜","luckyColor":"초록","luckyHex":"#72a889","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":40,"category":"설렘 · 백인일수 제40수","original":"忍ぶれど 色に出でにけり わが恋は 物や思ふと 人の問ふまで","author":"平兼盛","translation":"숨기려 했던 나의 사랑이 얼굴빛에 드러나 버렸구나. 사람들이 무슨 걱정이라도 있느냐고 물을 만큼.","term":"色に出づ","usage":"‘색으로 나타나다’는 감정이 얼굴빛과 태도에 드러나는 것을 가리킨다.","background":"헤이안 궁정의 노래 겨루기인 우타아와세에서 널리 알려진, 숨겨진 연심을 다룬 작품이다.","advice":"좋아하는 마음은 생각보다 표정에 잘 나타나기도 해요.","deckId":7,"image":"cards/card_007.webp","fortune":"표정에 드러난 마음을 숨기느라 애쓰기보다, 오늘만큼은 기분 좋은 기대를 자연스럽게 받아들여 보세요.","luckyItem":"작은 손거울","luckyColor":"살구색","luckyHex":"#edae92","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":41,"category":"설렘 · 백인일수 제41수","original":"恋すてふ わが名はまだき 立ちにけり 人知れずこそ 思ひ初めしか","author":"壬生忠見","translation":"남몰래 이제 막 사랑을 시작했는데, 벌써 내가 사랑에 빠졌다는 소문이 퍼져 버렸구나.","term":"恋すてふ","usage":"‘恋すといふ(사랑한다고 한다)’가 줄어든 고어 표현. ‘名が立つ’는 소문이 나다라는 뜻이다.","background":"평가 대상이 되는 궁정 사회에서는 연애의 소문과 체면이 시의 중요한 소재였다.","advice":"비밀로 간직하고 싶은 설렘의 순간이에요.","deckId":8,"image":"cards/card_008.webp","fortune":"소문보다 중요한 건 나의 진심이에요. 두근거리는 순간을 다른 사람의 말로 판단하지 말고 직접 느껴 보세요.","luckyItem":"봉인 스티커","luckyColor":"장밋빛","luckyHex":"#cf8298","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":50,"category":"설렘 · 백인일수 제50수","original":"君がため 惜しからざりし 命さへ 長くもがなと 思ひけるかな","author":"藤原義孝","translation":"당신을 위해서라면 아깝지 않던 목숨마저도, 이제는 오래오래 이어지기를 바라게 되는구나.","term":"長くもがな","usage":"‘오래 이어졌으면’ 하는 간절한 소망을 나타내는 고어 종결 표현이다.","background":"헤이안 시대 연애시는 사랑의 성취가 삶의 가치마저 바꾸는 경험을 종종 노래했다.","advice":"누군가와 보내고 싶은 내일이 생긴 마음을 떠올려요.","deckId":9,"image":"cards/card_009.webp","fortune":"함께 보내고 싶은 내일을 떠올리게 하는 시예요. 오늘은 소중한 사람과 하고 싶은 작은 계획 하나를 적어 보세요.","luckyItem":"미니 달력","luckyColor":"금빛","luckyHex":"#d3ad63","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"설렘","number":67,"category":"설렘 · 백인일수 제67수","original":"春の夜の 夢ばかりなる 手枕に かひなく立たむ 名こそ惜しけれ","author":"周防内侍","translation":"봄밤의 꿈처럼 덧없는 팔베개 때문에, 공연한 소문이 나는 일만큼은 아쉽고 두렵습니다.","term":"手枕(たまくら)","usage":"팔을 베개 삼아 내어 주는 친밀한 몸짓. ‘かひ’는 보람과 팔(腕)의 소리를 겹친 말장난으로 읽는다.","background":"궁정의 장난스러운 구애에 대해 재치 있게 응수한 증답가로 알려진 작품이다.","advice":"가벼운 농담 속에 숨은 미묘한 두근거림을 느껴 보세요.","deckId":10,"image":"cards/card_010.webp","fortune":"봄밤의 짧은 꿈처럼 지나가는 순간일수록 선택을 신중히 해 보세요. 설렘과 나의 경계를 함께 지키는 하루가 되길 바라요.","luckyItem":"작은 베개 키링","luckyColor":"복숭아색","luckyHex":"#efad9d","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":7,"category":"그리움 · 백인일수 제7수","original":"天の原 ふりさけ見れば 春日なる 三笠の山に 出でし月かも","author":"安倍仲麿","translation":"먼 하늘을 올려다보니, 고향 나라 미카사산 위에도 떠오르던 바로 그 달이구나.","term":"天の原","usage":"끝없이 펼쳐진 하늘을 가리키는 시적 표현. 같은 달은 먼 곳의 고향을 잇는 매개다.","background":"당나라에 머물렀던 아베노 나카마로가 일본의 고향을 그리며 지었다고 전해지는 망향가다.","advice":"멀리 있어도 같은 달을 본다는 생각에 위안을 얻어 보세요.","deckId":11,"image":"cards/card_011.webp","fortune":"달은 멀리 있어도 함께 볼 수 있어요. 그리운 사람에게 오늘의 하늘 사진 한 장을 보내 보는 건 어떨까요?","luckyItem":"달 모양 책갈피","luckyColor":"은빛","luckyHex":"#b1b9ca","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":16,"category":"그리움 · 백인일수 제16수","original":"立ち別れ いなばの山の 峰に生ふる まつとし聞かば 今帰り来む","author":"中納言行平","translation":"헤어져 이나바로 떠나지만, 당신이 기다린다는 말만 들으면 곧 돌아오리다.","term":"いなば・まつ","usage":"‘いなば’는 이나바 지방과 ‘떠나면’, ‘まつ’는 소나무(松)와 기다리다(待つ)를 겹친다.","background":"지방으로 떠나는 관료의 이별을 지명과 식물 이름에 엮어 재회의 희망을 표현했다.","advice":"헤어짐 속에서도 다시 만날 약속을 마음에 새겨 보세요.","deckId":12,"image":"cards/card_012.webp","fortune":"떠나는 길에도 다시 만날 약속이 있었지요. 오늘은 오래 미뤄 둔 안부를 먼저 전해 보세요.","luckyItem":"여행 엽서","luckyColor":"연갈색","luckyHex":"#c7a58a","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":18,"category":"그리움 · 백인일수 제18수","original":"住の江の 岸による波 よるさへや 夢の通ひ路 人めよくらむ","author":"藤原敏行朝臣","translation":"스미노에 바닷가에 밀려오는 파도처럼 밤이 와도, 꿈길에서조차 당신은 남의 눈을 피하는가요.","term":"よる","usage":"파도가 ‘밀려오다(寄る)’와 ‘밤(夜)’의 발음을 겹쳐 쓰는 가케코토바(掛詞)다.","background":"헤이안 연애시에서 꿈속의 만남은 상대가 나를 생각한다는 표지로 여겨지기도 했다.","advice":"꿈에서라도 보고 싶은 마음이 얼마나 큰지 표현한 노래예요.","deckId":13,"image":"cards/card_013.webp","fortune":"밤마다 밀려오는 파도처럼 그리움은 반복되기도 해요. 기억을 억누르기보다 잠시 적어 두고 쉬어 보세요.","luckyItem":"파도 무늬 손수건","luckyColor":"남색","luckyHex":"#617eaa","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":19,"category":"그리움 · 백인일수 제19수","original":"難波潟 みじかき葦の ふしの間も 逢はでこの世を 過ぐしてよとや","author":"伊勢","translation":"난바 갯벌 갈대 마디만큼 짧은 순간조차 만나지 못한 채, 이 세상을 보내라는 건가요.","term":"ふしの間","usage":"갈대의 ‘마디 사이’를 가리키며 아주 짧은 시간에 빗댄 표현이다.","background":"난바 갯벌의 갈대를 소재로 만남조차 허락되지 않는 연인의 간절함을 드러낸다.","advice":"짧은 안부 한 번이 소중할 때 떠오르는 시입니다.","deckId":14,"image":"cards/card_014.webp","fortune":"갈대 마디 같은 짧은 순간이 간절한 날이에요. 오늘은 작은 만남이나 짧은 통화의 가치를 떠올려 보세요.","luckyItem":"갈대 책갈피","luckyColor":"모래색","luckyHex":"#ccb58c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":21,"category":"그리움 · 백인일수 제21수","original":"今来むと 言ひしばかりに 長月の 有明の月を 待ち出でつるかな","author":"素性法師","translation":"곧 오겠다는 그 말만 믿고 기다리다, 긴 가을밤이 지나 새벽달이 떠오르는 것까지 보았네요.","term":"長月・有明の月","usage":"‘長月’은 음력 9월, ‘有明の月’은 날이 밝아도 남아 있는 달을 뜻한다.","background":"화자가 기다리는 여인의 입장을 빌린 연애가로, 기다림을 계절과 달의 시간으로 그린다.","advice":"보고 싶은 사람을 기다리는 시간이 유난히 길게 느껴지죠.","deckId":15,"image":"cards/card_015.webp","fortune":"기다리는 밤이 길게 느껴져도 시간은 흘러요. 오늘은 누군가를 기다리는 동안 나를 위한 작은 즐거움도 챙겨 보세요.","luckyItem":"초승달 메모지","luckyColor":"보랏빛","luckyHex":"#9683b8","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":30,"category":"그리움 · 백인일수 제30수","original":"有明の つれなく見えし 別れより 暁ばかり 憂きものはなし","author":"壬生忠岑","translation":"냉정하게 보이던 새벽달 아래서 헤어진 뒤로, 새벽만큼 괴로운 시간은 없구나.","term":"暁(あかつき)","usage":"밤이 끝나 갈 무렵의 시간. 당시 연인의 만남 뒤 이별과 맞물리는 시어다.","background":"밤을 함께 보낸 뒤 새벽에 돌아가는 ‘기누기누(後朝)’의 관습과 관련된 이별의 정서를 담는다.","advice":"이별 뒤 특정 시간이 유난히 아프게 남을 수 있어요.","deckId":16,"image":"cards/card_016.webp","fortune":"새벽이 유난히 아프게 남은 마음이라면, 오늘은 자신에게 더 부드러운 아침을 선물해 보세요.","luckyItem":"따뜻한 머그컵","luckyColor":"옅은 파랑","luckyHex":"#9fb9d6","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":35,"category":"그리움 · 백인일수 제35수","original":"人はいさ 心も知らず ふるさとは 花ぞ昔の 香に匂ひける","author":"紀貫之","translation":"사람의 마음이야 변했는지 알 수 없지만, 익숙한 곳의 매화는 옛날과 같은 향기를 풍기는구나.","term":"ふるさと・花","usage":"여기서 ‘ふるさと’는 오래전부터 익숙한 장소이며, ‘花’는 문맥상 매화꽃을 가리킨다.","background":"오래간만에 찾은 숙소에서 주인과 주고받은 시로 전해지며, 변하는 사람과 변하지 않은 매화 향기를 대비한다.","advice":"예전 장소에서 문득 옛사람이 떠오를 때 읽어 보세요.","deckId":17,"image":"cards/card_017.webp","fortune":"매화 향은 남았지만 사람 마음은 달라질 수 있어요. 익숙한 장소에서 지금의 나를 위한 새로운 기억을 만들어 보세요.","luckyItem":"매화 향 주머니","luckyColor":"매화색","luckyHex":"#dc9ca5","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":42,"category":"그리움 · 백인일수 제42수","original":"契りきな かたみに袖を しぼりつつ 末の松山 波越さじとは","author":"清原元輔","translation":"서로 눈물 젖은 소매를 짜며 맹세했잖아요. 스에노마쓰야마를 파도가 넘지 않듯 마음은 변하지 않으리라고.","term":"末の松山","usage":"미야기 지역의 지명. 파도가 산을 넘을 수 없다는 말은 흔들리지 않을 약속의 비유다.","background":"고전 시가에서 ‘파도가 스에노마쓰야마를 넘지 않는다’는 표현은 변치 않는 사랑의 관용적 비유로 쓰였다.","advice":"함께 나눈 약속의 기억이 그리운 날에 어울려요.","deckId":18,"image":"cards/card_018.webp","fortune":"변하지 않겠다는 약속의 기억을 품고 있다면, 오늘은 그 기억이 내게 남긴 좋은 가치를 한 줄 써 보세요.","luckyItem":"작은 실 매듭","luckyColor":"푸른 회색","luckyHex":"#8499a6","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":57,"category":"그리움 · 백인일수 제57수","original":"めぐり逢ひて 見しやそれとも 分かぬ間に 雲隠れにし 夜半の月かな","author":"紫式部","translation":"오랜만에 만나 당신인지 알아볼 새도 없이, 한밤의 달이 구름에 숨듯 떠나 버렸구나.","term":"雲隠れ","usage":"‘구름에 숨다’라는 뜻. 눈앞에서 사라진 사람을 달에 겹쳐 그린다.","background":"작가 무라사키 시키부가 오랜 지인을 잠깐 만나고 헤어진 경험을 그린 작품으로 알려져 있다.","advice":"짧은 재회가 오히려 더 큰 그리움을 남길 때가 있어요.","deckId":19,"image":"cards/card_019.webp","fortune":"달이 구름에 숨는 듯 짧은 재회가 남았다면, 오늘은 놓친 말 하나를 일기에 적어 보세요.","luckyItem":"구름 모양 메모","luckyColor":"달빛색","luckyHex":"#d6c9b4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"그리움","number":58,"category":"그리움 · 백인일수 제58수","original":"有馬山 猪名の笹原 風吹けば いでそよ人を 忘れやはする","author":"大弐三位","translation":"아리마산 이나의 대숲에 바람이 불면 사각거리지요. 그래요, 내가 어찌 그대를 잊겠어요.","term":"そよ","usage":"대나무 잎이 바람에 스치는 소리이면서 ‘그래요’라는 응답의 말소리를 겹친다.","background":"상대가 자신을 잊었느냐고 묻는 편지에 자연의 소리로 답하는 헤이안 증답가다.","advice":"오래된 관계를 잊지 않겠다는 따뜻한 마음을 전해요.","deckId":20,"image":"cards/card_020.webp","fortune":"대숲을 스치는 소리처럼 오래된 인연의 기억도 살아 있어요. 오늘 고마웠던 사람의 이름을 떠올려 보세요.","luckyItem":"대나무 펜","luckyColor":"대숲색","luckyHex":"#7ca48e","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":5,"category":"슬픔 · 백인일수 제5수","original":"奥山に もみぢ踏み分け 鳴く鹿の 声聞く時ぞ 秋は悲しき","author":"猿丸大夫","translation":"산 깊은 곳에서 낙엽을 밟으며 우는 사슴 소리를 들을 때, 가을은 참으로 슬프구나.","term":"鳴く鹿","usage":"가을에 짝을 찾는 수사슴의 울음은 일본 고전시에서 쓸쓸한 가을의 표상이다.","background":"가을을 대표하는 경물인 단풍과 사슴 울음을 함께 배치해 계절의 슬픔을 증폭한다.","advice":"설명하기 어려운 쓸쓸함에 자연이 말을 걸어 주는 듯해요.","deckId":21,"image":"cards/card_021.webp","fortune":"사슴 울음에 슬픔을 느낀 시인처럼, 마음이 울적할 땐 그 감정을 말없이 들어 줄 풍경을 찾아보세요.","luckyItem":"작은 낙엽 책갈피","luckyColor":"적갈색","luckyHex":"#ba8c74","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":9,"category":"슬픔 · 백인일수 제9수","original":"花の色は うつりにけりな いたづらに わが身世にふる ながめせしまに","author":"小野小町","translation":"긴 비를 바라보며 덧없이 세월을 보내는 사이, 꽃빛도 내 청춘도 어느새 바래 버렸구나.","term":"ふる・ながめ","usage":"‘ふる’는 비가 내리다(降る)와 세월을 보내다(経る), ‘ながめ’는 긴 비(長雨)와 바라봄(眺め)을 겹친다.","background":"꽃의 퇴색과 자기 삶의 변화를 겹쳐 표현한 헤이안 시대의 대표적인 중의법 와카다.","advice":"시간이 지나가는 서글픔을 억누르지 않아도 괜찮아요.","deckId":22,"image":"cards/card_022.webp","fortune":"긴 비가 세월을 흘려보낸 듯 느껴질 때도 있어요. 오늘은 지나간 것보다 지금 지킬 수 있는 한 가지를 골라 보세요.","luckyItem":"비 오는 날 우산","luckyColor":"회보라","luckyHex":"#9793a9","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":23,"category":"슬픔 · 백인일수 제23수","original":"月見れば 千々に物こそ 悲しけれ わが身ひとつの 秋にはあらねど","author":"大江千里","translation":"달을 바라보니 갖가지 생각이 모두 슬프구나. 가을은 나 혼자만의 계절도 아닌데.","term":"千々(ちぢ)","usage":"‘수없이 많음’을 가리키며 ‘나 하나(ひとつ)’와 대조되는 말이다.","background":"고전 한시의 가을 달과 수심(愁心)이라는 소재를 일본식 와카 감수성으로 풀어냈다.","advice":"같은 달을 보더라도 마음의 날씨는 저마다 달라요.","deckId":23,"image":"cards/card_023.webp","fortune":"같은 달을 보고도 마음은 저마다 달라요. 오늘의 슬픔을 비교하지 말고 내 속도로 쉬어 보세요.","luckyItem":"달빛 스티커","luckyColor":"먹청색","luckyHex":"#64728d","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":38,"category":"슬픔 · 백인일수 제38수","original":"忘らるる 身をば思はず 誓ひてし 人の命の 惜しくもあるかな","author":"右近","translation":"잊힌 내 처지는 탓하지 않겠지만, 맹세를 저버린 그 사람의 앞날이 오히려 걱정되는구나.","term":"誓ひ(ちかひ)","usage":"서로의 사랑을 걸고 나눈 약속. 맹세를 어긴 데 대한 종교적 두려움도 겹친다.","background":"사랑의 맹세를 저버리는 일을 도덕적·불교적 응보와 연관 지어 표현한 시대적 정서를 엿볼 수 있다.","advice":"상처받은 마음이면서도 상대를 염려하는 복잡함을 담았어요.","deckId":24,"image":"cards/card_024.webp","fortune":"상처와 걱정이 뒤섞인 날에는 마음의 짐을 구분해 보세요. 내가 책임질 일과 아닌 일을 따로 적으면 좋아요.","luckyItem":"두 칸 메모장","luckyColor":"차분한 회색","luckyHex":"#9e9da5","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":44,"category":"슬픔 · 백인일수 제44수","original":"逢ふことの 絶えてしなくは なかなかに 人をも身をも 恨みざらまし","author":"中納言朝忠","translation":"차라리 만난 적이 전혀 없었다면, 그 사람도 나 자신도 이렇게 원망하지 않았을 텐데.","term":"なかなかに","usage":"현대어의 ‘좀처럼’과 달리 여기서는 ‘도리어, 차라리’에 가까운 뜻으로 쓰인다.","background":"실현된 만남이 오히려 더 큰 괴로움의 원인이 된다는 헤이안 연애시의 역설을 보여 준다.","advice":"이미 있었던 소중한 만남도 때로는 아픔으로 남죠.","deckId":25,"image":"cards/card_025.webp","fortune":"만남이 아픔으로 남았더라도 그때의 모든 시간이 헛된 건 아니에요. 오늘은 나를 위해 새로 시작할 작은 일을 정해 보세요.","luckyItem":"새 공책","luckyColor":"연회색","luckyHex":"#b7b7b4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":45,"category":"슬픔 · 백인일수 제45수","original":"あはれとも いふべき人は 思ほえで 身のいたづらに なりぬべきかな","author":"謙徳公","translation":"가엾다 말해 줄 사람조차 떠오르지 않으니, 내 삶이 이대로 덧없이 끝나려나.","term":"あはれ","usage":"오늘날 ‘불쌍하다’뿐 아니라 깊은 연민과 감동을 나타내던 폭넓은 고전 감정어다.","background":"고립된 화자의 연민을 요청하는 고전 연애가로, 애상적 표현의 강도를 높인 작품이다.","advice":"슬픈 날에는 위로해 줄 사람을 떠올리는 것만으로도 의미가 있어요.","deckId":26,"image":"cards/card_026.webp","fortune":"외로움이 깊게 느껴지는 날에는 누군가의 도움을 청해도 괜찮아요. 가까운 사람에게 솔직한 한마디를 전해 보세요.","luckyItem":"연락처 카드","luckyColor":"따뜻한 베이지","luckyHex":"#ceb69c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":48,"category":"슬픔 · 백인일수 제48수","original":"風をいたみ 岩うつ波の おのれのみ くだけて物を 思ふころかな","author":"源重之","translation":"바람이 거세 바위에 부딪힌 파도처럼, 나 혼자 마음이 산산이 부서져 근심하는구나.","term":"くだけて","usage":"파도가 ‘부서지다’와 마음이 ‘무너지다’를 겹쳐 표현한 비유다.","background":"강한 바위와 부서지는 파도의 대비로 응답받지 못하는 사랑의 괴로움을 드러낸다.","advice":"마음이 부서질 만큼 힘든 감정을 비유하는 한 수예요.","deckId":27,"image":"cards/card_027.webp","fortune":"바위에 부딪힌 파도처럼 마음이 부서지는 기분이라면, 오늘은 답을 찾기보다 잠시 멈추어 숨을 골라 보세요.","luckyItem":"작은 조약돌","luckyColor":"바다 회색","luckyHex":"#8292a3","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":53,"category":"슬픔 · 백인일수 제53수","original":"嘆きつつ ひとり寝る夜の 明くる間は いかに久しき ものとかは知る","author":"右大将道綱母","translation":"한숨 쉬며 혼자 잠드는 밤, 날이 밝을 때까지 얼마나 긴지 당신은 알기나 하나요.","term":"ひとり寝る","usage":"혼자 잠자리에 들다. 당시 남편의 방문을 기다리는 혼인 풍습과 닿아 있다.","background":"『가게로 일기(蜻蛉日記)』의 작가인 미치쓰나의 어머니가 남편을 향한 섭섭함을 노래한 시다.","advice":"서운함을 분명한 말로 표현하는 것 역시 중요한 일입니다.","deckId":28,"image":"cards/card_028.webp","fortune":"혼자 잠드는 밤이 길게 느껴진다면 자기 전 걱정을 종이에 내려놓아 보세요. 내일의 나에게 맡겨도 괜찮아요.","luckyItem":"수면 일기장","luckyColor":"남보라","luckyHex":"#8583a7","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":65,"category":"슬픔 · 백인일수 제65수","original":"恨みわび ほさぬ袖だに あるものを 恋に朽ちなむ 名こそ惜しけれ","author":"相模","translation":"원망에 지쳐 눈물 젖은 소매도 마르지 않는데, 사랑 때문에 내 이름마저 상할까 아쉽구나.","term":"袖がぬれる","usage":"소매가 젖는다는 말은 와카에서 눈물을 많이 흘린다는 관용적인 표현이다.","background":"헤이안 연애의 소문과 명예 문제를 ‘마르지 않는 소매’와 함께 제시한다.","advice":"상처받은 감정과 자존감을 구분해 바라볼 계기를 줘요.","deckId":29,"image":"cards/card_029.webp","fortune":"눈물 젖은 소매가 떠오르는 날이에요. 타인의 시선보다 내가 지켜야 할 마음의 경계를 먼저 생각해 보세요.","luckyItem":"부드러운 손수건","luckyColor":"담자주","luckyHex":"#b98c9d","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"슬픔","number":90,"category":"슬픔 · 백인일수 제90수","original":"見せばやな 雄島のあまの 袖だにも ぬれにぞぬれし 色はかはらず","author":"殷富門院大輔","translation":"바다에서 젖은 어부의 소매도 색은 그대로인데, 내 소매는 눈물로 색조차 변한 모습을 보여 주고 싶구나.","term":"あまの袖","usage":"‘海人(어부)의 소매’와 눈물 젖은 화자의 소매를 대비하는 전통적 비유다.","background":"눈물을 피처럼 짙게 흘린다는 과장법으로 상실과 괴로움을 강하게 드러낸다.","advice":"말로 다 전하지 못한 슬픔의 크기를 생각하게 해요.","deckId":30,"image":"cards/card_030.webp","fortune":"눈물의 색까지 말하고 싶은 마음이라면 오늘은 표현해도 좋아요. 글, 그림, 음악 중 편한 방법 하나를 골라 보세요.","luckyItem":"색연필 한 자루","luckyColor":"짙은 청색","luckyHex":"#637b97","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":10,"category":"희망 · 백인일수 제10수","original":"これやこの 行くも帰るも 別れては 知るも知らぬも 逢坂の関","author":"蝉丸","translation":"이곳이 바로 떠나는 이와 돌아오는 이, 아는 이와 모르는 이가 마주치는 오사카의 관문이구나.","term":"逢坂(あふさか)","usage":"오늘날 오사카시(大阪)와 다른 교토·시가 경계의 ‘오사카 고개’. ‘逢ふ’는 만남을 뜻한다.","background":"사람의 왕래가 많은 고개를 인연과 이별이 교차하는 상징적 장소로 표현했다.","advice":"새로운 사람과 만날 가능성이 늘 길 위에 열려 있어요.","deckId":31,"image":"cards/card_031.webp","fortune":"오가는 사람이 만나는 고갯길처럼, 오늘은 뜻밖의 작은 만남을 받아들일 여유를 가져 보세요.","luckyItem":"길 모양 책갈피","luckyColor":"연두색","luckyHex":"#96b98d","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":15,"category":"희망 · 백인일수 제15수","original":"君がため 春の野に出でて 若菜つむ わが衣手に 雪は降りつつ","author":"光孝天皇","translation":"당신을 위해 봄 들판에 나가 어린 풀을 뜯는 동안, 내 소매에는 아직 눈이 내리는구나.","term":"若菜(わかな)","usage":"새봄에 돋는 어린 나물. 이를 따서 먹거나 선물하는 풍습은 새 계절의 생명력과 이어진다.","background":"초봄의 눈 속에서 소중한 사람에게 줄 풀을 찾는 풍경으로 돌봄과 새로운 계절을 함께 보여 준다.","advice":"차가운 날씨 속에서도 봄을 준비하는 마음에 닮았어요.","deckId":32,"image":"cards/card_032.webp","fortune":"눈이 내려도 봄나물을 캐러 가는 마음처럼, 아직 추워도 새로운 계절을 준비하는 작은 행동을 시작해 보세요.","luckyItem":"새싹 화분","luckyColor":"풀빛","luckyHex":"#7ca76c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":24,"category":"희망 · 백인일수 제24수","original":"このたびは 幣もとりあへず 手向山 紅葉の錦 神のまにまに","author":"菅家","translation":"이번 여행에는 바칠 예물을 마련하지 못했습니다. 대신 다무케산 단풍의 비단을 신께 올리겠습니다.","term":"幣(ぬさ)","usage":"여행길의 신에게 바치는 종이·천 등의 제물. ‘手向’는 신에게 예물을 올리는 행위다.","background":"여행의 무사를 기원하는 제의 문화를 아름다운 단풍에 빗댄 스가와라노 미치자네의 시다.","advice":"준비가 완벽하지 않아도 진심으로 시작할 수 있어요.","deckId":33,"image":"cards/card_033.webp","fortune":"완벽한 예물이 없어도 단풍 한 장에 마음을 담았듯, 오늘은 준비가 부족해도 진심을 전해 보세요.","luckyItem":"단풍잎 카드","luckyColor":"주황","luckyHex":"#da995c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":26,"category":"희망 · 백인일수 제26수","original":"小倉山 峰のもみぢ葉 心あらば 今ひとたびの みゆき待たなむ","author":"貞信公","translation":"오구라산 봉우리의 단풍잎이여, 마음이 있다면 임금이 다시 오실 때까지 흩어지지 말아 다오.","term":"みゆき(御幸)","usage":"천황이 외출·행차하는 일을 높여 이르는 말이다.","background":"궁중 귀족이 천황의 재방문을 바라며 단풍에 말을 건네는 궁정 와카의 의인화 표현이다.","advice":"다시 찾아올 좋은 순간을 기다리는 마음에 어울려요.","deckId":34,"image":"cards/card_034.webp","fortune":"다시 찾아올 순간을 기다리는 단풍처럼, 오늘의 노력도 언젠가 의미를 만날 거예요. 꾸준히 할 일 하나를 정해 보세요.","luckyItem":"약속 메모","luckyColor":"노을빛","luckyHex":"#d2a17e","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":55,"category":"희망 · 백인일수 제55수","original":"滝の音は 絶えて久しく なりぬれど 名こそ流れて なほ聞こえけれ","author":"大納言公任","translation":"폭포 소리가 끊긴 지 오래지만, 그 이름과 명성은 여전히 흘러 전해지는구나.","term":"流れる","usage":"물이 흐르다와 소문·명성이 퍼지다를 잇는 말장난으로 읽을 수 있다.","background":"말라 버린 오래된 폭포 앞에서 자연의 실체가 사라진 뒤에도 남는 기억과 명성을 노래했다.","advice":"지금 보이지 않아도 오래 남는 가치가 있다는 시선이에요.","deckId":35,"image":"cards/card_035.webp","fortune":"폭포가 멈추어도 이름은 흐릅니다. 당장 눈에 보이는 결과가 없어도 오늘의 작은 성취를 기록해 보세요.","luckyItem":"물결 펜","luckyColor":"청록색","luckyHex":"#6fa8aa","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":73,"category":"희망 · 백인일수 제73수","original":"高砂の 尾の上の桜 咲きにけり 外山の霞 立たずもあらなむ","author":"権中納言匡房","translation":"먼 산봉우리의 벚꽃이 피었구나. 가까운 산에 안개가 끼어 그 꽃을 가리지 말았으면.","term":"外山(とやま)","usage":"사람이 사는 곳 가까이에 있는 산. 멀고 높은 산을 뜻하는 深山과 대비한다.","background":"먼 산의 꽃을 바라보려는 바람으로 봄의 아름다운 순간을 지키고자 하는 마음을 노래한다.","advice":"선명한 목표를 바라보기 위해 눈앞의 안개가 걷히길 바라 보세요.","deckId":36,"image":"cards/card_036.webp","fortune":"먼 산의 꽃을 가리는 안개처럼 걱정이 목표를 흐릴 수 있어요. 오늘은 가장 가까운 첫걸음만 또렷하게 정해 보세요.","luckyItem":"산봉우리 스티커","luckyColor":"벚꽃빛","luckyHex":"#dca5be","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":75,"category":"희망 · 백인일수 제75수","original":"契りおきし させもが露を 命にて あはれ今年の 秋もいぬめり","author":"藤原基俊","translation":"약속하신 ‘이슬 같은 은혜’를 믿고 살아왔는데, 아아 올해 가을도 이렇게 지나가나 봅니다.","term":"させもが露","usage":"옛 와카의 ‘させも草’ 이미지와 이슬에 대한 비유를 빌려, 생명처럼 의지한 약속을 나타낸다.","background":"아들의 승진에 관한 타인의 약속을 기다리다 이루어지지 않은 실망을 노래한 작품이다. 희망이 무조건 성취된 이야기는 아니다.","advice":"기다림이 길어질 때는 기대와 현실을 함께 살펴보세요.","deckId":37,"image":"cards/card_037.webp","fortune":"오랜 기다림 속에도 마음은 지칠 수 있어요. 기대를 품되 오늘 나를 위해 할 수 있는 일을 하나 선택해 보세요.","luckyItem":"작은 모래시계","luckyColor":"황금빛","luckyHex":"#cdb477","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":77,"category":"희망 · 백인일수 제77수","original":"瀬をはやみ 岩にせかるる 滝川の われても末に 逢はむとぞ思ふ","author":"崇徳院","translation":"여울이 빨라 바위에 갈라진 물길도 끝내 합쳐지듯, 우리도 언젠가는 다시 만나리라.","term":"われても","usage":"시냇물이 둘로 ‘갈라지다’와 연인이 ‘헤어지다’를 겹쳐 읽을 수 있다.","background":"빠른 여울의 자연 원리를 연인들의 재회에 포개어 회복과 약속을 표현한 대표적 와카다.","advice":"지금은 멀어도 다시 이어질 길을 상상하는 시예요.","deckId":38,"image":"cards/card_038.webp","fortune":"갈라진 물길도 다시 만나듯, 멀어진 일들이 새 방향에서 이어질 수 있어요. 포기하기 전 다른 길을 살펴보세요.","luckyItem":"두 줄 리본","luckyColor":"맑은 파랑","luckyHex":"#76a4cb","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":93,"category":"희망 · 백인일수 제93수","original":"世の中は 常にもがもな 渚こぐ あまの小舟の 綱手かなしも","author":"鎌倉右大臣","translation":"세상이 이대로 변함없으면 좋으련만. 물가의 어부 배를 밧줄로 끄는 풍경이 참으로 애틋하구나.","term":"常にもがもな","usage":"‘늘 그대로였으면 좋겠다’는 간절한 소망을 나타내는 고어 표현이다.","background":"가마쿠라 막부의 쇼군이자 시인인 미나모토노 사네토모가 일상적인 바닷가 풍경의 지속을 기원한다.","advice":"평범한 일상이 오래 이어지길 바라는 소망도 희망이에요.","deckId":39,"image":"cards/card_039.webp","fortune":"평범한 어부의 풍경을 오래 바라본 시처럼, 오늘은 지금 가진 평온한 일상에 감사 한 줄을 남겨 보세요.","luckyItem":"작은 사진틀","luckyColor":"햇살색","luckyHex":"#d6b37f","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"희망","number":95,"category":"희망 · 백인일수 제95수","original":"おほけなく うき世の民に おほふかな わが立つ杣に 墨染の袖","author":"前大僧正慈円","translation":"보잘것없는 나이지만 속세의 사람들을 이 검은 승려 소매로 감싸 주고 싶구나.","term":"墨染の袖","usage":"먹빛으로 물들인 승복의 소매. 승려의 삶과 자비의 상징이다.","background":"승려 지엔이 사람들의 고통을 감싸려는 종교적 기원을 표현한 시로 읽힌다.","advice":"나 하나를 넘어 누군가를 돕고 싶은 마음으로 이어 보세요.","deckId":40,"image":"cards/card_040.webp","fortune":"누군가를 감싸 주고 싶다는 마음이 큰 힘이 되는 날이에요. 오늘은 가벼운 친절 하나를 실천해 보세요.","luckyItem":"따뜻한 목도리","luckyColor":"연자주","luckyHex":"#b58fa7","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":3,"category":"외로움 · 백인일수 제3수","original":"あしびきの 山鳥の尾の しだり尾の ながながし夜を ひとりかも寝む","author":"柿本人麻呂","translation":"산새의 길게 드리운 꼬리처럼 끝없는 밤을, 오늘도 나는 홀로 잠들어야 하는가.","term":"あしびきの","usage":"‘산(山)’을 이끄는 마쿠라코토바(枕詞·관용적인 시어). 정확한 어원에는 여러 설이 있다.","background":"산새의 긴 꼬리를 밤의 길이와 연결해 독수공방의 외로움을 시각적으로 확장한 고전 비유다.","advice":"밤이 길게 느껴지는 날에도 마음은 천천히 흘러갑니다.","deckId":41,"image":"cards/card_041.webp","fortune":"긴 꼬리처럼 길게 느껴지는 밤이라면, 혼자 있는 시간을 스스로를 돌보는 시간으로 바꾸어 보세요.","luckyItem":"별 무늬 수면안대","luckyColor":"밤하늘색","luckyHex":"#56647f","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":28,"category":"외로움 · 백인일수 제28수","original":"山里は 冬ぞさびしさ まさりける 人目も草も かれぬと思へば","author":"源宗于朝臣","translation":"산골은 겨울에 더욱 쓸쓸하구나. 찾아오는 사람도 끊기고 풀도 시들었으니.","term":"かれ","usage":"사람의 발길이 ‘끊기다(離れ)’와 풀이 ‘마르다(枯れ)’를 겹친 가케코토바다.","background":"겨울의 은둔 공간을 사람과 초목의 부재로 함께 그리는 자연·인간 정서의 결합이다.","advice":"사람의 발길이 뜸해지는 계절에 어울리는 시예요.","deckId":42,"image":"cards/card_042.webp","fortune":"사람이 떠난 겨울 산에도 봄은 찾아와요. 오늘은 아주 작은 연결 하나를 만들거나 따뜻한 공간을 찾아보세요.","luckyItem":"미니 담요","luckyColor":"겨울 하늘색","luckyHex":"#91a9ba","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":34,"category":"외로움 · 백인일수 제34수","original":"誰をかも 知る人にせむ 高砂の 松も昔の 友ならなくに","author":"藤原興風","translation":"이제 누구를 벗 삼아야 할까. 오래된 다카사고의 소나무조차 내 옛 친구는 아닌 것을.","term":"高砂の松","usage":"장수와 영속을 상징하는 유명한 소나무. 인간의 유한한 우정과 대비한다.","background":"오래 살아남은 자연물과 먼저 떠난 벗들을 대비하며 노년의 고독을 노래한다.","advice":"오래된 사람을 떠올리며 새로운 인연을 소중히 여겨 보세요.","deckId":43,"image":"cards/card_043.webp","fortune":"오래된 소나무처럼 곁을 지켜 준 기억이 있다면, 오늘은 그 추억을 나만의 문장으로 적어 두세요.","luckyItem":"소나무 엽서","luckyColor":"솔잎색","luckyHex":"#769480","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":47,"category":"외로움 · 백인일수 제47수","original":"八重葎 しげれる宿の さびしきに 人こそ見えね 秋は来にけり","author":"恵慶法師","translation":"덩굴에 뒤덮인 적막한 집에 사람은 오지 않아도, 가을은 어김없이 찾아왔구나.","term":"八重葎(やへむぐら)","usage":"겹겹이 우거진 잡초·덩굴. 사람이 돌보지 않는 오래된 집을 나타내는 전통적 경물이다.","background":"방문객 없는 폐가와 반복해 찾아오는 계절을 대비하는 버려진 거처의 노래다.","advice":"아무도 오지 않는 날에도 계절은 소리 없이 지나갑니다.","deckId":44,"image":"cards/card_044.webp","fortune":"아무도 찾지 않는 집에도 계절은 찾아오지요. 오늘은 창문을 열고 새로운 공기부터 들여 보세요.","luckyItem":"창가 화분","luckyColor":"회녹색","luckyHex":"#8c9b8c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":66,"category":"외로움 · 백인일수 제66수","original":"もろともに あはれと思へ 山桜 花よりほかに 知る人もなし","author":"前大僧正行尊","translation":"산벚꽃이여, 우리 서로를 가엾이 여기자. 이 산에서는 너 말고 아는 이가 없구나.","term":"もろともに","usage":"‘서로 함께’라는 뜻. 꽃과 사람이 마음을 주고받는 듯 의인화한다.","background":"산속 수행의 고독을 벚꽃과의 대화로 돌려 표현한 승려의 시다.","advice":"혼자인 시간에도 작은 자연에서 벗을 발견할 수 있어요.","deckId":45,"image":"cards/card_045.webp","fortune":"산벚꽃을 친구 삼은 시인처럼, 오늘은 주변의 작은 생명과 풍경에서 친근함을 찾아보세요.","luckyItem":"꽃잎 압화","luckyColor":"연분홍","luckyHex":"#daa1b2","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":70,"category":"외로움 · 백인일수 제70수","original":"さびしさに 宿を立ち出でて ながむれば いづこも同じ 秋の夕暮れ","author":"良暹法師","translation":"외로워 집 밖으로 나와 바라보아도, 어디나 똑같이 쓸쓸한 가을 저녁이구나.","term":"秋の夕暮れ","usage":"가을 해 질 무렵은 일본 중세 와카에서 고독과 무상을 환기하는 시적 배경이다.","background":"장소를 바꾸어도 달라지지 않는 쓸쓸함을 풍경 전체로 확장한 작품이다.","advice":"장소보다 마음의 시선이 풍경을 바꾸기도 해요.","deckId":46,"image":"cards/card_046.webp","fortune":"밖에 나가도 쓸쓸함이 이어진다면 풍경을 바꾸기보다 마음을 쉬게 해 보세요. 좋아하는 장소에 잠시 머물러 보세요.","luckyItem":"가을색 머그","luckyColor":"황갈색","luckyHex":"#b99b7c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":78,"category":"외로움 · 백인일수 제78수","original":"淡路島 かよふ千鳥の 鳴く声に いく夜寝覚めぬ 須磨の関守","author":"源兼昌","translation":"아와지섬을 오가는 물떼새 울음소리에, 스마 관문의 파수꾼은 몇 밤이나 잠을 깼을까.","term":"千鳥(ちどり)","usage":"물가에 사는 작은 새. 차가운 해안과 쓸쓸한 밤을 상징하는 고전 계절 소재다.","background":"스마 해협과 관문의 밤을 상상하며 타인의 외로움을 헤아리는 여행·장소의 시다.","advice":"나와 다른 자리의 누군가도 같은 고독을 겪을 수 있어요.","deckId":47,"image":"cards/card_047.webp","fortune":"멀리서 들려오는 물떼새 소리처럼, 누군가도 비슷한 밤을 보내고 있어요. 가벼운 안부를 나눠 보면 어떨까요?","luckyItem":"새 모양 핀","luckyColor":"안개 파랑","luckyHex":"#8ba0b3","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":85,"category":"외로움 · 백인일수 제85수","original":"夜もすがら 物思ふころは 明けやらで 閨のひまさへ つれなかりけり","author":"俊恵法師","translation":"밤새 그 사람만 생각하는 요즘, 날도 밝지 않고 침실 문틈마저 매정하게 느껴지는구나.","term":"夜もすがら","usage":"‘밤이 새도록, 밤새 내내’라는 고어 부사. ‘閨’는 잠자리를 뜻한다.","background":"좀처럼 새벽이 오지 않는 잠 못 드는 밤을 생활 공간의 좁은 틈까지 의인화한 시다.","advice":"혼자 깨어 있는 긴 밤을 섬세하게 담아냈어요.","deckId":48,"image":"cards/card_048.webp","fortune":"밤을 꼬박 지새우는 생각이 있다면 오늘은 잠들기 전 마음을 적고 잠시 덮어 두세요.","luckyItem":"작은 수첩","luckyColor":"짙은 보라","luckyHex":"#77718e","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":91,"category":"외로움 · 백인일수 제91수","original":"きりぎりす 鳴くや霜夜の さむしろに 衣かたしき ひとりかも寝む","author":"後京極摂政前太政大臣","translation":"귀뚜라미 우는 서리 내린 밤, 차가운 거적에 옷 한쪽을 깔고 홀로 자는가.","term":"衣かたしき","usage":"혼자 누워 옷의 한쪽만 바닥에 깔다는 뜻으로, 연인 없는 잠자리를 암시한다.","background":"서리·벌레 소리·차가운 깔개를 결합해 가을밤의 고독을 구체적인 몸의 감각으로 그린다.","advice":"고요한 밤에 밀려오는 외로움을 이해해 주는 시예요.","deckId":49,"image":"cards/card_049.webp","fortune":"서리 내린 밤의 옷자락처럼 마음이 시리다면, 오늘은 몸을 따뜻하게 돌보는 것부터 시작해 보세요.","luckyItem":"따뜻한 양말","luckyColor":"은회색","luckyHex":"#aeb6be","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"외로움","number":97,"category":"외로움 · 백인일수 제97수","original":"来ぬ人を 松帆の浦の 夕なぎに 焼くや藻塩の 身もこがれつつ","author":"権中納言定家","translation":"오지 않는 사람을 기다리며, 마쓰호 포구 저녁바람이 멎을 때 굽는 소금처럼 내 마음도 타들어 가는구나.","term":"松帆・藻塩","usage":"‘松(まつ)’는 ‘待つ(기다리다)’를 연상시키며, 해초를 태워 소금을 만드는 ‘藻塩’는 타는 그리움의 비유다.","background":"후지와라노 데이카는 해안 풍경과 구애를 기다리는 화자의 내면을 겹쳐 표현했다.","advice":"기다림이 길어질수록 내 마음도 잘 돌봐야 해요.","deckId":50,"image":"cards/card_050.webp","fortune":"소금을 굽는 불처럼 기다림이 마음을 태우지 않도록, 오늘은 오롯이 나를 위한 약속을 하나 잡아 보세요.","luckyItem":"작은 소금 항아리","luckyColor":"바다빛","luckyHex":"#769fb0","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":2,"category":"행복 · 백인일수 제2수","original":"春過ぎて 夏来にけらし 白妙の 衣ほすてふ 天の香具山","author":"持統天皇","translation":"봄이 지나 여름이 왔나 보다. 하얀 옷을 말린다는 아마노카구산이 눈앞에 펼쳐졌구나.","term":"白妙(しろたへ)","usage":"희고 깨끗한 천을 가리키는 고전 시어로 흰옷과 밝은 여름의 인상을 만든다.","background":"아스카 지방의 가구산 풍경으로 새로운 계절의 도착을 알아차리는 계절가다.","advice":"좋아하는 계절이 시작되는 작고 반가운 순간이에요.","deckId":51,"image":"cards/card_051.webp","fortune":"여름이 온 산의 흰 천처럼 계절의 변화를 발견해 보세요. 오늘은 눈길이 가는 밝은 색 하나를 찾아보면 좋겠어요.","luckyItem":"하얀 손수건","luckyColor":"백색","luckyHex":"#e5e0d4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":4,"category":"행복 · 백인일수 제4수","original":"田子の浦に うち出でて見れば 白妙の 富士の高嶺に 雪は降りつつ","author":"山部赤人","translation":"다고노우라로 나가 바라보니, 희게 빛나는 후지산 높은 봉우리에는 눈이 내리고 있구나.","term":"田子の浦","usage":"후지산을 바라볼 수 있는 스루가 지역의 해안 지명. ‘白妙’는 새하얀 빛을 강조한다.","background":"고대의 경승을 노래하는 산수 와카가 후지산의 장엄한 풍경을 찬미한 작품이다.","advice":"눈앞의 경치에 마음이 환해지는 기분을 느껴 보세요.","deckId":52,"image":"cards/card_052.webp","fortune":"멀리 후지산의 설경을 바라보듯, 오늘은 익숙한 거리에서도 아름다운 장면 하나를 찾아보세요.","luckyItem":"풍경 엽서","luckyColor":"설산색","luckyHex":"#b6c7d6","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":17,"category":"행복 · 백인일수 제17수","original":"ちはやぶる 神代も聞かず 竜田川 からくれなゐに 水くくるとは","author":"在原業平朝臣","translation":"신들의 시대에도 들어 본 적 없구나. 다쓰타강이 단풍으로 물을 붉은 비단처럼 물들이는 광경이라니.","term":"ちはやぶる","usage":"신(神)을 수식하는 마쿠라코토바. ‘からくれなゐ’는 짙고 선명한 진홍색을 뜻한다.","background":"가을 단풍이 흐르는 강물을 염색한 듯 보이는 모습을 직물 염색에 빗댄 시다. 원래 연애시가 아니라 경치의 경이로움을 다룬다.","advice":"아름다운 풍경에 감탄하는 행복을 건네는 작품이에요.","deckId":53,"image":"cards/card_053.webp","fortune":"붉은 단풍이 강을 비단처럼 물들이는 날이에요. 오늘은 마음에 드는 풍경을 한 장 기록해 보세요.","luckyItem":"단풍 책갈피","luckyColor":"단풍 빨강","luckyHex":"#c95e52","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":29,"category":"행복 · 백인일수 제29수","original":"心あてに 折らばや折らむ 初霜の 置きまどはせる 白菊の花","author":"凡河内躬恒","translation":"첫서리와 흰 국화가 뒤섞여 구별할 수 없으니, 짐작으로라도 한 송이 꺾어 볼까.","term":"心あてに","usage":"‘짐작으로, 어림잡아’라는 뜻. 흰서리와 흰꽃의 유사성을 즐기는 표현이다.","background":"초겨울 첫서리와 백국을 한빛으로 바라보는 자연 관찰의 재치를 담았다.","advice":"사소한 풍경에서 발견하는 장난스러운 기쁨이에요.","deckId":54,"image":"cards/card_054.webp","fortune":"첫서리와 국화가 뒤섞이는 장난스러운 풍경처럼, 오늘은 작은 호기심을 따라가 보세요.","luckyItem":"국화 모양 브로치","luckyColor":"아이보리","luckyHex":"#e4d8bc","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":31,"category":"행복 · 백인일수 제31수","original":"朝ぼらけ 有明の月と 見るまでに 吉野の里に 降れる白雪","author":"坂上是則","translation":"새벽빛이 밝아올 때 달빛인 줄 알았더니, 요시노 마을 가득 눈이 내려 환해졌구나.","term":"朝ぼらけ","usage":"새벽 동이 터 희미하게 밝아지는 때. ‘有明の月’은 아침에 남은 달이다.","background":"눈의 반사광을 달빛에 빗대어 요시노의 설경을 놀라움으로 받아들이는 시다.","advice":"예상하지 못한 아름다움에 마음이 밝아지는 날이에요.","deckId":55,"image":"cards/card_055.webp","fortune":"달빛인 줄 알았던 눈처럼 뜻밖의 장면이 기쁨을 줄 수 있어요. 오늘은 계획에 없는 산책을 짧게 해 보세요.","luckyItem":"눈꽃 스티커","luckyColor":"설백색","luckyHex":"#d9e6ec","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":32,"category":"행복 · 백인일수 제32수","original":"山川に 風のかけたる しがらみは 流れもあへぬ 紅葉なりけり","author":"春道列樹","translation":"산골짜기 강에 바람이 걸어 둔 울타리인 줄 알았더니, 흘러가지 못한 단풍잎이었구나.","term":"しがらみ","usage":"흐르는 물을 막는 말뚝·울타리. 단풍의 무더기를 의인화해 그렇게 부른다.","background":"물에 쌓인 낙엽을 자연이 만들어 낸 장식처럼 해석한 관찰의 시다.","advice":"자연이 만든 뜻밖의 무늬를 즐겨 보세요.","deckId":56,"image":"cards/card_056.webp","fortune":"단풍잎이 만든 자연의 울타리처럼 예상치 못한 조화가 생길 수 있어요. 사소한 우연을 즐겨 보세요.","luckyItem":"잎사귀 배지","luckyColor":"주홍","luckyHex":"#d48769","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":33,"category":"행복 · 백인일수 제33수","original":"ひさかたの 光のどけき 春の日に しづ心なく 花の散るらむ","author":"紀友則","translation":"햇살이 이토록 온화한 봄날인데, 어째서 벚꽃은 마음 급하게 흩날리는 걸까.","term":"ひさかたの","usage":"빛·하늘 등을 꾸미는 마쿠라코토바. 정확한 원뜻은 확정하기 어렵다.","background":"따뜻한 봄날의 평온과 너무 빨리 지는 벚꽃 사이의 아쉬움을 대비했다. 완전한 환희보다 아름다움의 덧없음에 가깝다.","advice":"좋은 순간이 짧아서 더 아름답게 느껴지기도 해요.","deckId":57,"image":"cards/card_057.webp","fortune":"온화한 봄 햇살 아래 흩날리는 벚꽃을 바라보듯, 오늘의 좋은 순간을 붙잡기보다 충분히 느껴 보세요.","luckyItem":"벚꽃 키링","luckyColor":"벚꽃 분홍","luckyHex":"#edb0be","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":36,"category":"행복 · 백인일수 제36수","original":"夏の夜は まだ宵ながら 明けぬるを 雲のいづこに 月宿るらむ","author":"清原深養父","translation":"여름밤은 아직 초저녁 같은데 벌써 동이 텄구나. 달은 어느 구름에 머무르고 있을까.","term":"宵(よひ)","usage":"해가 진 뒤 아직 늦지 않은 밤, 초저녁을 뜻한다.","background":"짧은 여름밤의 시간 감각을 달의 행방을 묻는 상상으로 표현한 노래다.","advice":"여름밤이 주는 가벼운 호기심과 기쁨을 느껴 보세요.","deckId":58,"image":"cards/card_058.webp","fortune":"여름밤이 짧다는 사실도 즐거운 발견이 될 수 있어요. 오늘은 짧고 가벼운 취미 하나에 시간을 써 보세요.","luckyItem":"별자리 카드","luckyColor":"밤파랑","luckyHex":"#647ca4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":37,"category":"행복 · 백인일수 제37수","original":"白露に 風の吹きしく 秋の野は つらぬきとめぬ 玉ぞ散りける","author":"文屋朝康","translation":"흰 이슬 맺힌 가을 들판에 바람이 불자, 꿰지 않은 구슬들이 사방으로 흩어지는 듯하구나.","term":"白露(しらつゆ)","usage":"맑고 희게 빛나는 이슬. 작은 물방울을 보석에 견주는 고전 시어다.","background":"바람에 흩날리는 이슬방울을 끈이 끊어진 진주에 빗대는 시각적 비유를 보여 준다.","advice":"작고 반짝이는 것을 발견하는 기쁨을 담았어요.","deckId":59,"image":"cards/card_059.webp","fortune":"이슬방울이 구슬처럼 흩어지는 들판을 떠올려 보세요. 오늘은 작고 반짝이는 기쁨을 세 가지 적어 보세요.","luckyItem":"유리구슬","luckyColor":"이슬빛","luckyHex":"#8dc4c4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"행복","number":61,"category":"행복 · 백인일수 제61수","original":"いにしへの 奈良の都の 八重桜 けふ九重に にほひぬるかな","author":"伊勢大輔","translation":"오래전 나라의 도읍에 피던 겹벚꽃이 오늘은 궁궐의 뜰에 더욱 찬란하게 피었구나.","term":"八重桜・九重","usage":"‘八重’는 겹겹이 핀 벚꽃, ‘九重’는 여러 겹의 담으로 둘러싸인 궁궐을 뜻한다.","background":"나라에서 궁중으로 바친 겹벚꽃을 노래하며 예전 수도와 현재 궁정의 번영을 연결한다.","advice":"특별한 날의 축하와 꽃의 아름다움을 함께 누려 보세요.","deckId":60,"image":"cards/card_060.webp","fortune":"겹벚꽃이 궁궐에 피어난 장면처럼, 오늘은 소중한 사람의 성취를 함께 기뻐해 보세요.","luckyItem":"꽃무늬 편지지","luckyColor":"연분홍 금빛","luckyHex":"#e2a7a9","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":20,"category":"불안 · 백인일수 제20수","original":"わびぬれば 今はた同じ 難波なる みをつくしても 逢はむとぞ思ふ","author":"元良親王","translation":"이토록 괴로워진 이상, 어떤 대가를 치르더라도 당신을 만나고 싶구나.","term":"みをつくし","usage":"항로를 알리는 ‘澪標(물길 표지)’와 ‘身を尽くし(몸을 다하다)’를 겹친 가케코토바다.","background":"세상에 알려진 연애의 위태로움 속에서도 만남을 택하겠다는 절박함을 노래했다.","advice":"무언가를 간절히 바라면서도 위험을 느끼는 마음이에요.","deckId":61,"image":"cards/card_061.webp","fortune":"간절함이 큰 만큼 마음이 급해질 수 있어요. 오늘은 서두르기보다 나를 지키는 선택인지 한 번 살펴보세요.","luckyItem":"닻 모양 키링","luckyColor":"짙은 파랑","luckyHex":"#5d7d99","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":46,"category":"불안 · 백인일수 제46수","original":"由良のとを 渡る舟人 かぢを絶え ゆくへも知らぬ 恋の道かな","author":"曾禰好忠","translation":"유라 해협에서 노를 잃은 배처럼, 내 사랑도 어디로 흘러갈지 알 수 없구나.","term":"かぢを絶え","usage":"배의 방향을 조종하는 도구를 잃은 상태. 여기서는 통제 불가능한 사랑을 비유한다.","background":"조류가 거센 해협을 연애의 불확실성과 겹쳐 그리는 자연 비유의 전형이다.","advice":"앞이 보이지 않을 때의 불안을 물길로 표현했어요.","deckId":62,"image":"cards/card_062.webp","fortune":"노를 잃은 배처럼 방향이 불분명한 날에는 멀리 보려 하지 않아도 돼요. 오늘 할 수 있는 작은 행동을 정해 보세요.","luckyItem":"미니 나침반","luckyColor":"안개 청록","luckyHex":"#82a5aa","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":49,"category":"불안 · 백인일수 제49수","original":"みかきもり 衛士のたく火の 夜は燃え 昼は消えつつ 物をこそ思へ","author":"大中臣能宣朝臣","translation":"궁궐 문지기의 모닥불처럼 밤에는 타오르고 낮에는 사그라지는 마음으로 괴로워하는구나.","term":"衛士(えじ)","usage":"궁궐을 지키는 경비병. 밤낮으로 바뀌는 불꽃의 모습이 흔들리는 심정을 비춘다.","background":"신분 질서가 뚜렷한 궁정의 경비 풍경을 연심의 불안정한 리듬에 포개었다.","advice":"감정이 하루에도 여러 번 달라질 때 읽기 좋아요.","deckId":63,"image":"cards/card_063.webp","fortune":"모닥불이 타올랐다 사그라지듯 기분도 오르내릴 수 있어요. 오늘은 변화하는 감정을 판단하지 말고 적어 보세요.","luckyItem":"작은 촛불 모형","luckyColor":"잿빛 주황","luckyHex":"#ba8f72","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":51,"category":"불안 · 백인일수 제51수","original":"かくとだに えやはいぶきの さしも草 さしも知らじな 燃ゆる思ひを","author":"藤原実方朝臣","translation":"이렇다고 한마디조차 말할 수 없으니, 이부키산의 쑥처럼 타오르는 내 마음을 당신은 모르겠지요.","term":"いぶき・さしも","usage":"‘言ふ(말하다)’와 ‘伊吹(이부키)’, ‘さしも(그토록)’와 뜸쑥 이름을 엮은 말장난이다.","background":"뜸에 쓰는 쑥이 타는 이미지로 드러내지 못한 격렬한 사랑의 고통을 그렸다.","advice":"말하지 못한 마음이 커질수록 불안도 짙어지죠.","deckId":64,"image":"cards/card_064.webp","fortune":"입 밖에 내지 못한 마음이 불안을 키울 수 있어요. 오늘은 전하고 싶은 말을 먼저 종이에 써 보세요.","luckyItem":"연필과 메모지","luckyColor":"쑥색","luckyHex":"#899f79","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":52,"category":"불안 · 백인일수 제52수","original":"明けぬれば 暮るるものとは 知りながら なほうらめしき 朝ぼらけかな","author":"藤原道信朝臣","translation":"아침이 오면 또 밤이 찾아온다는 걸 알면서도, 지금 밝아오는 새벽이 야속하구나.","term":"朝ぼらけ","usage":"서서히 날이 밝는 새벽. 고전 연애시에서 함께한 밤이 끝나는 이별의 시간이다.","background":"연인의 집을 방문했다가 새벽에 떠나는 ‘기누기누’의 관습을 배경으로 읽는다.","advice":"다시 만날 수 있음을 알아도 이별의 순간은 불안할 수 있어요.","deckId":65,"image":"cards/card_065.webp","fortune":"새벽이 야속하게 느껴지는 순간에도 하루는 다시 시작돼요. 오늘은 바꿀 수 없는 것보다 선택 가능한 일에 집중해 보세요.","luckyItem":"해돋이 엽서","luckyColor":"희미한 금색","luckyHex":"#cfb387","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":54,"category":"불안 · 백인일수 제54수","original":"忘れじの 行く末までは かたければ 今日を限りの 命ともがな","author":"儀同三司母","translation":"잊지 않겠다는 그 약속이 언제까지 이어질지 알 수 없으니, 차라리 가장 행복한 오늘이 끝이기를.","term":"忘れじ","usage":"‘잊지 않겠다’는 강한 약속의 고어 표현. 미래의 지속 가능성을 의심하는 시의 핵심이다.","background":"영원한 사랑의 약속이 깨질까 두려워하는 순간을 극단적인 수사로 표현한 연애가다.","advice":"사랑이 크기에 미래를 두려워하는 감정을 읽을 수 있어요.","deckId":66,"image":"cards/card_066.webp","fortune":"약속이 영원할지 걱정되는 날에는 미래를 단정하지 말고 지금의 마음을 확인해 보세요.","luckyItem":"작은 약속 카드","luckyColor":"연보라","luckyHex":"#a699bc","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":63,"category":"불안 · 백인일수 제63수","original":"今はただ 思ひ絶えなむ とばかりを 人づてならで 言ふよしもがな","author":"左京大夫道雅","translation":"이제는 그 마음을 끊겠다는 말만이라도, 남을 거치지 않고 직접 전할 수 있다면.","term":"人づて","usage":"다른 사람을 통한 전언. 궁정에서 직접 만나기 어려운 관계를 비추는 표현이다.","background":"만남이 제한된 연인의 사연과 함께 직접 이별을 말할 수조차 없는 상황의 답답함을 드러낸다.","advice":"불확실한 관계에서는 직접 말할 기회를 바랄 수 있어요.","deckId":67,"image":"cards/card_067.webp","fortune":"전해 듣는 말보다 직접 확인하는 말이 필요할 때가 있어요. 오늘은 오해를 줄일 차분한 대화를 생각해 보세요.","luckyItem":"편지 봉투","luckyColor":"푸른 회색","luckyHex":"#8da0b3","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":72,"category":"불안 · 백인일수 제72수","original":"音に聞く 高師の浜の あだ波は かけじや袖の ぬれもこそすれ","author":"祐子内親王家紀伊","translation":"바람둥이로 소문난 다카시 바닷가의 헛된 파도는 피하겠어요. 내 소매가 눈물로 젖을까 두려우니까.","term":"あだ波","usage":"함부로 밀려드는 파도와 믿기 어려운 사람의 변덕을 겹쳐 표현한 말이다.","background":"연애 제의에 대해 시적 재치로 분명하게 거절한 작품으로, 자기 방어의 정서가 담겼다.","advice":"불안한 관계에 선을 긋는 선택도 존중받아야 해요.","deckId":68,"image":"cards/card_068.webp","fortune":"헛된 파도가 옷자락을 적실까 두려운 시처럼, 오늘은 불편한 관계에서 나만의 기준을 지켜 보세요.","luckyItem":"방수 파우치","luckyColor":"바다 회색","luckyHex":"#7f9ba5","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":74,"category":"불안 · 백인일수 제74수","original":"憂かりける 人を初瀬の 山おろしよ はげしかれとは 祈らぬものを","author":"源俊頼朝臣","translation":"차갑게 구는 그 사람 때문에 하쓰세에 기도했지만, 산바람처럼 더 매정해지라고 빈 건 아니었는데.","term":"初瀬(はつせ)","usage":"오늘날 나라현 하세 지역. 하세데라는 관음 신앙과 연결된 지명이다.","background":"기도에도 변하지 않는 상대의 마음을 거센 산바람에 빗댄 실망의 노래다.","advice":"아무리 애써도 뜻대로 되지 않는 때의 조바심을 담았어요.","deckId":69,"image":"cards/card_069.webp","fortune":"기도한 뜻과 다르게 흘러가는 일이 있어도 모든 걸 내 탓으로 돌리진 마세요. 작은 휴식으로 생각을 정돈해 보세요.","luckyItem":"바람 종","luckyColor":"연회색","luckyHex":"#b5adb2","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"불안","number":80,"category":"불안 · 백인일수 제80수","original":"長からむ 心も知らず 黒髪の 乱れて今朝は 物をこそ思へ","author":"待賢門院堀河","translation":"그 마음이 오래갈지 알 수 없어, 아침의 흐트러진 검은 머리처럼 내 생각도 어지럽구나.","term":"黒髪の乱れ","usage":"헝클어진 검은 머리와 뒤엉킨 마음을 겹쳐 표현한 비유다.","background":"연인과 함께한 다음 날 아침에도 상대의 지속적인 사랑을 확신하지 못하는 불안을 그렸다.","advice":"행복한 순간 뒤에도 찾아올 수 있는 불안을 이해해 줘요.","deckId":70,"image":"cards/card_070.webp","fortune":"흐트러진 머리처럼 생각이 복잡할 때는 우선순위를 세 가지만 적어 보세요. 차례대로 살피면 마음이 가벼워질 수 있어요.","luckyItem":"작은 빗","luckyColor":"푸른 보라","luckyHex":"#9291b5","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":1,"category":"평온 · 백인일수 제1수","original":"秋の田の かりほの庵の 苫をあらみ わが衣手は 露にぬれつつ","author":"天智天皇","translation":"가을 논의 임시 오두막은 지붕이 성겨, 밤이슬에 내 소매가 계속 젖는구나.","term":"かりほの庵・苫","usage":"‘かりほ’는 임시로 지은 농막, ‘苫(とま)’은 짚·갈대 등으로 만든 덮개다.","background":"백인일수 첫 작품으로, 가을 수확기 논을 지키는 사람의 밤을 노래하는 농경 풍경을 담았다.","advice":"작은 생활의 풍경을 천천히 바라보는 시간을 가져 보세요.","deckId":71,"image":"cards/card_071.webp","fortune":"이슬에 젖은 소매도 계절의 일부예요. 오늘은 작은 불편을 그대로 인정하고 차분히 하루를 시작해 보세요.","luckyItem":"볏짚 책갈피","luckyColor":"벼색","luckyHex":"#b7aa7d","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":6,"category":"평온 · 백인일수 제6수","original":"かささぎの 渡せる橋に おく霜の 白きを見れば 夜ぞふけにける","author":"中納言家持","translation":"까치가 놓은 하늘의 다리에 서리가 내린 듯 희게 빛나는 것을 보니, 밤이 깊었구나.","term":"かささぎの橋","usage":"칠석 전설에서 까치가 은하수에 놓아 준다고 하는 다리. 겨울밤의 흰빛과 겹쳐진다.","background":"동아시아 칠석 설화의 이미지를 궁중의 차가운 밤 풍경과 결합한 노래다.","advice":"고요한 밤하늘을 올려다보는 시간을 떠올려 보세요.","deckId":72,"image":"cards/card_072.webp","fortune":"서리빛 밤하늘을 올려다보는 시처럼, 오늘은 고요한 시간을 짧게 마련해 보세요.","luckyItem":"별 모양 책갈피","luckyColor":"은백색","luckyHex":"#c0c7cf","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":8,"category":"평온 · 백인일수 제8수","original":"わが庵は 都のたつみ しかぞ住む 世をうぢ山と 人はいふなり","author":"喜撰法師","translation":"내 초가는 수도의 동남쪽에 있고 나는 그저 조용히 지내는데, 사람들은 세상을 싫어해 우지산에 산다고 말하는구나.","term":"うぢ山・憂し","usage":"우지(宇治) 지명과 ‘憂し(괴롭고 싫다)’의 소리를 연결한 가케코토바다.","background":"속세에서 한발 떨어진 은자의 삶을 사람들의 평가와 구분해 담담하게 노래한다.","advice":"다른 사람의 말과 상관없이 나만의 속도를 지켜 보세요.","deckId":73,"image":"cards/card_073.webp","fortune":"사람들이 붙인 이름보다 내 마음의 속도가 중요해요. 오늘은 남의 판단을 잠시 내려놓아 보세요.","luckyItem":"작은 찻잔","luckyColor":"연녹색","luckyHex":"#a5b69a","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":22,"category":"평온 · 백인일수 제22수","original":"吹くからに 秋の草木の しをるれば むべ山風を 嵐といふらむ","author":"文屋康秀","translation":"산바람이 불자 가을 풀과 나무가 시드니, 그래서 산의 바람을 폭풍이라 부르는가 보구나.","term":"嵐(あらし)","usage":"한자 ‘山’과 ‘風’으로 이루어진 글자의 모습을 떠올리게 하는 언어유희다. 실제 어원 증명과는 별개다.","background":"자연 현상을 글자와 소리의 재치로 풀이한 경쾌한 기교의 시다.","advice":"세상에 이름이 붙은 방식을 가볍게 관찰해 보는 건 어때요?","deckId":74,"image":"cards/card_074.webp","fortune":"산바람이 나무와 풀을 스치듯 변화는 자연스럽게 찾아와요. 오늘은 주변의 소리를 천천히 들어 보세요.","luckyItem":"나뭇잎 풍경","luckyColor":"먹녹색","luckyHex":"#82958a","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":64,"category":"평온 · 백인일수 제64수","original":"朝ぼらけ 宇治の川霧 たえだえに あらはれわたる 瀬々の網代木","author":"権中納言定頼","translation":"동이 터오는 우지강, 안개가 끊어지는 사이마다 여울의 어살 말뚝이 차례로 드러나는구나.","term":"網代木(あじろぎ)","usage":"강에서 물고기를 잡기 위해 설치한 어살의 말뚝을 뜻한다.","background":"우지강의 아침 안개와 어업 시설의 모습을 차분하게 포착한 풍경 와카다.","advice":"천천히 드러나는 풍경처럼 서두르지 않아도 괜찮아요.","deckId":75,"image":"cards/card_075.webp","fortune":"안개 사이로 강의 모습이 드러나듯, 오늘의 고민도 시간이 지나며 분명해질 수 있어요. 지금은 한 장면만 바라보세요.","luckyItem":"안개색 손수건","luckyColor":"회청색","luckyHex":"#9eabb4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":69,"category":"평온 · 백인일수 제69수","original":"嵐吹く 三室の山の もみぢ葉は 竜田の川の 錦なりけり","author":"能因法師","translation":"산바람에 흩어진 미무로산 단풍잎은, 다쓰타강에 깔린 비단이 되었구나.","term":"錦(にしき)","usage":"여러 색 실로 무늬를 짠 비단. 강물 위 단풍을 화려한 직물에 빗댄다.","background":"일본 고전시에서 유명한 다쓰타강 단풍 풍경과 비단 직조 이미지를 엮은 노래다.","advice":"자연을 바라보며 잠시 생각을 내려놓아 보세요.","deckId":76,"image":"cards/card_076.webp","fortune":"단풍이 강을 비단처럼 물들이는 풍경을 보며 오늘은 결과보다 지금의 아름다움을 즐겨 보세요.","luckyItem":"단풍잎 티코스터","luckyColor":"금주황","luckyHex":"#c49a6c","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":71,"category":"평온 · 백인일수 제71수","original":"夕されば 門田の稲葉 おとづれて 芦のまろやに 秋風ぞ吹く","author":"源経信","translation":"저녁이면 문 앞 논의 벼 잎을 스치며, 갈대 지붕 오두막까지 가을바람이 불어오는구나.","term":"おとづれる","usage":"본래 소리가 들리거나 찾아오다라는 뜻의 고어. 바람이 벼 잎을 울리는 모습과 맞물린다.","background":"가을 저녁의 논과 농막을 배경으로 소리와 바람의 흐름을 시로 옮겼다.","advice":"바람 소리를 따라가듯 호흡을 천천히 해 보세요.","deckId":77,"image":"cards/card_077.webp","fortune":"벼 잎을 스치는 저녁바람처럼, 오늘은 마음을 조용히 가라앉히는 소리 하나를 찾아보세요.","luckyItem":"작은 풍경(風磬)","luckyColor":"갈대색","luckyHex":"#b6a587","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":76,"category":"평온 · 백인일수 제76수","original":"わたの原 漕ぎ出でて見れば ひさかたの 雲居にまがふ 沖つ白波","author":"法性寺入道前関白太政大臣","translation":"드넓은 바다로 노를 저어 나가 바라보니, 먼 바다의 흰 파도가 하늘의 구름과 구별되지 않는구나.","term":"ひさかたの","usage":"하늘·빛 등에 붙는 마쿠라코토바. ‘雲居’는 구름이 있는 높은 하늘을 뜻한다.","background":"수평선의 물과 하늘이 맞닿는 장관을 고전 특유의 대조와 비유로 표현했다.","advice":"넓은 풍경을 바라보며 마음의 여백을 만들어 보세요.","deckId":78,"image":"cards/card_078.webp","fortune":"물결과 구름이 닮은 수평선을 떠올리며, 오늘은 잠시 시야를 넓혀 보고 숨을 길게 내쉬어 보세요.","luckyItem":"바다 사진","luckyColor":"연하늘색","luckyHex":"#93baca","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":79,"category":"평온 · 백인일수 제79수","original":"秋風に たなびく雲の 絶え間より もれ出づる月の 影のさやけさ","author":"左京大夫顕輔","translation":"가을바람에 흘러가는 구름 사이로 스며 나오는 달빛이 참으로 맑구나.","term":"さやけさ","usage":"빛이나 소리가 맑고 또렷한 상태를 나타내는 말이다.","background":"구름 틈에서 번지는 달빛의 청명함을 작은 변화로 포착한 대표적인 가을 풍경가다.","advice":"복잡한 생각 사이로 잠시 맑아지는 순간을 만나요.","deckId":79,"image":"cards/card_079.webp","fortune":"구름 사이로 맑아지는 달빛처럼, 복잡한 하루에도 작은 여백이 있어요. 오늘은 조용한 시간을 지켜 보세요.","luckyItem":"달 모양 조명","luckyColor":"달빛 은색","luckyHex":"#c2c9c5","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."},{"tag":"평온","number":98,"category":"평온 · 백인일수 제98수","original":"風そよぐ ならの小川の 夕暮れは みそぎぞ夏の しるしなりける","author":"従二位家隆","translation":"나라의 작은 강에 바람이 스치는 저녁, 여름임을 알려 주는 건 정화 의식뿐이구나.","term":"みそぎ(禊)","usage":"물로 몸과 마음의 부정을 씻는 신토 정화 의식. 음력 6월 말 의례와 연결된다.","background":"시원한 바람이 마치 가을 같은 여름 저녁, 의례가 계절을 일깨우는 풍경을 묘사한다.","advice":"몸과 마음을 정돈하는 저녁의 평온함을 떠올려 보세요.","deckId":80,"image":"cards/card_080.webp","fortune":"여름 저녁의 정화 의식처럼 하루를 마무리하는 작은 습관을 만들어 보세요. 책상 정리부터 시작해도 좋아요.","luckyItem":"맑은 물컵","luckyColor":"물빛 초록","luckyHex":"#8cb4a4","fortuneNote":"이 메시지는 와카의 정서에서 영감을 얻은 문학적 제안이며 실제 미래를 예언하지 않습니다."}];
+    const JP_WAKA_DATA = [{"translation":"天の風よ、雲の通り道を閉ざしておくれ。舞う乙女たちを、もうしばらく見ていたい。","usage":"天を吹く風への呼びかけ。雲の道は天と地をつなぐ想像上の道。","background":"宮中の舞姫を天女にたとえ、その姿がいつまでも続くよう願った歌。","advice":"美しい一瞬を惜しむ、ときめきに耳を傾けましょう。","fortune":"心が弾むひとときを急がず味わって。好きな景色を一枚残してみましょう。","luckyItem":"小さな風車","luckyColor":"淡い桃色"},{"translation":"筑波山から流れ出る男女川が深い淵になるように、私の恋心も積もって深くなった。","usage":"筑波山から流れる川の名。小さな流れが深い淵になる様子を恋に重ねる。","background":"水が深まる様子で恋心の高まりを表した、宮廷の恋の歌。","advice":"小さな好意が大きな気持ちへ変わる瞬間を感じてみて。","fortune":"会話を重ねるほど気持ちが育つ日。ささやかな一言を大切に。","luckyItem":"川模様のしおり","luckyColor":"青緑色"},{"translation":"陸奥のしのぶ摺りの乱れ模様のように、私の心は乱れている。あなた以外の誰のせいでもない。","usage":"陸奥で作られた乱れ模様の染め物。「しのぶ」は忍ぶ恋も連想させる。","background":"名産の染め物と掛詞で、隠しきれない恋心を描いた歌。","advice":"理由も分からず心が揺れるときめきを見つめてみましょう。","fortune":"複雑に感じる気持ちも、素直な好意から始まることがあります。","luckyItem":"模様入りのハンカチ","luckyColor":"ラベンダー色"},{"translation":"名のとおり逢える坂なら、さねかずらの蔓をたぐるように、誰にも知られずあなたに会いたい。","usage":"「逢坂」の逢うと、「さねかずら」の語感を恋に重ねた掛詞。","background":"逢坂山という地名と蔓草を使い、秘密の逢瀬を願う歌。","advice":"誰かに近づきたい気持ちをそっと受け止めましょう。","fortune":"蔓が伸びるように、小さな挨拶から距離を縮めてみて。","luckyItem":"緑のリボン","luckyColor":"若草色"},{"translation":"みかの原を分けて流れる泉川よ。いつ会ったというのに、こんなにもあの人が恋しいのだろう。","usage":"泉川の音と「いつ見」を響き合わせた言葉遊び。","background":"川の名を序詞として用い、出会いへの憧れを歌った一首。","advice":"まだよく知らない相手を思う、不思議な気持ちを楽しんで。","fortune":"気になる人をすぐに決めつけず、今のときめきを味わいましょう。","luckyItem":"小さなガラス瓶","luckyColor":"空色"},{"translation":"浅茅の茂る篠原のように恋を忍んでも、どうしてこんなにもあの人が恋しいのか。","usage":"「篠」と「忍ぶ」の音を重ね、隠そうとする恋心を示す。","background":"自然の景色から恋の気持ちへつなぐ、序詞の技法が使われている。","advice":"隠しても大きくなる好意に気づいてみましょう。","fortune":"自分を笑顔にするものを一つ見つけてみて。","luckyItem":"草の葉のペン","luckyColor":"緑色"},{"translation":"隠していたのに、恋心は顔色に表れてしまった。人から物思いをしているのかと聞かれるほどに。","usage":"「色に出づ」は、感情が表情や態度に現れること。","background":"歌合でも知られる、秘めた恋心が表に出る歌。","advice":"好きな気持ちが表情に現れることもあります。","fortune":"楽しみな気持ちを無理に隠さず、自然に受け入れてみましょう。","luckyItem":"小さな手鏡","luckyColor":"杏色"},{"translation":"恋をしているという噂がもう立ってしまった。人知れず思い始めたばかりなのに。","usage":"「恋すてふ」は「恋をしているという」の古い言い方。","background":"秘密の恋が噂になってしまう戸惑いを詠んだ歌。","advice":"人に知られたくない大切なときめきもあります。","fortune":"周囲の噂より、自分の本当の気持ちを大切に。","luckyItem":"封印シール","luckyColor":"薔薇色"},{"translation":"あなたのためなら惜しくなかった命さえ、今は長くあってほしいと思う。","usage":"「長くもがな」は「長くあってほしい」という願い。","background":"恋することで生きる時間そのものが大切になる歌。","advice":"一緒に過ごしたい未来が生まれた心を思い浮かべて。","fortune":"大切な人と叶えたい小さな予定を書き留めてみましょう。","luckyItem":"ミニカレンダー","luckyColor":"金色"},{"translation":"春の夜の夢のように短い腕枕で、むなしい噂が立つのは惜しいことです。","usage":"「手枕」は腕を枕にすること。親密な時間をほのめかす。","background":"春の夜の短い逢瀬と世間の評判を機知に富んだ言葉で歌う。","advice":"淡いときめきの中にも、自分の気持ちを大切に。","fortune":"一瞬の雰囲気に流されず、心地よい距離感を選んで。","luckyItem":"小さな枕のキーホルダー","luckyColor":"桃色"},{"translation":"大空を見上げれば、故郷の春日にある三笠山にも、同じ月が出ているのだろうか。","usage":"「天の原」は果てしなく広がる大空を指す。","background":"遠く異国にいる作者が、故郷の月を思い出して詠んだ歌。","advice":"遠く離れていても同じ月を見られると思ってみて。","fortune":"懐かしい人に今日の空の写真を送ってみませんか。","luckyItem":"月のしおり","luckyColor":"銀色"},{"translation":"あなたと別れて因幡へ行っても、待つと聞けばすぐに帰ってきましょう。","usage":"「いなば」は地名と「行かば」、「まつ」は松と「待つ」を掛ける。","background":"旅立ちと再会の約束を、地名と音の重なりで表した歌。","advice":"別れの中にも、再会への願いがあります。","fortune":"久しぶりの人に短い近況を伝えてみましょう。","luckyItem":"旅の絵はがき","luckyColor":"薄茶色"},{"translation":"住の江の岸に寄る波のように、夜でさえ夢で会う道を避けてしまうのですか。","usage":"波が「寄る」と、夜の「夜」を掛けた言葉遊び。","background":"夢でさえ会えない相手への切ない思いを歌う。","advice":"夢の中でも会いたいほどの恋しさを感じてみて。","fortune":"思い出が押し寄せる夜は、一言だけ日記に書いてみましょう。","luckyItem":"波模様のハンカチ","luckyColor":"紺色"},{"translation":"難波潟の葦の節と節の短い間さえ会わずに、この世を過ごせというのですか。","usage":"「ふしの間」は葦の節の間ほど短い時間のこと。","background":"一瞬も離れたくない思いを、葦の短い節に託す。","advice":"ほんの短い再会も、かけがえのないものです。","fortune":"短い電話や挨拶の時間を大切にしてみましょう。","luckyItem":"葦のしおり","luckyColor":"砂色"},{"translation":"すぐ来ると言った言葉を信じて、長い秋の夜を待ち、とうとう有明の月を見てしまった。","usage":"「長月」は旧暦九月、「有明の月」は夜明けにも残る月。","background":"来るはずの相手を夜通し待つ、切ない恋の歌。","advice":"誰かを待つ時間が長く感じられることもあります。","fortune":"待っている間、自分のための小さな楽しみも作ってみて。","luckyItem":"三日月のメモ","luckyColor":"紫色"},{"translation":"冷たく見えた有明の月の下で別れて以来、明け方ほどつらい時間はない。","usage":"「暁」は夜が明けるころを指す。","background":"別れの記憶が夜明けの風景と結びついた歌。","advice":"別れたあとの特定の時間が胸に残ることもあります。","fortune":"つらい朝には、いつもより自分にやさしくして。","luckyItem":"温かなマグカップ","luckyColor":"淡い青色"},{"translation":"人の心は分からないけれど、昔なじみの場所では梅の花だけが以前と同じ香りを放っている。","usage":"「ふるさと」は昔なじみの場所。「花」は梅の花を指す。","background":"変わった人の心と変わらない梅の香りを対比する歌。","advice":"懐かしい場所に残る香りを思い出してみましょう。","fortune":"見慣れた場所で、新しい自分だけの思い出を作ってみて。","luckyItem":"梅の香り袋","luckyColor":"梅色"},{"translation":"互いに涙で袖を絞りながら、末の松山を波が越さないように心変わりもしないと誓ったのに。","usage":"「末の松山」は、波が越えないと詠まれる約束の象徴。","background":"変わらぬ愛を誓い合った記憶と、その行方を問う歌。","advice":"かつて交わした約束の意味を静かに振り返って。","fortune":"大切な記憶から、今の自分に残る良さを一つ探してみましょう。","luckyItem":"糸の結び目","luckyColor":"青灰色"},{"translation":"久しぶりに巡り会ったのに、あなただと確かめる間もなく、夜半の月のように雲に隠れてしまった。","usage":"「雲隠れ」は月が雲に隠れることを、別れに重ねる。","background":"短い再会のはかなさを月の姿に重ねた歌。","advice":"ほんの一瞬の再会が、深い恋しさを残すことも。","fortune":"伝えられなかった言葉を日記に一つ残してみて。","luckyItem":"雲のメモ","luckyColor":"月光色"},{"translation":"有馬山の笹原に風が吹くように、ほら、私はあなたを忘れたりしません。","usage":"「そよ」は笹の葉の音であり、相手への返答にも響く。","background":"風の音に掛けて、変わらぬ思いを告げる歌。","advice":"長く続く縁の温かさを思い出してみましょう。","fortune":"感謝したい人の名前を一人、心に浮かべて。","luckyItem":"竹のペン","luckyColor":"竹林色"},{"translation":"奥山で紅葉を踏み分けて鳴く鹿の声を聞くと、秋はいっそう悲しく感じられる。","usage":"鹿の鳴き声は、秋の物寂しさを示す歌の景物。","background":"山の鹿の声に秋の悲しみを重ねた歌。","advice":"言葉にならない悲しみに自然が寄り添うことも。","fortune":"気持ちが沈むときは、静かな景色を眺めてみて。","luckyItem":"落ち葉のしおり","luckyColor":"赤茶色"},{"translation":"花の色はすっかり衰えてしまった。長雨を眺めるうちに、私の美しさも時とともに過ぎていった。","usage":"「ふる」は雨が降ることと時が経つこと、「ながめ」は長雨と思い悩むことを掛ける。","background":"散る花に歳月の移ろいと無常を重ねた小野小町の歌。","advice":"過ぎていく時間を悲しく感じてもかまいません。","fortune":"失ったものより、今大切にできるものを見つめて。","luckyItem":"雨の日の傘","luckyColor":"灰紫色"},{"translation":"月を見ると、幾千もの物思いが胸に浮かぶ。この秋が私一人のものではないのに。","usage":"「千々」は数えきれないほど多くのこと。","background":"月に照らされて深まる秋の物思いを詠む。","advice":"同じ月でも感じ方は一人ひとり違います。","fortune":"悲しみを比べず、自分のペースで休みましょう。","luckyItem":"月光のシール","luckyColor":"墨青色"},{"translation":"忘れられた自分のことより、誓いを破ったあの人の命が案じられる。","usage":"「誓ひ」は神仏にもかけた固い約束のこと。","background":"裏切りの悲しみと相手を思う気持ちが交差する歌。","advice":"傷つきながら相手を案じる複雑な気持ちを見つめて。","fortune":"自分で背負うべきことと、そうでないことを分けてみましょう。","luckyItem":"二段のメモ帳","luckyColor":"落ち着いた灰色"},{"translation":"最初から会うことなどなければ、相手も自分も恨まずに済んだだろうに。","usage":"「なかなかに」は、かえって、むしろ、という意味。","background":"逢瀬の喜びが深い悲しみに変わる逆説を歌う。","advice":"大切だった出会いが痛みになることもあります。","fortune":"過去を否定せず、自分のために新しい一歩を。","luckyItem":"新しいノート","luckyColor":"淡い灰色"},{"translation":"かわいそうだと言ってくれる人も思い浮かばず、このままむなしく消えてしまいそうだ。","usage":"「あはれ」は深い感動や哀れみを表す古語。","background":"理解してくれる人の不在を嘆く、切実な孤独の歌。","advice":"悲しい日は慰めてくれる人を思い浮かべて。","fortune":"頼れる人に、短くても素直な気持ちを伝えてみましょう。","luckyItem":"連絡先カード","luckyColor":"温かなベージュ"},{"translation":"強い風に岩へ打ちつける波のように、私だけが砕けるほど思い悩んでいる。","usage":"「くだけて」は砕ける波と、傷つく心を重ねる。","background":"激しい波で恋の苦しさを表した歌。","advice":"心が砕けそうなほどの思いを静かに受け止めて。","fortune":"答えを急がず、少し立ち止まって深呼吸を。","luckyItem":"小石","luckyColor":"海の灰色"},{"translation":"嘆きながら一人で眠る夜が明けるまで、どれほど長いかあなたには分かるでしょうか。","usage":"「ひとり寝る」は愛しい相手のいない夜を表す。","background":"訪れない相手への恨みと、長い夜の苦しみを歌う。","advice":"寂しさをはっきり言葉にすることも大切です。","fortune":"眠る前に心配ごとを紙に書き出してみて。","luckyItem":"睡眠日記","luckyColor":"濃い紫色"},{"translation":"涙で乾かない袖だけでもつらいのに、恋のために評判まで失うのは惜しい。","usage":"涙で濡れた袖は、悲しみを表す和歌の定番表現。","background":"恋の傷と世間の評判を気にかける心を歌う。","advice":"傷ついた気持ちと自分の価値を分けて考えて。","fortune":"他人の視線より、自分の心の境界を守りましょう。","luckyItem":"柔らかなハンカチ","luckyColor":"淡い紫紅色"},{"translation":"雄島の漁師の袖でさえ濡れても色は変わらない。私の涙に染まった袖を見せたいものだ。","usage":"漁師の濡れた袖と、悲しみに染まる自分の袖を対比する。","background":"涙の深さを、海辺で働く人の袖に託した歌。","advice":"言葉にできない悲しみの大きさを想像してみて。","fortune":"文章や絵、音楽など、楽な方法で気持ちを表して。","luckyItem":"色鉛筆一本","luckyColor":"深い青色"},{"translation":"ここが行く人も帰る人も、知る人も知らぬ人も出会い、そして別れる逢坂の関なのだ。","usage":"「逢坂」は人が行き交い、出会いと別れが重なる峠。","background":"人生の出会いと別れを関所の風景に重ねた歌。","advice":"新しい出会いはいつも道の先にあります。","fortune":"思いがけない出会いに心を開いてみましょう。","luckyItem":"道のしおり","luckyColor":"若草色"},{"translation":"あなたのために春の野へ若菜を摘みに出たら、私の袖に雪が降りかかっている。","usage":"「若菜」は春に摘む若い野草のこと。","background":"雪の残る野に若菜を摘む、思いやりのこもった歌。","advice":"寒い日にも春を準備する気持ちを思い出して。","fortune":"新しい季節に向けて、小さな準備を始めてみましょう。","luckyItem":"芽吹いた鉢植え","luckyColor":"草色"},{"translation":"今度の旅では幣を用意する暇もなかった。手向山の紅葉の錦を神々のお心に任せて捧げよう。","usage":"「幣」は神に供える布や紙の捧げ物。","background":"紅葉を供物に見立てた、旅の安全を願う歌。","advice":"準備が完璧でなくても、真心は伝わります。","fortune":"今できる形で、感謝を一つ伝えてみましょう。","luckyItem":"紅葉のカード","luckyColor":"橙色"},{"translation":"小倉山の峰の紅葉よ、もし心があるなら、もう一度の行幸まで散らずに待っていておくれ。","usage":"「みゆき」は天皇などの外出を表す「御幸」。","background":"美しい紅葉が再び見られるよう願う歌。","advice":"良い瞬間がまた訪れることを信じてみて。","fortune":"続けている努力の意味を、そっと確かめてみましょう。","luckyItem":"約束のメモ","luckyColor":"夕焼け色"},{"translation":"滝の音は久しく聞こえなくなっても、その名声は今も流れ続けている。","usage":"滝の「流れ」と評判が「流れる」を掛けている。","background":"失われた滝の音と、残り続ける名声を対比する。","advice":"目に見えなくても残る価値があります。","fortune":"今日の小さな成果を記録しておきましょう。","luckyItem":"波のペン","luckyColor":"青緑色"},{"translation":"遠く高い山の桜が咲いた。手前の山の霞よ、どうか立たずにいてほしい。","usage":"「外山」は奥山に対する手前の山を指す。","background":"遠く咲く桜を見つめたい気持ちを歌う。","advice":"目標を隠す霞が晴れる場面を想像してみて。","fortune":"まずは一番近い小さな一歩を踏み出しましょう。","luckyItem":"山頂のシール","luckyColor":"桜色"},{"translation":"約束してくれたさしもの露の言葉を命の支えにしていたのに、今年の秋も過ぎてしまう。","usage":"「させもが露」はさしも草に置く露。命をつなぐ頼みの象徴。","background":"長く待ち続ける希望と、かなわぬ現実を詠む歌。","advice":"待つ時間が長いとき、期待と現実を見つめて。","fortune":"願いを抱きながら、今日できることも大切に。","luckyItem":"小さな砂時計","luckyColor":"黄金色"},{"translation":"急流が岩にせき止められて分かれても、最後にはまた一つになるように、必ず再会したい。","usage":"「われても」は水流が分かれることと人の別れを掛ける。","background":"離れた二人が再び結ばれることを願う歌。","advice":"遠ざかったものが再びつながる道を思い描いて。","fortune":"諦める前に、新しい可能性を一つ探して。","luckyItem":"二本のリボン","luckyColor":"澄んだ青色"},{"translation":"世の中がいつまでもこのままであってほしい。岸辺を漕ぐ漁師の小舟を引く綱がいとおしい。","usage":"「常にもがもな」は、いつまでも変わらずあってほしいという願い。","background":"何気ない漁村の風景に永続を願った歌。","advice":"当たり前の暮らしが続くことも希望です。","fortune":"今ある日常に感謝の言葉を一つ書いてみましょう。","luckyItem":"小さな写真立て","luckyColor":"陽だまり色"},{"translation":"身の程知らずにも、この憂き世の人々を墨染めの袖で覆い守りたい。","usage":"「墨染の袖」は僧衣の袖で、慈悲の象徴。","background":"僧の立場から、世の人を救いたいと願った歌。","advice":"誰かを支えたい気持ちも大きな力になります。","fortune":"今日できる小さな親切を一つ実行してみて。","luckyItem":"温かなマフラー","luckyColor":"淡い紅紫色"},{"translation":"山鳥の長く垂れた尾のように、長い夜を私は一人で眠るのだろうか。","usage":"「あしびきの」は山にかかる枕詞。","background":"山鳥の長い尾に、独り寝の長い夜を重ねた歌。","advice":"長く感じる夜にも心は少しずつ動きます。","fortune":"一人の時間を自分をいたわる時間にしてみましょう。","luckyItem":"星柄のアイマスク","luckyColor":"夜空色"},{"translation":"山里は冬になるとひときわ寂しい。人の訪れも草の姿も絶えてしまうから。","usage":"「かれ」は人の足が離れることと草が枯れることを掛ける。","background":"冬の山里の静けさに孤独を重ねた歌。","advice":"人けの少ない季節の寂しさを受け止めて。","fortune":"温かな飲み物や、小さなつながりを一つ作ってみましょう。","luckyItem":"小さな毛布","luckyColor":"冬空色"},{"translation":"いったい誰を旧知の友と呼べよう。高砂の松さえ昔からの友ではないのだから。","usage":"「高砂の松」は長寿の象徴で、昔からの友になぞらえる。","background":"長い歳月の中で失われる友を思う歌。","advice":"古い縁を思いながら、新しい縁も大切に。","fortune":"懐かしい人との思い出を短い文にしてみて。","luckyItem":"松の絵はがき","luckyColor":"松葉色"},{"translation":"八重葎が茂る寂しい家に人の訪れはない。それでも秋だけはやって来た。","usage":"「八重葎」は幾重にも茂るつる草のこと。","background":"人のいない荒れた住まいと秋の訪れを対比する歌。","advice":"誰も訪れなくても季節は静かに進みます。","fortune":"窓を開け、新しい空気を迎えてみましょう。","luckyItem":"窓辺の鉢植え","luckyColor":"灰緑色"},{"translation":"山桜よ、私と一緒にしみじみと感じておくれ。花のほかには心を通わせる人もいないのだから。","usage":"「もろともに」は一緒に、共に、という意味。","background":"山桜を唯一の友として語りかけた歌。","advice":"独りの時間にも自然の中に友を見つけられます。","fortune":"身近な小さな花や風景を眺めてみて。","luckyItem":"押し花","luckyColor":"淡い桃色"},{"translation":"寂しくて宿を出て眺めてみれば、どこも同じ秋の夕暮れだった。","usage":"「秋の夕暮れ」は静けさや物寂しさを象徴する情景。","background":"場所を変えても消えない心の寂しさを詠む。","advice":"風景は心の見方によって変わることもあります。","fortune":"景色を変えるより、まず心を休ませてみましょう。","luckyItem":"秋色のマグカップ","luckyColor":"黄褐色"},{"translation":"淡路島を行き交う千鳥の鳴き声に、須磨の関守は幾夜目を覚ましたのだろう。","usage":"「千鳥」は浜辺に集まる小さな鳥のこと。","background":"千鳥の声を通して旅先の寂しい夜を描いた歌。","advice":"別の場所にも同じ孤独を抱える人がいるかもしれません。","fortune":"気軽な近況を誰かと分け合ってみましょう。","luckyItem":"鳥のピン","luckyColor":"霧がかった青色"},{"translation":"一晩中物思いに沈む夜は、なかなか明けず、寝室のすき間さえ冷たく感じる。","usage":"「夜もすがら」は一晩中という意味。","background":"思い悩んで眠れない夜の長さを歌う。","advice":"一人で目覚めている長い夜の気持ちを大切に。","fortune":"寝る前に思いを書いて、いったんノートを閉じましょう。","luckyItem":"小さな手帳","luckyColor":"濃い紫色"},{"translation":"こおろぎが鳴く霜夜、むしろに片袖を敷いて、一人で眠るのだろうか。","usage":"「衣かたしき」は自分の衣だけを敷いて一人で寝ること。","background":"寒い夜に孤独を強く感じる情景を詠む。","advice":"静かな夜の孤独にそっと寄り添う歌です。","fortune":"まず体を温かくして、ゆっくり休みましょう。","luckyItem":"温かな靴下","luckyColor":"銀灰色"},{"translation":"来ない人を待つ松帆の浦の夕なぎに、藻塩を焼く火のように私の身も焦がれている。","usage":"「松帆」は待つこと、「藻塩」は海藻から作る塩を指す。","background":"海辺の塩焼きの火に、待ち焦がれる恋心を重ねた歌。","advice":"待つ時間が長いほど、自分も大切にしてください。","fortune":"人を待つだけでなく、自分との約束を一つ作ってみて。","luckyItem":"小さな塩壺","luckyColor":"海色"},{"translation":"春が過ぎ、夏が来たらしい。天の香具山には真っ白な衣が干されている。","usage":"「白妙」は白い布やその白さを表す言葉。","background":"白い衣で夏の訪れを感じ取る、季節の歌。","advice":"季節の変化に気づく小さな喜びを味わって。","fortune":"いつもの道で明るい色を一つ探してみましょう。","luckyItem":"白いハンカチ","luckyColor":"白色"},{"translation":"田子の浦に出て眺めると、真っ白な富士の高嶺には雪が降り積もっている。","usage":"「田子の浦」は富士山を望む駿河湾沿いの地名。","background":"富士の雪景色の清らかさを詠んだ歌。","advice":"目の前の景色に心が晴れる喜びを感じて。","fortune":"慣れた道でも、美しい場面を一つ見つけましょう。","luckyItem":"風景の絵はがき","luckyColor":"雪山色"},{"translation":"神代にも聞いたことがない。竜田川が紅葉の真紅で水を染め上げるとは。","usage":"「ちはやぶる」は神にかかる枕詞。","background":"紅葉で染まった竜田川の鮮やかさを詠む。","advice":"美しい景色に思わず感嘆する喜びを大切に。","fortune":"気に入った風景を写真や言葉で残してみて。","luckyItem":"紅葉のしおり","luckyColor":"紅葉の赤色"},{"translation":"あてずっぽうに折るなら、どれを折ろうか。初霜に紛れて見分けにくい白菊の花を。","usage":"「心あてに」は当て推量で、という意味。","background":"白い霜と白菊の見分けにくさを楽しむ歌。","advice":"小さな景色から生まれる遊び心を楽しんで。","fortune":"ちょっとした好奇心を追いかけてみましょう。","luckyItem":"菊のブローチ","luckyColor":"アイボリー色"},{"translation":"夜明けの景色を有明の月かと思うほど、吉野の里には白雪が降り積もっている。","usage":"「朝ぼらけ」は夜が明け始めるころの薄明かり。","background":"月光と見まがうほどの雪景色を詠む。","advice":"思いがけない美しさに心が明るくなるときです。","fortune":"予定にない短い散歩を楽しんでみて。","luckyItem":"雪の結晶シール","luckyColor":"雪白色"},{"translation":"山の川に風が作った柵は、流れきれずに積もった紅葉だった。","usage":"「しがらみ」は川の流れをせき止める柵のこと。","background":"川にたまる紅葉を風の作る柵に見立てた歌。","advice":"自然が生んだ思いがけない模様を楽しんで。","fortune":"小さな偶然の美しさに気づいてみましょう。","luckyItem":"葉っぱのバッジ","luckyColor":"朱色"},{"translation":"のどかな春の日差しの中で、どうして桜の花だけが落ち着きなく散っていくのだろう。","usage":"「ひさかたの」は光などにかかる枕詞。","background":"穏やかな春と散り急ぐ花を対比した歌。","advice":"短いからこそ美しい瞬間があります。","fortune":"良い時間を引き留めようとせず、十分に味わって。","luckyItem":"桜のキーホルダー","luckyColor":"桜の桃色"},{"translation":"夏の夜はまだ宵だというのに明けてしまった。月はいったいどの雲に宿ったのだろう。","usage":"「宵」は日が暮れて間もない時間のこと。","background":"短い夏の夜と月の行方を軽やかに歌う。","advice":"夏の夜の不思議な楽しさを感じてみて。","fortune":"短い趣味の時間を気軽に楽しんでみましょう。","luckyItem":"星座カード","luckyColor":"夜の青色"},{"translation":"白露に風が吹きわたる秋の野は、糸でつながない玉が散りばめられたようだ。","usage":"「白露」は草木に宿る白く光る露。","background":"露の輝きを玉に見立てた美しい風景の歌。","advice":"小さく光るものを見つける喜びを味わって。","fortune":"今日の小さな喜びを三つ数えてみて。","luckyItem":"ガラス玉","luckyColor":"露色"},{"translation":"昔の奈良の都の八重桜が、今日は宮中の奥深くで美しく咲き誇っている。","usage":"「八重桜」と「九重」を重ね、宮中の華やかさを表す。","background":"奈良の桜が都の宮廷で咲く祝いの歌。","advice":"特別な日の喜びを人と分かち合って。","fortune":"大切な人の小さな成果を祝ってみましょう。","luckyItem":"花柄の便箋","luckyColor":"淡い桃色と金色"},{"translation":"もうどうにもならないのなら、難波の澪標のように身を尽くしてでも、あなたに会いたい。","usage":"「みをつくし」は船の道標「澪標」と身を尽くすことを掛ける。","background":"強い恋心に伴う危うさを歌う。","advice":"強く願うほど不安になる心を見つめて。","fortune":"急ぐ前に、自分を大切にできる選択か考えましょう。","luckyItem":"錨のキーホルダー","luckyColor":"濃い青色"},{"translation":"由良の瀬戸を渡る船人が櫂を失ったように、行方も分からない恋の道だ。","usage":"「かぢを絶え」は船の櫂を失うこと。","background":"方向を失う船に恋の不安を重ねる。","advice":"先が見えない不安を水の流れで表した歌です。","fortune":"遠くを見ようとせず、今日できること一つに集中して。","luckyItem":"小さなコンパス","luckyColor":"霞んだ青緑色"},{"translation":"宮中の衛士が焚く火のように、夜は燃え、昼は消えながら、恋に思い悩んでいる。","usage":"「衛士」は宮中の警護を務める人のこと。","background":"夜と昼で揺れる恋心を焚き火にたとえた歌。","advice":"一日の中で感情が変わっても自然なことです。","fortune":"揺れる気持ちを良し悪しで判断せず眺めてみて。","luckyItem":"小さなろうそく模型","luckyColor":"灰がかった橙色"},{"translation":"これほど思っているとさえ言えない。伊吹山のさしも草のように燃える思いを、あなたは知らないだろう。","usage":"「いぶき」と「さしも」の音を、言えない思いと燃える草に掛ける。","background":"伝えられない恋心を言葉遊びで表した歌。","advice":"言えない思いほど不安を強くすることも。","fortune":"伝えたい言葉を、まず紙に書いてみましょう。","luckyItem":"鉛筆とメモ","luckyColor":"よもぎ色"},{"translation":"夜が明ければまた暮れると知っていても、別れの朝の明るさは恨めしい。","usage":"「朝ぼらけ」は薄明るくなる夜明けの時間。","background":"再会できると分かっていても別れを惜しむ歌。","advice":"また会えるとしても別れの瞬間はつらいもの。","fortune":"変えられないことより、今選べることを大切に。","luckyItem":"日の出の絵はがき","luckyColor":"淡い金色"},{"translation":"忘れないという約束がいつまで続くか分からない。いっそ今日で命が尽きてほしい。","usage":"「忘れじ」は決して忘れないという約束の言葉。","background":"愛が永遠に続くかという恐れを詠む歌。","advice":"大切な愛ほど未来が怖くなることもあります。","fortune":"先のことを決めつけず、今の気持ちを確かめて。","luckyItem":"小さな約束カード","luckyColor":"薄紫色"},{"translation":"今はただ、もう思いを断とうと決めたと、他人づてでなく直接あなたに伝えたい。","usage":"「人づて」は人を介して言葉を伝えること。","background":"自分の意思を直接伝えられないもどかしさを歌う。","advice":"不確かな関係では直接話したくなるものです。","fortune":"落ち着いて話せる機会を一つ考えてみましょう。","luckyItem":"手紙の封筒","luckyColor":"青灰色"},{"translation":"評判に聞く高師の浜の頼りない波を袖には掛けまい。濡れてしまうのが怖いから。","usage":"「あだ波」は当てにならない波。浮気な人のたとえ。","background":"傷つくことを恐れ、恋を慎重に避ける歌。","advice":"不安な関係に距離を置く選択も大切です。","fortune":"自分の心を守るための境界を意識して。","luckyItem":"防水ポーチ","luckyColor":"海の灰色"},{"translation":"冷たいあの人の心が変わるように祈ったけれど、初瀬の山風まで激しく吹けとは祈らなかった。","usage":"「初瀬」は祈願の寺で知られた地名。","background":"祈りと裏腹に荒れる風に、恋の不安を重ねた歌。","advice":"願っても思いどおりにならない日があります。","fortune":"すべて自分のせいにせず、少し休みましょう。","luckyItem":"風鈴","luckyColor":"淡い灰色"},{"translation":"あの人の心がいつまで続くか分からない。今朝は黒髪のように思いが乱れている。","usage":"「黒髪の乱れ」は乱れた髪に心の乱れを重ねる。","background":"幸せな逢瀬の後に訪れる不安を詠む歌。","advice":"幸せの後にも不安が生まれることがあります。","fortune":"気になることを三つに絞って、順番に考えてみて。","luckyItem":"小さなくし","luckyColor":"青紫色"},{"translation":"秋の田の仮小屋は屋根の編み目が粗く、私の袖は露に濡れている。","usage":"「かりほの庵」は仮小屋、「苫」はわらなどで編んだ覆い。","background":"秋の田の質素な仮小屋で過ごす情景を詠む。","advice":"身近な暮らしの風景をゆっくり眺めて。","fortune":"小さな不便を受け止め、穏やかに一日を過ごしましょう。","luckyItem":"わらのしおり","luckyColor":"稲穂色"},{"translation":"かささぎが渡したという天の橋に白い霜が置くのを見ると、夜はもう深い。","usage":"「かささぎの橋」は七夕伝説に由来する天上の橋。","background":"白い霜が映す夜の静けさを歌う。","advice":"静かな夜空を見上げる時間を思い浮かべて。","fortune":"ほんの少し、何もしない時間を作ってみましょう。","luckyItem":"星のしおり","luckyColor":"銀白色"},{"translation":"私の庵は都の東南にあり、静かに暮らしている。人はここを憂き世の宇治山というようだ。","usage":"「うぢ山」は地名の宇治と、「憂し」の音を重ねる。","background":"世間の評判から離れた山住まいを機知で詠む。","advice":"他人の言葉に左右されず、自分の歩幅を守って。","fortune":"周囲の評価を手放し、心地よい時間を過ごしましょう。","luckyItem":"小さな湯のみ","luckyColor":"淡い緑色"},{"translation":"山風が吹くと秋の草木はしおれてしまう。だから山の風を「嵐」と呼ぶのだろうか。","usage":"「嵐」の字を山と風に分けた、文字の形を楽しむ言葉遊び。","background":"秋の風を漢字の形と音で軽妙に解釈した歌。","advice":"物事の名前に目を向ける楽しさを味わって。","fortune":"周囲の音をゆっくり聞いてみましょう。","luckyItem":"葉の風鈴","luckyColor":"墨緑色"},{"translation":"夜明けの宇治川では川霧が途切れ途切れに晴れ、瀬の網代木が現れてくる。","usage":"「網代木」は川魚を捕る仕掛けに使う木。","background":"霧の晴れる川面の変化を静かに詠む。","advice":"景色が少しずつ見えてくるように、急がなくても大丈夫。","fortune":"悩みが晴れるまで、今できることを一つずつ。","luckyItem":"霧色のハンカチ","luckyColor":"灰青色"},{"translation":"嵐が吹く三室山の紅葉は、竜田川を彩る錦のようだ。","usage":"「錦」は色鮮やかな織物。紅葉を川の錦にたとえる。","background":"風に散る紅葉が川を彩る風景を詠む。","advice":"自然を眺めて、ふっと思いを手放して。","fortune":"結果より今目の前にある美しさを味わいましょう。","luckyItem":"紅葉のコースター","luckyColor":"金橙色"},{"translation":"夕方になると門前の田の稲葉を鳴らして、葦の丸屋に秋風が吹いてくる。","usage":"「おとづれる」は音を立てて訪れること。","background":"稲葉と葦の小屋に吹く夕風を詠む。","advice":"風の音を追うように呼吸をゆっくりしてみて。","fortune":"一日を静かに締めくくる音を探してみましょう。","luckyItem":"小さな風鈴","luckyColor":"葦色"},{"translation":"大海原に漕ぎ出して眺めると、沖の白波は空の雲と見分けがつかない。","usage":"「ひさかたの」は空や雲にかかる枕詞。","background":"海と空が溶け合う壮大な景色を描いた歌。","advice":"広い風景に、心の余白を見つけてみましょう。","fortune":"一度遠くを眺めて、ゆっくり息を吐いてみて。","luckyItem":"海の写真","luckyColor":"淡い空色"},{"translation":"秋風にたなびく雲の切れ間から、澄んだ月の光が差し込んでいる。","usage":"「さやけさ」は澄みきって明るい様子。","background":"雲間からこぼれる月光の清らかさを歌う。","advice":"複雑な思いの間にも明るい瞬間はあります。","fortune":"一日の終わりに静かな時間を持ってみましょう。","luckyItem":"月のランプ","luckyColor":"月光の銀色"},{"translation":"風がそよぐ楢の小川の夕暮れは、禊の行事だけが夏を感じさせる。","usage":"「みそぎ」は身を清める神事のこと。","background":"夏の終わりを感じる川辺の風と禊を詠む。","advice":"心身を整える夕暮れの静けさを感じて。","fortune":"小さな片づけの習慣で一日を締めくくりましょう。","luckyItem":"澄んだ水のコップ","luckyColor":"水色がかった緑"}];
+    const JP_STATIC = {"오늘의 와카 오라클 ":" 마음을 비추는 한 수의 시|今日の和歌オラクル｜心を映す一首","오늘의 와카 오라클":"今日の和歌オラクル","아이디어 소개":"コンセプト","와카 뽑기":"和歌を引く","나의 도감":"マイ図鑑","오늘의 마음에,":"今日の心に、","한 수의 와카.":"一首の和歌を。","말로 표현하기 어려운 오늘의 감정이 있나요?":"言葉にしにくい、今日の気持ちはありませんか。","일본의 고전 시인이 남긴 짧은 노래에서":"日本の古典歌人が残した短い歌から、","지금의 나에게 필요한 한마디를 발견해 보세요.":"今の自分に響く言葉を見つけてみましょう。","오늘의 와카 뽑기":"今日の和歌を引く","어떻게 사용하나요?":"使い方を見る","✿ 8가지 감정":"✿ 8つの感情","80편 수집":"80首を集める","오늘의 운세":"今日のおみくじ","80장의 와카로 만나는 세 가지 순간":"80枚の和歌で出会う3つの瞬間","복잡한 설명 없이, 누구나 쉽고 편안하게 즐기는 문학적 마음 기록":"難しい知識がなくても楽しめる、文学と心の記録","오늘의 감정 고르기":"今日の気持ちを選ぶ","지금 내 마음과 가장 가까운 감정을 골라 보세요. 감정에 맞는 일본 고전 와카를 연결합니다.":"今の気持ちに近い感情を選びましょう。気持ちに合った古典和歌をご紹介します。","와카 카드 뒤집기":"和歌カードをめくる","어두워진 화면에서 빛나는 카드를 직접 뒤집으면 와카 원문과 번역, 표현의 유래가 공개돼요.":"光るカードを自分でめくると、原文・現代語訳・言葉の解説が現れます。","나만의 마음 일기":"わたしの心の日記","시를 읽고 떠오른 생각을 남겨 보세요. 일기와 수집한 카드는 사용하는 브라우저에 저장됩니다.":"歌を読んで感じたことを残しましょう。日記とカードの記録はこのブラウザに保存されます。","당신의 오늘은 어떤 시와 닮았나요?":"今日のあなたは、どんな歌に似ていますか。","한 장의 카드가 오늘의 감정을 다시 바라보는 계기가 될지도 모릅니다.":"一枚のカードが、今日の気持ちを見つめ直すきっかけになるかもしれません。","체험 시작하기 ↗":"体験を始める ↗","오늘의 와카, 오늘의 나":"今日の和歌、今日のわたし","오늘의 감정을 선택하고 아래 확인 버튼을 눌러 주세요.":"今日の気持ちを選び、下の確認ボタンを押してください。","시연 버전에서는 하루 횟수 제한 없이 80장을 모을 수 있어요.":"デモ版では1日の回数制限なく、80枚すべて集められます。","나의 와카 도감":"わたしの和歌図鑑","0 / 80장의 와카를 수집했어요":"80枚中0枚の和歌を集めました","도감 보기 ↗":"図鑑を見る ↗","지금 어떤 마음인가요?":"今、どんな気持ちですか。","오늘의 기분과 가장 가까운 감정 하나를 선택해 주세요. 8가지 감정마다 10편의 실제 고전 와카가 기다려요.":"今の気分に近い感情を一つ選んでください。8つの感情に、それぞれ10首の和歌を収録しています。","설렘":"ときめき","그리움":"恋しさ","슬픔":"悲しみ","희망":"希望","외로움":"孤独","행복":"幸せ","불안":"不安","평온":"安らぎ","10편의 와카":"和歌10首","감정을 선택해 주세요":"感情を選んでください","YOUR CHOICE · 선택한 감정":"YOUR CHOICE · 選んだ気持ち","감정을 선택하고 확인해 주세요.":"感情を選んで確認してください。","오늘 이런 마음이 든 이유는?":"今日はなぜ、そんな気持ちになりましたか。","(선택 사항)":"(任意)","이 감정으로 오늘의 와카 만나기 →":"この気持ちで和歌に出会う →","감정을 누르는 것만으로는 다음 화면으로 넘어가지 않아요.":"感情を選んだあと、確認ボタンを押してください。","시연 모드:":"デモモード：","하루 1회 제한 없이 반복 체험할 수 있어요.":"1日1回の制限なく、何度でも体験できます。","✧ 카드를 직접 뒤집기 전까지 와카와 운세는 비밀이에요.":"✧ カードをめくるまで、和歌とおみくじは秘密です。","✧ 수집한 카드는 다시 나오지 않고, 80장의 도감에 기록돼요.":"✧ 集めたカードは重複せず、80枚の図鑑に記録されます。","마음 선택으로":"感情を選び直す","의 마음을 골랐군요":"の気持ちを選びましたね","이 감정에 어울리는 옛 노래 한 수를 준비했어요.":"この気持ちに寄り添う、昔の和歌を一首ご用意しました。","급하게 넘기지 말고, 오늘의 마음에 집중해 보세요.":"急がずに、今の自分の心に耳を傾けてみましょう。","오늘의 와카 받기":"今日の和歌を受け取る","✿ 한 번에 한 장씩 · 시연 중에는 여러 번 획득할 수 있어요":"✿ 1回につき1枚 · デモ中は何度でも引けます","오늘의 와카가 도착했어요!":"今日の和歌が届きました！","카드에 담긴 이야기는 아직 비밀이에요.":"カードに秘められた物語は、まだ秘密です。","빛나는 카드를 직접 눌러 확인해 보세요.":"光るカードをタップして確かめてみましょう。","✧ 빛나는 카드를 눌러, 와카를 열어 보세요":"✧ 光るカードをタップして、和歌を開きましょう","당신의 마음을 위한 한 수가 도착했어요.":"あなたの心に寄り添う一首が届きました。","직접 카드를 뒤집기 전까지 내용은 비밀이에요.":"カードをめくるまで内容は秘密です。","※ 우리말은 뜻을 이해하기 위한 의역입니다. 감정 분류는 현대적 감상으로, 시인의 원래 의도를 단정하지 않습니다.":"※ 現代語訳は理解のための意訳です。感情分類は現代の解釈であり、作者の本来の意図を断定しません。","이 말은 무슨 뜻일까요?":"この言葉はどういう意味？","와카에 담긴 시대와 배경":"和歌に込められた時代と背景","✦ 오늘의 마음과 연결하기":"✦ 今日の気持ちと重ねてみる","✦ TODAY'S FORTUNE · 오늘의 문학 운세":"✦ TODAY'S FORTUNE · 今日の文学おみくじ","와카가 건네는 오늘의 한마디":"和歌が贈る今日のひとこと","✧ 오늘의 행운 아이템":"✧ 今日のラッキーアイテム","✧ 오늘의 행운 색상":"✧ 今日のラッキーカラー","※ 실제 미래를 예측하는 운세가 아니라, 고전 와카에서 영감을 받은 문학적 메시지와 하루의 제안입니다.":"※ 未来を予測するものではなく、古典和歌から着想を得た文学的なメッセージです。","↓ 카드 이미지 저장":"↓ カード画像を保存","와카 내용 복사":"和歌の内容をコピー","이 마음 일기로 남기기 ↗":"この気持ちを日記に残す ↗","✿ 다른 마음 고르기":"✿ 別の気持ちを選ぶ","새로운 와카 카드 해금!":"新しい和歌カードを獲得！","✦ 카드 감상하기":"✦ カードを見る","마음을 남기는 작은 기록":"心を残す、小さな記録","시를 읽고 난 뒤의 감정을 내 언어로 적어 보세요.":"歌を読んだ後の気持ちを、自分の言葉で書いてみましょう。","기록 내보내기 ↓":"記録を書き出す ↓","오늘의 일기 제목":"今日の日記のタイトル","나에게 남긴 말":"自分に残したい言葉","와카를 뽑으면 그 시와 함께 저장됩니다.":"和歌を引くと、その歌と一緒に保存されます。","일기 저장하기 ✎":"日記を保存 ✎","나의 와카 일기":"わたしの和歌日記","0개의 기록":"記録0件","아직 남긴 기록이 없어요":"まだ記録はありません","오늘의 마음 한 줄을 남겨 보세요.":"今日の気持ちを一行だけ残してみましょう。","이곳에 차곡차곡 쌓이게 됩니다.":"ここに少しずつ積み重なっていきます。","♧ 이 데모의 일기는 별도 서버로 전송되지 않고 현재 브라우저의 저장 공간(localStorage)에만 저장됩니다. 브라우저 데이터를 지우거나 다른 기기를 사용하면 기록이 보이지 않을 수 있어요.":"♧ 日記はサーバーに送信されず、このブラウザの保存領域（localStorage）にのみ保存されます。データの削除や別の端末では閲覧できない場合があります。","데모 안내 ·":"デモについて ·","이 페이지는 선배의 초기 시제품을 확장한":"このページは先輩の初期プロトタイプを発展させた","80편 고전 와카 학습·감정 연결 데모":"古典和歌80首の学習・感情体験デモ","입니다. 일본의 『오구라 백인일수』 원문을 활용했으며, 한국어 번역과 어휘·배경 설명은 시연용으로 새로 작성했습니다. 감정 분류와 오늘의 메시지는":"です。『小倉百人一首』の原文を使用し、現代語訳と語句・背景説明はデモ用に作成しました。感情分類と今日のメッセージは","현대적 감상이며 원작의 본래 주제와 다를 수 있습니다.":"現代的な解釈であり、原作の本来の主題と異なる場合があります。","시연 버전에는 하루 1장 제한이 적용되지 않습니다. 실제 생성형 AI, 로그인, 클라우드 동기화 및 공개 커뮤니티는 아직 연결되어 있지 않습니다.":"デモ版には1日1枚の制限はありません。生成AI・ログイン・クラウド同期・公開コミュニティ機能は未接続です。","원문 대조: 사가아라시야마 문학관 ↗":"原文参照：嵯峨嵐山文華館 ↗","해설 참고 ↗":"解説参考 ↗","나만의 와카 도감":"わたしの和歌図鑑","카드를 직접 뒤집어 만난 와카가 여기에 모여요.":"自分でめくって出会った和歌がここに集まります。","획득한 카드만 자세한 원문·운세·그날의 마음을 다시 볼 수 있어요.":"獲得済みカードの原文・おみくじ・その日の気持ちを見返せます。","/ 80장":"/ 80枚","완성도":"達成率","8개 감정 · 각 10장 · 이미 모은 카드는 다시 나오지 않아요. 시연 버전에서는 하루 획득 제한이 없어요.":"8つの感情・各10枚。獲得済みのカードは重複しません。デモ版は回数無制限です。","도감 필터":"図鑑の絞り込み","모든 카드 (80)":"すべてのカード（80）","아직 못 만난 카드":"未獲得のカード","💕 설렘":"💕 ときめき","🍂 그리움":"🍂 恋しさ","🌧️ 슬픔":"🌧️ 悲しみ","🌱 희망":"🌱 希望","🌙 외로움":"🌙 孤独","🌸 행복":"🌸 幸せ","🌫️ 불안":"🌫️ 不安","🍃 평온":"🍃 安らぎ","수집 기록 다운로드 ↓":"収集記録をダウンロード ↓","시연 기록 초기화 ↻":"デモの収集記録をリセット ↻","✦ 도전과제":"✦ 実績","0 / 12개 달성":"12個中0個達成","✿ 시연판의 도감은 현재 브라우저에 저장돼요. 같은 기기·같은 브라우저에서 다시 접속하면 수집 기록이 유지되지만, 시크릿 모드나 다른 기기에서는 동기화되지 않아요. 이미지 파일은":"✿ デモ版の図鑑はこのブラウザに保存されます。同じ端末・同じブラウザなら記録が残りますが、シークレットモードや別の端末とは同期しません。カード画像は","로 관리하므로 나중에 원하는 번호만 교체할 수 있어요.":"で管理され、後から個別に交換できます。","닫기 ✕":"閉じる ✕","표현과 유래":"言葉と由来","시대적 배경":"時代的背景","행운 아이템 · 색상":"ラッキーアイテム・カラー","↓ 이 카드 이미지 저장":"↓ このカード画像を保存","획득일":"獲得日","그날의 마음":"その日の気持ち","和 · 오늘의 와카 오라클":"和 · 今日の和歌オラクル","일본 고전 문학 × 감정 기록 · 경진대회 시연용 웹앱":"日本古典文学 × 心の記録 · コンテスト展示用Webアプリ","처음 화면으로 이동":"トップへ戻る","화면 선택":"画面を選ぶ","와카 오라클 직접 체험":"和歌オラクルを体験する","나의 수집 현황":"カードの収集状況","감정 선택":"感情を選ぶ","감정 종류":"感情の種類","예: 새로운 도전을 앞두고 조금 긴장돼요. 적지 않고 넘어가도 괜찮아요.":"例：新しい挑戦が少し不安です。入力しなくても構いません。","와카를 만나는 공간":"和歌と出会う場所","감정 선택으로 돌아가기":"感情選択へ戻る","와카 카드와 해설":"和歌カードと解説","카드 뒤집기":"カードをめくる","와카 카드 일러스트":"和歌カードのイラスト","새롭게 수집한 와카 카드":"新たに獲得した和歌カード","마음 일기":"心の日記","예: 다시 떠오른 그리움":"例：ふとよみがえった恋しさ","오늘의 와카는 어떤 마음을 떠올리게 했나요? 자유롭게 적어 보세요.":"今日の和歌から何を感じましたか。自由に書いてみましょう。","수집 진행 상황":"収集の進捗","80장 와카 수집 도감":"和歌80枚の収集図鑑","도전과제":"実績","수집한 와카 상세 보기":"獲得した和歌の詳細","수집한 카드 일러스트":"獲得済みカードのイラスト"};
+    // --- WAKA ORACLE bilingual data / accessibility, no external translation service needed ---
+    // These are Japanese demo translations; the original waka text and canonical data are unchanged.
+    const MOOD_JP = Object.freeze({'설렘':'ときめき','그리움':'恋しさ','슬픔':'悲しみ','희망':'希望','외로움':'孤独','행복':'幸せ','불안':'不安','평온':'安らぎ'});
+    const LANGUAGE_KEY='waka-oracle-language';
+    const MUSIC_KEY='waka-oracle-music-enabled';
+    let currentLang='ko';
+    try { currentLang=localStorage.getItem(LANGUAGE_KEY)==='ja'?'ja':'ko'; } catch(e){}
+    let musicEnabled=true;
+    try { musicEnabled=localStorage.getItem(MUSIC_KEY)!=='false'; } catch(e){}
+    const T=(ko,ja)=>currentLang==='ja'?ja:ko;
+    const moodLabel=(m)=>currentLang==='ja'?(MOOD_JP[m]||m):m;
+    const jpRecord=(w)=>JP_WAKA_DATA[(w?.deckId||0)-1]||null;
+    const localizedField=(w,key)=>currentLang==='ja'?(jpRecord(w)?.[key]||w[key]):w[key];
+    const wakaCategory=(w)=>currentLang==='ja'?`${moodLabel(w.tag)} · 百人一首 第${w.number}首`:w.category;
+    const FURIGANA_DISPLAY = [
+      '天つ風|あまつかぜ','男女川|みなのがわ','しのぶもぢずり|しのぶもじずり','逢坂|あふさか;さねかづら|さねかづら','泉川|いずみがわ;いつ見|いつみ','篠原|しのはら;しのぶ|しのぶ','色に出づ|いろにいづ','恋すてふ|こひすてふ','長くもがな|ながくもがな','手枕|たまくら',
+      '天の原|あまのはら','いなば|いなば;まつ|まつ','よる|よる','ふしの間|ふしのま','長月|ながつき;有明の月|ありあけのつき','暁|あかつき','ふるさと|ふるさと;花|はな','末の松山|すえのまつやま','雲隠れ|くもがくれ','そよ|そよ',
+      '鳴く鹿|なくしか','ふる|ふる;ながめ|ながめ','千々|ちぢ','誓ひ|ちかひ','なかなかに|なかなかに','あはれ|あはれ','くだけて|くだけて','ひとり寝る|ひとりねる','袖がぬれる|そでがぬれる','あまの袖|あまのそで',
+      '逢坂|あふさか','若菜|わかな','幣|ぬさ','御幸|みゆき','流れる|ながれる','外山|とやま','させもが露|させもがつゆ','われても|われても','常にもがもな|つねにもがもな','墨染の袖|すみぞめのそで',
+      'あしびきの|あしびきの','かれ|かれ','高砂の松|たかさごのまつ','八重葎|やへむぐら','もろともに|もろともに','秋の夕暮れ|あきのゆうぐれ','千鳥|ちどり','夜もすがら|よもすがら','衣かたしき|ころもかたしき','松帆|まつほ;藻塩|もしお',
+      '白妙|しろたへ','田子の浦|たごのうら','ちはやぶる|ちはやぶる','心あてに|こころあてに','朝ぼらけ|あさぼらけ','しがらみ|しがらみ','ひさかたの|ひさかたの','宵|よひ','白露|しらつゆ','八重桜|やえざくら;九重|ここのえ',
+      'みをつくし|みをつくし','かぢを絶え|かぢをたえ','衛士|えじ','いぶき|いぶき;さしも|さしも','朝ぼらけ|あさぼらけ','忘れじ|わすれじ','人づて|ひとづて','あだ波|あだなみ','初瀬|はつせ','黒髪の乱れ|くろかみのみだれ',
+      'かりほの庵|かりほのいおり;苫|とま','かささぎの橋|かささぎのはし','うぢ山|うぢやま;憂し|うし','嵐|あらし','網代木|あじろぎ','錦|にしき','おとづれる|おとづれる','ひさかたの|ひさかたの','さやけさ|さやけさ','禊|みそぎ'
+    ];
+    const escapeHTML=(v)=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function furiganaFor(w){
+      const row=FURIGANA_DISPLAY[w.deckId-1];
+      if(!row)return escapeHTML(w.term);
+      return row.split(';').map(s=>{
+        const [word,reading]=s.split('|');
+        if(!/[一-龠々]/.test(word))return `<span class="kana-term">${escapeHTML(word)}</span>`;
+        return `<ruby>${escapeHTML(word)}<rp>（</rp><rt>${escapeHTML(reading)}</rt><rp>）</rp></ruby>`;
+      }).join('<span class="term-divider">・</span>');
+    }
+    // Browser playback is user-gesture initiated; missing tracks simply stay silent.
+    // Upload one MP3 for each of the eight stable slugs below, e.g. bgm/seollem.mp3.
+    const BGM_SLUGS = Object.freeze({'설렘':'seollem','그리움':'geurium','슬픔':'seulpeum','희망':'huimang','외로움':'oeroum','행복':'haengbok','불안':'buran','평온':'pyeonon'});
+    const bgmAudio=new Audio(); bgmAudio.loop=true; bgmAudio.preload='none'; bgmAudio.volume=0.38;
+    let bgmActiveMood=null;
+    function updateBgmUI(){
+      document.querySelectorAll('[data-bgm-toggle]').forEach(el=>{
+        el.textContent=musicEnabled?T('♫ BGM 켜짐','♫ BGM ON'):T('♪ BGM 꺼짐','♪ BGM OFF');
+        el.setAttribute('aria-pressed',String(musicEnabled));
+        el.title=musicEnabled?T('누르면 배경음악을 끕니다','クリックで音楽をオフにします'):T('누르면 배경음악을 켭니다','クリックで音楽をオンにします');
+      });
+    }
+    function stopBgm(){bgmAudio.pause();bgmAudio.currentTime=0;bgmActiveMood=null;}
+    function playBgm(mood){
+      if(!mood||!BGM_SLUGS[mood]||!musicEnabled)return;
+      if(bgmActiveMood!==mood){
+        bgmAudio.pause();bgmActiveMood=mood;
+        bgmAudio.src=`bgm/${BGM_SLUGS[mood]}.mp3`;
+        bgmAudio.load();
+      }
+      const promise=bgmAudio.play();
+      if(promise&&typeof promise.catch==='function')promise.catch(()=>{});
+    }
+    bgmAudio.addEventListener('error',()=>{bgmActiveMood=null;bgmAudio.pause()});
+    document.querySelectorAll('[data-bgm-toggle]').forEach(el=>el.addEventListener('click',()=>{
+      musicEnabled=!musicEnabled;
+      try{localStorage.setItem(MUSIC_KEY,String(musicEnabled))}catch(e){}
+      if(!musicEnabled)stopBgm();
+      else if(currentWaka&&document.querySelector('#oracle-card')?.classList.contains('flipped')&&!document.querySelector('#ritual-page')?.hidden)playBgm(currentWaka.tag);
+      else if(detailWaka&&document.querySelector('#card-detail-dialog')?.open)playBgm(detailWaka.tag);
+      updateBgmUI();
+    }));
+    const I18N_STATIC_NODES=[];
+    const I18N_STATIC_ATTRS=[];
+    function registerStaticTranslations(){
+      const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+      let node;
+      while((node=walker.nextNode())){
+        if(node.parentNode?.closest?.('script,style'))continue;
+        const val=node.nodeValue||'',key=val.trim();
+        if(Object.prototype.hasOwnProperty.call(JP_STATIC,key))I18N_STATIC_NODES.push({node,val,key});
+      }
+      document.querySelectorAll('*').forEach(el=>{
+        for(const attr of ['aria-label','placeholder','alt','title']){
+          const val=el.getAttribute(attr);
+          if(val&&Object.prototype.hasOwnProperty.call(JP_STATIC,val))I18N_STATIC_ATTRS.push({el,attr,val});
+        }
+      });
+    }
+    function repaintStaticLanguage(){
+      for(const item of I18N_STATIC_NODES){
+        if(!item.node.isConnected)continue;
+        const target=currentLang==='ja'?JP_STATIC[item.key]:item.key;
+        item.node.nodeValue=item.val.replace(item.key,target);
+      }
+      for(const item of I18N_STATIC_ATTRS){
+        if(item.el.isConnected)item.el.setAttribute(item.attr,currentLang==='ja'?JP_STATIC[item.val]:item.val);
+      }
+      document.documentElement.lang=currentLang;
+      document.title=currentLang==='ja'?'今日の和歌オラクル｜心を映す一首':'오늘의 와카 오라클 | 마음을 비추는 한 수의 시';
+      document.querySelectorAll('[data-select-lang]').forEach(el=>{
+        const yes=el.dataset.selectLang===currentLang;
+        el.classList.toggle('selected',yes);el.setAttribute('aria-pressed',String(yes));
+      });
+      updateBgmUI();
+    }
+    function renderPoemLocalized(w){
+      if(!w)return;
+      document.querySelector('#poem-category').textContent=wakaCategory(w);
+      document.querySelector('#poem-author').textContent='✎ '+w.author;
+      document.querySelector('#poem-original').textContent=w.original;
+      document.querySelector('#poem-translation').textContent='“'+localizedField(w,'translation')+'”';
+      document.querySelector('#poem-advice').textContent=localizedField(w,'advice');
+      document.querySelector('#poem-term').innerHTML=furiganaFor(w);
+      document.querySelector('#poem-usage').textContent=localizedField(w,'usage');
+      document.querySelector('#poem-background').textContent=localizedField(w,'background');
+      document.querySelector('#poem-fortune').textContent=localizedField(w,'fortune');
+      document.querySelector('#poem-item').textContent=localizedField(w,'luckyItem');
+      document.querySelector('#poem-color-name').textContent=localizedField(w,'luckyColor');
+      document.querySelector('#poem-color-swatch').style.backgroundColor=w.luckyHex;
+      document.querySelector('#emotion-note-result').textContent=currentNote?T('오늘의 마음: ','今日の気持ち：')+currentNote:T('오늘의 마음은 글로 남기지 않았어요.','今日の気持ちは文章に残していません。');
+      document.querySelector('#diary-association').textContent=`✿ ${T('현재 선택된 와카','選んだ和歌')}: ${w.author} · ${moodLabel(w.tag)}`;
+    }
+    function renderArchiveDetailLocalized(w){
+      if(!w)return;
+      const record=collection.records.find(x=>Number(x.id)===w.deckId);
+      document.querySelector('#detail-img').src=w.image;
+      document.querySelector('#detail-img').alt=T(`${w.tag} 카드 ${w.deckId}번 일러스트`,`${moodLabel(w.tag)}・和歌カード${w.deckId}番の絵`);
+      document.querySelector('#detail-number').textContent=`NO. ${String(w.deckId).padStart(3,'0')} · ${moodLabel(w.tag)} · ${T('백인일수 제','百人一首 第')}${w.number}${T('수','首')}`;
+      document.querySelector('#detail-poem').textContent=w.original;
+      document.querySelector('#detail-translation').textContent=localizedField(w,'translation');
+      document.querySelector('#detail-author').textContent=w.author;
+      document.querySelector('#detail-term').innerHTML=furiganaFor(w)+' — '+escapeHTML(localizedField(w,'usage'));
+      document.querySelector('#detail-background').textContent=localizedField(w,'background');
+      document.querySelector('#detail-fortune').textContent=localizedField(w,'fortune');
+      document.querySelector('#detail-item').textContent=`${localizedField(w,'luckyItem')} · ${localizedField(w,'luckyColor')}`;
+      document.querySelector('#detail-note').textContent=record?(record.note||T('(그날의 마음 기록 없음)','（その日の気持ちの記録なし）')):T('(마음 기록 없음)','（気持ちの記録なし）');
+      document.querySelector('#detail-date').textContent=record?dateLong(record.createdAt):T('수집 날짜 정보 없음','獲得日の記録なし');
+    }
+    function applyLanguage(next){
+      currentLang=next==='ja'?'ja':'ko';
+      try{localStorage.setItem(LANGUAGE_KEY,currentLang)}catch(e){}
+      repaintStaticLanguage();
+      updateStats();renderEntries();renderArchive();
+      document.querySelector('#today-label').textContent=dateLong(new Date());
+      if(currentMood){
+        document.querySelector('#selected-mood').textContent=MOOD_EMOJI[currentMood]+' '+moodLabel(currentMood);
+        document.querySelector('#chosen-mood').textContent=moodLabel(currentMood);
+        updateMoodProgress();
+      } else {
+        document.querySelector('#mood-status').textContent=T('선택한 감정을 확인한 다음 카드 받기 화면으로 넘어가요.','気持ちを選び、確認するとカードを引く画面へ進みます。');
+      }
+      if(currentWaka){
+        document.querySelector('#diary-association').textContent=`✿ ${T('현재 선택된 와카','選んだ和歌')}: ${currentWaka.author} · ${moodLabel(currentWaka.tag)}`;
+        document.querySelector('#card-overlay-title').textContent=MOOD_EMOJI[currentWaka.tag]+' '+moodLabel(currentWaka.tag);
+        document.querySelector('#card-illustration').alt=T(`${currentWaka.tag} · 와카 ${currentWaka.deckId}번 타로풍 일러스트`,`${moodLabel(currentWaka.tag)}・和歌カード ${currentWaka.deckId} 番`);
+        document.querySelector('#card-overlay-author').textContent=`NO. ${String(currentWaka.deckId).padStart(3,'0')} · ${currentWaka.author}`;
+        if(document.querySelector('#ritual-page').classList.contains('reading')){
+          renderPoemLocalized(currentWaka);
+          document.querySelector('#ritual-title').textContent=T('오늘의 와카를 만났어요','今日の和歌に出会いました');
+          document.querySelector('#ritual-subtitle').textContent=T('옛 시인의 말을 오늘의 마음과 연결해 보세요.','昔の歌人の言葉を、今日の気持ちに重ねてみましょう。');
+          document.querySelector('#flip-hint').textContent=T('✧ 카드를 다시 누르면 뒷면으로 돌아가요','✧ もう一度タップすると裏面に戻ります');
+          document.querySelector('#collected-message').textContent=T(`✦ ${String(currentWaka.deckId).padStart(3,'0')}번 카드가 나의 도감에 등록되었어요!`,`✦ カード ${String(currentWaka.deckId).padStart(3,'0')} を図鑑に登録しました！`);
+        }else if(document.querySelector('#ritual-result').hidden===false){
+          document.querySelector('#ritual-title').textContent=T('오늘의 와카가 도착했어요!','今日の和歌が届きました！');
+          document.querySelector('#ritual-subtitle').textContent=T('카드에 담긴 이야기는 아직 비밀이에요. 빛나는 카드를 직접 눌러 확인해 보세요.','カードに秘められた物語はまだ秘密。光るカードをタップしてみましょう。');
+          document.querySelector('#flip-hint').textContent=T('✧ 빛나는 카드를 직접 눌러 와카를 확인해 보세요','✧ 光るカードをタップして和歌を見てみましょう');
+        }
+      }
+      if(!document.querySelector('#new-card-unlock').hidden&&currentWaka){
+        document.querySelector('#unlock-art').alt=T(`새롭게 수집한 ${currentWaka.deckId}번 와카 카드 이미지`,`新しく獲得した和歌カード${currentWaka.deckId}番`);
+        document.querySelector('#unlock-number').textContent=`NO. ${String(currentWaka.deckId).padStart(3,'0')} · ${moodLabel(currentWaka.tag)}`;
+        document.querySelector('#unlock-progress').textContent=T(`나의 와카 도감 · ${collection.owned.length} / 80장 수집`,`わたしの和歌図鑑 · ${collection.owned.length} / 80枚獲得`);
+      }
+      if(detailWaka&&document.querySelector('#card-detail-dialog').open)renderArchiveDetailLocalized(detailWaka);
+      if(currentMood){
+        document.querySelector('#ritual-note').textContent=currentNote?'“'+currentNote+'”':T('오늘의 마음 한 줄은 건너뛰었어요.','今日の気持ちのメモは省略しました。');
+        if(!currentWaka)document.querySelector('#ritual-draw-btn').childNodes[0].textContent=T('오늘의 와카 받기 ','今日の和歌を受け取る ');
+      }
+    }
+    document.querySelectorAll('[data-select-lang]').forEach(el=>el.addEventListener('click',()=>applyLanguage(el.dataset.selectLang)));
+
     const MOOD_EMOJI={설렘:'💕',그리움:'🍂',슬픔:'🌧️',희망:'🌱',외로움:'🌙',행복:'🌸',불안:'🌫️',평온:'🍃'};
     const MOODS=Object.keys(MOOD_EMOJI);
     const COLLECTION_KEY='waka-oracle-collection-v4';
@@ -871,7 +1077,7 @@
     }
     function storeCollection(){
       try{localStorage.setItem(COLLECTION_KEY,JSON.stringify(collection));return true}
-      catch{notify('브라우저 저장 공간을 사용할 수 없어요. 이 페이지에서만 기록이 유지될 수 있어요.');return false}
+      catch{notify(T('브라우저 저장 공간을 사용할 수 없어요. 이 페이지에서만 기록이 유지될 수 있어요.','ブラウザの保存領域を利用できません。このページ内だけの記録になる可能性があります。'));return false}
     }
     function notify(msg){
       const box=$('#toast');box.textContent=msg;box.classList.add('show');clearTimeout(toastTimer);
@@ -879,7 +1085,7 @@
     }
     // Same-origin GitHub Pages image: save the original high-resolution WebP, not a small screenshot.
     function downloadCardImage(w){
-      if(!w||!w.image){notify('저장할 와카 카드가 없어요.');return}
+      if(!w||!w.image){notify(T('저장할 와카 카드가 없어요.','保存できる和歌カードがありません。'));return}
       const number=String(w.deckId).padStart(3,'0');
       const a=document.createElement('a');
       a.href=w.image;
@@ -887,7 +1093,7 @@
       document.body.appendChild(a);
       a.click();
       a.remove();
-      notify(`${number}번 카드 이미지 저장을 요청했어요. 다운로드 목록을 확인해 주세요.`);
+      notify(T(`${number}번 카드 이미지 저장을 요청했어요. 다운로드 목록을 확인해 주세요.`, `カード${number}番の画像を保存します。ダウンロード一覧をご確認ください。`));
     }
     function hideNewCardUnlock(restoreFocus=true){
       const overlay=$('#new-card-unlock');
@@ -898,9 +1104,9 @@
     function showNewCardUnlock(w){
       if(!w||$('#ritual-page').hidden)return;
       $('#unlock-art').src=w.image;
-      $('#unlock-art').alt=`새롭게 수집한 ${w.deckId}번 와카 카드 이미지`;
-      $('#unlock-number').textContent=`NO. ${String(w.deckId).padStart(3,'0')} · ${w.tag}`;
-      $('#unlock-progress').textContent=`나의 와카 도감 · ${collection.owned.length} / 80장 수집`;
+      $('#unlock-art').alt=T(`새롭게 수집한 ${w.deckId}번 와카 카드 이미지`,`新しく獲得した和歌カード${w.deckId}番`);
+      $('#unlock-number').textContent=`NO. ${String(w.deckId).padStart(3,'0')} · ${moodLabel(w.tag)}`;
+      $('#unlock-progress').textContent=T(`나의 와카 도감 · ${collection.owned.length} / 80장 수집`,`わたしの和歌図鑑 · ${collection.owned.length} / 80枚獲得`);
       const overlay=$('#new-card-unlock');
       overlay.hidden=false;
       $('#unlock-continue').focus({preventScroll:true});
@@ -910,8 +1116,8 @@
     $('#new-card-unlock').addEventListener('click',e=>{if(e.target===$('#new-card-unlock'))hideNewCardUnlock()});
     $('#download-current-card').addEventListener('click',()=>{if(currentWaka)downloadCardImage(currentWaka)});
     $('#download-detail-card').addEventListener('click',()=>{if(detailWaka)downloadCardImage(detailWaka)});
-    function dateLong(value){const d=new Date(value);return Number.isNaN(+d)?'날짜 정보 없음':new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(d)}
-    function dateWithTime(value){const d=new Date(value);return Number.isNaN(+d)?'날짜 정보 없음':new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d)}
+    function dateLong(value){const d=new Date(value);return Number.isNaN(+d)?T('날짜 정보 없음','日付なし'):new Intl.DateTimeFormat(currentLang==='ja'?'ja-JP':'ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(d)}
+    function dateWithTime(value){const d=new Date(value);return Number.isNaN(+d)?T('날짜 정보 없음','日付なし'):new Intl.DateTimeFormat(currentLang==='ja'?'ja-JP':'ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(d)}
     function owned(waka){return collection.owned.includes(waka.deckId)}
     function randomChoice(items){return items[Math.floor(Math.random()*items.length)]}
     function remainingFor(mood){return wakaDatabase.filter(w=>w.tag===mood&&!owned(w))}
@@ -922,17 +1128,17 @@
       $$('#collected-counter,#archive-count').forEach(el=>el.textContent=String(count));
       $$('#collection-percent,#archive-percent').forEach(el=>el.textContent=pct+'%');
       $$('#progress-meter-fill,#archive-meter-fill').forEach(el=>el.style.width=pct+'%');
-      $('#overall-status').textContent=`${count} / 80장의 와카를 수집했어요`;
+      $('#overall-status').textContent=T(`${count} / 80장의 와카를 수집했어요`,`80枚中${count}枚の和歌を集めました`);
       if(currentMood)updateMoodProgress();
-      else $('#draw-progress').textContent=`✿ 전체 ${count}/80장 수집 · 시연 모드에서는 횟수 제한 없음`;
+      else $('#draw-progress').textContent=T(`✿ 전체 ${count}/80장 수집 · 시연 모드에서는 횟수 제한 없음`,`✿ 全${count}/80枚獲得 · デモでは回数制限なし`);
       renderAchievements();
     }
     function updateMoodProgress(){
-      if(!currentMood){$('#draw-progress').textContent='감정을 선택해 주세요';return}
+      if(!currentMood){$('#draw-progress').textContent=T('감정을 선택해 주세요','感情を選んでください');return}
       const count=wakaDatabase.filter(w=>w.tag===currentMood&&owned(w)).length;
-      $('#draw-progress').textContent=`${MOOD_EMOJI[currentMood]} ${currentMood} · 10장 중 ${count}장 수집`;
+      $('#draw-progress').textContent=`${MOOD_EMOJI[currentMood]} ${moodLabel(currentMood)} · ${T(`10장 중 ${count}장 수집`,`10枚中${count}枚獲得`)}`;
       $('#mood-confirm').disabled=remainingFor(currentMood).length===0;
-      $('#mood-status').textContent=count===10?'이 감정의 카드 10장을 모두 모았어요. 다른 감정을 선택해 주세요.':`${currentMood}의 와카 ${10-count}장이 아직 기다리고 있어요.`;
+      $('#mood-status').textContent=count===10?T('이 감정의 카드 10장을 모두 모았어요. 다른 감정을 선택해 주세요.','この感情の10枚をすべて集めました。別の感情を選んでください。'):T(`${currentMood}의 와카 ${10-count}장이 아직 기다리고 있어요.`,`${moodLabel(currentMood)}の和歌があと${10-count}枚待っています。`);
     }
     function selectMood(mood){
       if(!MOOD_EMOJI[mood])return;
@@ -941,7 +1147,7 @@
         const selected=el.dataset.mood===mood;
         el.classList.toggle('selected',selected);el.setAttribute('aria-pressed',String(selected));
       });
-      $('#selected-mood').textContent=MOOD_EMOJI[mood]+' '+mood;
+      $('#selected-mood').textContent=MOOD_EMOJI[mood]+' '+moodLabel(mood);
       $('#selected-mood').hidden=false;
       updateMoodProgress();
     }
@@ -961,8 +1167,8 @@
     $('#learn-more').addEventListener('click',()=>$('#how-it-works').scrollIntoView({behavior:'smooth'}));
     $$('[data-mood]').forEach(btn=>btn.addEventListener('click',()=>selectMood(btn.dataset.mood)));
     $('#mood-confirm').addEventListener('click',()=>{
-      if(!currentMood){notify('먼저 오늘의 감정을 선택해 주세요.');return}
-      if(!remainingFor(currentMood).length){notify('이 감정의 10장을 모두 모았어요. 다른 감정을 골라 주세요.');return}
+      if(!currentMood){notify(T('먼저 오늘의 감정을 선택해 주세요.','先に今日の気持ちを選んでください。'));return}
+      if(!remainingFor(currentMood).length){notify(T('이 감정의 10장을 모두 모았어요. 다른 감정을 골라 주세요.','この感情の10枚は獲得済みです。別の感情を選んでください。'));return}
       currentNote=$('#mood-note').value.trim();
       showRitual();
     });
@@ -973,12 +1179,12 @@
       const ritual=$('#ritual-page');
       ritual.className='ritual-page ready';ritual.hidden=false;
       $('#ritual-ready').hidden=false;$('#ritual-result').hidden=true;
-      $('#chosen-mood').textContent=currentMood;
+      $('#chosen-mood').textContent=moodLabel(currentMood);
       $('#chosen-mood-emoji').textContent=MOOD_EMOJI[currentMood];
-      $('#ritual-note').textContent=currentNote?'“'+currentNote+'”':'오늘의 마음 한 줄은 건너뛰었어요.';
+      $('#ritual-note').textContent=currentNote?'“'+currentNote+'”':T('오늘의 마음 한 줄은 건너뛰었어요.','今日の気持ちのメモは省略しました。');
       $('#ritual-step').textContent='STEP 02 / 03';
       $('#ritual-draw-btn').disabled=false;
-      $('#ritual-draw-btn').textContent='오늘의 와카 받기 ✦';
+      $('#ritual-draw-btn').textContent=T('오늘의 와카 받기 ✦','今日の和歌を受け取る ✦');
       $('#oracle-card').classList.remove('flipped');
       $('.card-front').setAttribute('aria-hidden','true');
       $('.card-back').setAttribute('aria-hidden','false');
@@ -991,6 +1197,7 @@
       clearTimeout(revealTimer);
       hideNewCardUnlock(false);
       $('#ritual-page').hidden=true;
+      stopBgm();
       $('#ritual-page').className='ritual-page ready';
       document.body.classList.remove('ritual-open');
       if(ritualFocusOrigin&&ritualFocusOrigin.isConnected)ritualFocusOrigin.focus({preventScroll:true});
@@ -1019,27 +1226,27 @@
     $('#ritual-draw-btn').addEventListener('click',()=>{
       if(currentWaka)return;
       const remaining=remainingFor(currentMood);
-      if(!remaining.length){notify('이 감정의 와카를 모두 모았어요. 다른 감정을 선택해 주세요.');return}
+      if(!remaining.length){notify(T('이 감정의 와카를 모두 모았어요. 다른 감정을 선택해 주세요.','この感情の和歌はすべて集めました。別の感情を選んでください。'));return}
       currentWaka=randomChoice(remaining);
       currentSaved=false;
       $('#collected-message').textContent='';
       $('#card-illustration').src=currentWaka.image;
-      $('#card-illustration').alt=`${currentWaka.tag} · 와카 ${currentWaka.deckId}번 타로풍 일러스트`;
-      $('#card-illustration').onerror=()=>{$('#card-illustration').alt='카드 이미지 파일을 찾지 못했어요. cards 폴더를 함께 업로드해 주세요.'};
-      $('#card-overlay-title').textContent=MOOD_EMOJI[currentMood]+' '+currentMood;
+      $('#card-illustration').alt=T(`${currentWaka.tag} · 와카 ${currentWaka.deckId}번 타로풍 일러스트`,`${moodLabel(currentWaka.tag)} · 和歌カード${currentWaka.deckId}番`);
+      $('#card-illustration').onerror=()=>{$('#card-illustration').alt=T('카드 이미지 파일을 찾지 못했어요. cards 폴더를 함께 업로드해 주세요.','カード画像が見つかりません。cardsフォルダーをアップロードしてください。')};
+      $('#card-overlay-title').textContent=MOOD_EMOJI[currentMood]+' '+moodLabel(currentMood);
       $('#card-overlay-author').textContent=`NO. ${String(currentWaka.deckId).padStart(3,'0')} · ${currentWaka.author}`;
       $('#ritual-ready').hidden=true;$('#ritual-result').hidden=false;
       $('#ritual-page').className='ritual-page arrived';
-      $('#ritual-title').textContent='오늘의 와카가 도착했어요!';
-      $('#ritual-subtitle').textContent='카드에 담긴 이야기는 아직 비밀이에요. 빛나는 카드를 직접 눌러 확인해 보세요.';
+      $('#ritual-title').textContent=T('오늘의 와카가 도착했어요!','今日の和歌が届きました！');
+      $('#ritual-subtitle').textContent=T('카드에 담긴 이야기는 아직 비밀이에요. 빛나는 카드를 직접 눌러 확인해 보세요.','カードに秘められた物語はまだ秘密。光るカードをタップしてみましょう。');
       $('#ritual-page').scrollTop=0;
       $('#ritual-step').textContent='STEP 02 / 03';
-      $('#flip-hint').textContent='✧ 빛나는 카드를 직접 눌러 와카를 확인해 보세요';
+      $('#flip-hint').textContent=T('✧ 빛나는 카드를 직접 눌러 와카를 확인해 보세요','✧ 光るカードをタップして和歌を見てみましょう');
       $('#interpretation').classList.remove('visible');
       $('#oracle-placeholder').hidden=false;
       $('#oracle-card').classList.remove('flipped');
       $('#card-scene').setAttribute('aria-pressed','false');
-      $('#card-scene').setAttribute('aria-label','도착한 와카 카드 뒤집기');
+      $('#card-scene').setAttribute('aria-label',T('도착한 와카 카드 뒤집기','届いた和歌カードをめくる'));
       $('#card-scene').focus({preventScroll:true});
     });
     function collectCurrent(){
@@ -1050,7 +1257,7 @@
       collection.records.unshift({id:currentWaka.deckId,mood:currentMood,note:currentNote,createdAt:new Date().toISOString()});
       storeCollection();
       updateStats();renderArchive();
-      $('#collected-message').textContent=`✦ ${String(currentWaka.deckId).padStart(3,'0')}번 카드가 나의 도감에 등록되었어요!`;
+      $('#collected-message').textContent=T(`✦ ${String(currentWaka.deckId).padStart(3,'0')}번 카드가 나의 도감에 등록되었어요!`,`✦ カード ${String(currentWaka.deckId).padStart(3,'0')} を図鑑に登録しました！`);
       showNewCardUnlock(currentWaka);
     }
     function setFlip(flip){
@@ -1058,56 +1265,46 @@
       clearTimeout(revealTimer);
       $('#oracle-card').classList.toggle('flipped',flip);
       $('#card-scene').setAttribute('aria-pressed',String(flip));
-      $('#card-scene').setAttribute('aria-label',flip?'와카 카드 뒷면으로 돌리기':'와카 카드 뒤집기');
+      $('#card-scene').setAttribute('aria-label',flip?T('와카 카드 뒷면으로 돌리기','カードを裏面に戻す'):T('와카 카드 뒤집기','和歌カードをめくる'));
       $('.card-front').setAttribute('aria-hidden',String(!flip));
       $('.card-back').setAttribute('aria-hidden',String(flip));
       $('#interpretation').classList.remove('visible');
       if(!flip){
+        stopBgm();
         $('#ritual-page').className='ritual-page arrived';
-        $('#ritual-title').textContent='오늘의 와카가 도착했어요!';
-        $('#ritual-subtitle').textContent='카드에 담긴 이야기는 아직 비밀이에요. 직접 눌러 확인해 보세요.';
+        $('#ritual-title').textContent=T('오늘의 와카가 도착했어요!','今日の和歌が届きました！');
+        $('#ritual-subtitle').textContent=T('카드에 담긴 이야기는 아직 비밀이에요. 직접 눌러 확인해 보세요.','カードの内容はまだ秘密。タップして確かめてみましょう。');
         $('#ritual-step').textContent='STEP 02 / 03';
-        $('#flip-hint').textContent='✧ 빛나는 카드를 직접 눌러 와카를 확인해 보세요';
+        $('#flip-hint').textContent=T('✧ 빛나는 카드를 직접 눌러 와카를 확인해 보세요','✧ 光るカードをタップして和歌を見てみましょう');
         $('#oracle-placeholder').hidden=false;
         return;
       }
-      $('#flip-hint').textContent='✧ 카드를 다시 누르면 뒷면으로 돌아가요';
+      $('#flip-hint').textContent=T('✧ 카드를 다시 누르면 뒷면으로 돌아가요','✧ もう一度タップすると裏面に戻ります');
       $('#oracle-placeholder').hidden=true;
+      playBgm(currentWaka.tag); // invoked directly during card flip so browsers permit audio
       const delay=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:900;
       revealTimer=setTimeout(()=>{
         if(!$('#oracle-card').classList.contains('flipped')||$('#ritual-page').hidden)return;
-        $('#poem-category').textContent=currentWaka.category;
-        $('#poem-author').textContent='✎ '+currentWaka.author;
-        $('#poem-original').textContent=currentWaka.original;
-        $('#poem-translation').textContent='“'+currentWaka.translation+'”';
-        $('#poem-advice').textContent=currentWaka.advice;
-        $('#poem-term').textContent=currentWaka.term;
-        $('#poem-usage').textContent=currentWaka.usage;
-        $('#poem-background').textContent=currentWaka.background;
-        $('#poem-fortune').textContent=currentWaka.fortune;
-        $('#poem-item').textContent=currentWaka.luckyItem;
-        $('#poem-color-name').textContent=currentWaka.luckyColor;
-        $('#poem-color-swatch').style.backgroundColor=currentWaka.luckyHex;
-        $('#emotion-note-result').textContent=currentNote?'오늘의 마음: '+currentNote:'오늘의 마음은 글로 남기지 않았어요.';
+        renderPoemLocalized(currentWaka);
         $('#interpretation').classList.add('visible');
         $('#ritual-page').className='ritual-page reading';
-        $('#ritual-title').textContent='오늘의 와카를 만났어요';
-        $('#ritual-subtitle').textContent='옛 시인의 말을 오늘의 마음과 연결해 보세요.';
+        $('#ritual-title').textContent=T('오늘의 와카를 만났어요','今日の和歌に出会いました');
+        $('#ritual-subtitle').textContent=T('옛 시인의 말을 오늘의 마음과 연결해 보세요.','昔の歌人の言葉を、今日の気持ちに重ねてみましょう。');
         $('#ritual-step').textContent='STEP 03 / 03';
-        $('#diary-association').textContent=`✿ 현재 선택된 와카: ${currentWaka.author} · ${currentWaka.tag}`;
+        $('#diary-association').textContent=`✿ ${T('현재 선택된 와카','選んだ和歌')}: ${currentWaka.author} · ${moodLabel(currentWaka.tag)}`;
         collectCurrent();
       },delay);
     }
-    function toggleCardFlip(){if(!currentWaka){notify('먼저 와카 카드를 받아 주세요.');return}setFlip(!$('#oracle-card').classList.contains('flipped'))}
+    function toggleCardFlip(){if(!currentWaka){notify(T('먼저 와카 카드를 받아 주세요.','先に和歌カードを引いてください。'));return}setFlip(!$('#oracle-card').classList.contains('flipped'))}
     $('#card-scene').addEventListener('click',toggleCardFlip);
     $('#card-scene').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleCardFlip()}});
     $('#today-label').textContent=dateLong(new Date());
-    function formatWaka(w){return `오늘의 와카 오라클 · ${w.category}\n${w.original}\n— ${w.author}\n우리말 번역: ${w.translation}\n표현: ${w.term} — ${w.usage}\n배경: ${w.background}\n오늘의 운세: ${w.fortune}\n행운 아이템: ${w.luckyItem}\n행운 색상: ${w.luckyColor}`}
+    function formatWaka(w){return `${T('오늘의 와카 오라클','今日の和歌オラクル')} · ${wakaCategory(w)}\n${w.original}\n— ${w.author}\n${T('번역','現代語訳')}: ${localizedField(w,'translation')}\n${T('표현','表現')}: ${w.term} — ${localizedField(w,'usage')}\n${T('배경','背景')}: ${localizedField(w,'background')}\n${T('오늘의 운세','今日のおみくじ')}: ${localizedField(w,'fortune')}\n${T('행운 아이템','ラッキーアイテム')}: ${localizedField(w,'luckyItem')}\n${T('행운 색상','ラッキーカラー')}: ${localizedField(w,'luckyColor')}`}
     async function copyText(value){
       try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(value);
       else{const inp=document.createElement('textarea');inp.value=value;inp.style.position='fixed';inp.style.opacity='0';document.body.appendChild(inp);inp.select();if(!document.execCommand('copy'))throw new Error('clipboard');inp.remove()}
-      notify('와카 내용이 복사되었어요.')}
-      catch{notify('복사를 지원하지 않는 환경이에요. 내용을 직접 선택해 주세요.')}
+      notify(T('와카 내용이 복사되었어요.','和歌の内容をコピーしました。'))}
+      catch{notify(T('복사를 지원하지 않는 환경이에요. 내용을 직접 선택해 주세요.','コピーできない環境です。内容を直接選択してください。'))}
     }
     $('#copy-poem').addEventListener('click',()=>{if(currentWaka)copyText(formatWaka(currentWaka))});
     $('#write-diary').addEventListener('click',()=>{
@@ -1122,21 +1319,21 @@
       const select=$('#archive-filter');
       if(select&&select.value!==activeFilter)select.value=activeFilter;
       const cards=wakaDatabase.filter(w=>activeFilter==='전체'||(activeFilter==='미수집'&&!owned(w))||w.tag===activeFilter);
-      $('#archive-found').textContent=`${cards.length}장의 카드 · 보유 ${cards.filter(owned).length}장`;
+      $('#archive-found').textContent=T(`${cards.length}장의 카드 · 보유 ${cards.filter(owned).length}장`,`${cards.length}枚のカード · 獲得済み${cards.filter(owned).length}枚`);
       const grid=$('#collection-grid');grid.replaceChildren();
       const frag=document.createDocumentFragment();
       for(const w of cards){
         const isOwned=owned(w);
         const btn=document.createElement('button');btn.type='button';btn.className='archive-card'+(isOwned?' unlocked':' locked');
-        btn.setAttribute('aria-label',isOwned?`${w.deckId}번 ${w.tag} 카드 자세히 보기`:`${w.deckId}번 아직 획득하지 않은 카드`);
+        btn.setAttribute('aria-label',isOwned?T(`${w.deckId}번 ${w.tag} 카드 자세히 보기`,`カード${w.deckId}・${moodLabel(w.tag)}の詳細を見る`):T(`${w.deckId}번 아직 획득하지 않은 카드`,`カード${w.deckId}・未獲得`));
         const art=document.createElement('div');art.className='archive-image';
         if(isOwned){const img=document.createElement('img');img.src=w.image;img.loading='lazy';img.alt='';art.appendChild(img)}
         else{const mark=document.createElement('span');mark.className='archive-lock';mark.textContent='✦';art.appendChild(mark)}
         const footer=document.createElement('div');footer.className='archive-card-footer';
         const left=document.createElement('span');left.textContent=`NO. ${String(w.deckId).padStart(3,'0')}`;
-        const right=document.createElement('span');right.textContent=isOwned?w.tag:'미수집';
+        const right=document.createElement('span');right.textContent=isOwned?moodLabel(w.tag):T('미수집','未獲得');
         footer.append(left,right);btn.append(art,footer);
-        btn.addEventListener('click',()=>isOwned?openArchiveCard(w):notify('아직 만나지 못한 와카예요. 감정을 선택해 카드를 획득해 보세요.'));
+        btn.addEventListener('click',()=>isOwned?openArchiveCard(w):notify(T('아직 만나지 못한 와카예요. 감정을 선택해 카드를 획득해 보세요.','まだ出会っていない和歌です。感情を選んで獲得しましょう。')));
         frag.appendChild(btn);
       }
       grid.appendChild(frag);
@@ -1150,19 +1347,7 @@
     $('#archive-filter').addEventListener('change',e=>{activeFilter=e.target.value;renderArchive()});
     function openArchiveCard(w){
       detailWaka=w;
-      const record=collection.records.find(x=>Number(x.id)===w.deckId);
-      $('#detail-img').src=w.image;
-      $('#detail-img').alt=`${w.tag} 카드 ${w.deckId}번 일러스트`;
-      $('#detail-number').textContent=`NO. ${String(w.deckId).padStart(3,'0')} · ${w.tag} · 백인일수 제${w.number}수`;
-      $('#detail-poem').textContent=w.original;
-      $('#detail-translation').textContent=w.translation;
-      $('#detail-author').textContent=w.author;
-      $('#detail-term').textContent=w.term+' — '+w.usage;
-      $('#detail-background').textContent=w.background;
-      $('#detail-fortune').textContent=w.fortune;
-      $('#detail-item').textContent=`${w.luckyItem} · ${w.luckyColor}`;
-      $('#detail-note').textContent=record?(record.note||'(그날의 마음 기록 없음)'):'(마음 기록 없음)';
-      $('#detail-date').textContent=record?dateLong(record.createdAt):'수집 날짜 정보 없음';
+      renderArchiveDetailLocalized(w);
       const dlg=$('#card-detail-dialog');if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
     }
     $('#detail-close').addEventListener('click',()=>{$('#card-detail-dialog').close()});
@@ -1174,34 +1359,35 @@
       {icon:'👑',title:'와카 도감의 완성자',desc:'80장 모두 수집',test:()=>collection.owned.length===80},
       ...MOODS.map(m=>({icon:MOOD_EMOJI[m],title:`${m}의 수집가`,desc:`${m} 와카 10장 모두 수집`,test:()=>wakaDatabase.filter(w=>w.tag===m&&owned(w)).length===10}))
     ];
+    const JP_ACHIEVE={'첫 번째 문장':'はじめての一首','첫 와카를 수집하기':'最初の和歌を獲得する','열 장의 노래':'十首の歌','서로 다른 와카 10장 수집':'異なる和歌を10枚集める','문학 탐험가':'文学の探検家','서로 다른 와카 40장 수집':'異なる和歌を40枚集める','와카 도감의 완성자':'和歌図鑑の達成者','80장 모두 수집':'80枚すべて集める'};
     function renderAchievements(){
       const root=$('#achievement-grid');root.replaceChildren();let completed=0;
       for(const a of achievements){
         const unlocked=a.test();if(unlocked)completed++;
         const node=document.createElement('div');node.className='achievement'+(unlocked?' is-unlocked':'');
         const icon=document.createElement('span');icon.className='achievement-icon';icon.textContent=unlocked?a.icon:'🔒';
-        const box=document.createElement('div');const title=document.createElement('strong');title.textContent=a.title;
-        const desc=document.createElement('small');desc.textContent=a.desc;
+        const box=document.createElement('div');const title=document.createElement('strong');title.textContent=currentLang==='ja'?(JP_ACHIEVE[a.title]||(a.title.endsWith('의 수집가')?`${moodLabel(a.title.slice(0,-5))}のコレクター`:a.title)):a.title;
+        const desc=document.createElement('small');desc.textContent=currentLang==='ja'?((JP_ACHIEVE[a.desc])||(a.desc.endsWith(' 와카 10장 모두 수집')?`${moodLabel(a.desc.split(' ')[0])}の和歌10枚をすべて集める`:a.desc)):a.desc;
         box.append(title,desc);node.append(icon,box);root.append(node);
       }
-      $('#achievement-count').textContent=`${completed} / ${achievements.length}개 달성`;
+      $('#achievement-count').textContent=T(`${completed} / ${achievements.length}개 달성`,`${achievements.length}個中${completed}個達成`);
     }
     function saveJSON(obj,filename){
       const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json;charset=utf-8'});
       const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1300);
     }
-    $('#collection-export').addEventListener('click',()=>{saveJSON({app:'Waka Oracle 4.0',exportedAt:new Date().toISOString(),...collection},'waka-collection-'+new Date().toISOString().slice(0,10)+'.json');notify('도감 기록을 다운로드했어요.')});
+    $('#collection-export').addEventListener('click',()=>{saveJSON({app:'Waka Oracle 4.0',exportedAt:new Date().toISOString(),...collection},'waka-collection-'+new Date().toISOString().slice(0,10)+'.json');notify(T('도감 기록을 다운로드했어요.','図鑑の記録をダウンロードしました。'))});
     $('#collection-reset').addEventListener('click',()=>{
-      if(!confirm('시연용 카드 수집 기록 80장과 수집 날짜·한 줄 기록을 초기화할까요? 기존 일기는 삭제되지 않습니다.'))return;
+      if(!confirm(T('시연용 카드 수집 기록 80장과 수집 날짜·한 줄 기록을 초기화할까요? 기존 일기는 삭제되지 않습니다.','収集したカードと獲得日・メモをリセットしますか？ 日記は削除されません。')))return;
       collection={owned:[],records:[]};storeCollection();currentWaka=null;currentSaved=false;activeFilter='전체';
-      renderArchive();updateStats();notify('도감 기록을 초기화했어요. 다시 시연할 수 있어요.');
+      renderArchive();updateStats();notify(T('도감 기록을 초기화했어요. 다시 시연할 수 있어요.','図鑑をリセットしました。再びデモを体験できます。'));
     });
     // The old diary remains compatible with previous versions of this website.
     function getEntries(){try{const data=JSON.parse(localStorage.getItem(DIARY_KEY)||'[]');return Array.isArray(data)?data.filter(e=>e&&typeof e.id==='string'):[]}catch{return []}}
-    function saveEntries(entries){try{localStorage.setItem(DIARY_KEY,JSON.stringify(entries));return true}catch{notify('브라우저 저장 공간을 사용할 수 없어요.');return false}}
+    function saveEntries(entries){try{localStorage.setItem(DIARY_KEY,JSON.stringify(entries));return true}catch{notify(T('브라우저 저장 공간을 사용할 수 없어요.','ブラウザの保存領域を利用できません。'));return false}}
     function renderEntries(){
       const entries=getEntries(),list=$('#diary-entries');list.replaceChildren();
-      $('#diary-count').textContent=entries.length+'개의 기록';$('#empty-diary').hidden=entries.length>0;
+      $('#diary-count').textContent=T(entries.length+'개의 기록','記録'+entries.length+'件');$('#empty-diary').hidden=entries.length>0;
       entries.forEach(entry=>{
         const node=document.createElement('article');node.className='entry';
         const top=document.createElement('div');top.className='entry-top';
@@ -1209,28 +1395,43 @@
         const title=document.createElement('h4');title.textContent=entry.title;
         const body=document.createElement('p');body.textContent=entry.body;
         const bottom=document.createElement('div');bottom.className='entry-bottom';
-        const link=document.createElement('span');link.className='entry-waka';link.textContent=entry.waka?`✿ ${entry.waka.tag} · ${entry.waka.author}`:'✎ 자유 기록';
-        const del=document.createElement('button');del.type='button';del.className='text-btn';del.textContent='삭제';
-        del.setAttribute('aria-label',entry.title+' 일기 삭제');
-        del.addEventListener('click',()=>{if(!confirm('이 일기를 삭제할까요?'))return;if(saveEntries(getEntries().filter(x=>x.id!==entry.id))){renderEntries();notify('일기를 삭제했어요.')}});
+        const link=document.createElement('span');link.className='entry-waka';link.textContent=entry.waka?`✿ ${moodLabel(entry.waka.tag)} · ${entry.waka.author}`:T('✎ 자유 기록','✎ 自由記録');
+        const del=document.createElement('button');del.type='button';del.className='text-btn';del.textContent=T('삭제','削除');
+        del.setAttribute('aria-label',entry.title+T(' 일기 삭제',' の日記を削除'));
+        del.addEventListener('click',()=>{if(!confirm(T('이 일기를 삭제할까요?','この日記を削除しますか？')))return;if(saveEntries(getEntries().filter(x=>x.id!==entry.id))){renderEntries();notify(T('일기를 삭제했어요.','日記を削除しました。'))}});
         bottom.append(link,del);node.append(top,title,body,bottom);list.appendChild(node);
       });
     }
     $('#diary-form').addEventListener('submit',e=>{
       e.preventDefault();const title=$('#diary-title').value.trim(),body=$('#diary-body').value.trim();
-      if(!title||!body){notify('제목과 일기 내용을 모두 작성해 주세요.');return}
+      if(!title||!body){notify(T('제목과 일기 내용을 모두 작성해 주세요.','タイトルと本文を入力してください。'));return}
       const entries=getEntries();const id=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2);
       entries.unshift({id,title,body,createdAt:new Date().toISOString(),waka:currentWaka?{tag:currentWaka.tag,author:currentWaka.author,original:currentWaka.original,number:currentWaka.number,deckId:currentWaka.deckId}:null});
-      if(saveEntries(entries)){e.target.reset();renderEntries();notify('오늘의 마음을 저장했어요. ✿')}
+      if(saveEntries(entries)){e.target.reset();renderEntries();notify(T('오늘의 마음을 저장했어요. ✿','今日の気持ちを保存しました。✿'))}
     });
-    $('#export-diary').addEventListener('click',()=>{const entries=getEntries();if(!entries.length){notify('내보낼 일기가 아직 없어요.');return}saveJSON({app:'오늘의 와카 오라클',exportedAt:new Date().toISOString(),entries},'waka-diary-'+new Date().toISOString().slice(0,10)+'.json');notify('일기 파일을 내보냈어요.')});
+    $('#export-diary').addEventListener('click',()=>{const entries=getEntries();if(!entries.length){notify(T('내보낼 일기가 아직 없어요.','書き出せる日記がまだありません。'));return}saveJSON({app:'오늘의 와카 오라클',exportedAt:new Date().toISOString(),entries},'waka-diary-'+new Date().toISOString().slice(0,10)+'.json');notify(T('일기 파일을 내보냈어요.','日記ファイルを書き出しました。'))});
     // Initialize without presuming the user's emotion.
+    registerStaticTranslations();
     $$('[data-mood]').forEach(el=>{el.classList.remove('selected');el.setAttribute('aria-pressed','false')});
     $('#mood-confirm').disabled=true;
     $('#selected-mood').hidden=true;
-    $('#mood-status').textContent='선택한 감정을 확인한 다음 카드 받기 화면으로 넘어가요.';
+    $('#mood-status').textContent=T('선택한 감정을 확인한 다음 카드 받기 화면으로 넘어가요.','気持ちを選び、確認するとカードを引く画面へ進みます。');
     renderEntries();renderArchive();updateStats();
+    applyLanguage(currentLang);
 
   </script>
+
+  <!-- WAKA ORACLE: 업로드할 BGM의 정확한 이름 (MP3, 8곡)
+       bgm/seollem.mp3   = 설렘 / ときめき
+       bgm/geurium.mp3   = 그리움 / 恋しさ
+       bgm/seulpeum.mp3  = 슬픔 / 悲しみ
+       bgm/huimang.mp3   = 희망 / 希望
+       bgm/oeroum.mp3    = 외로움 / 孤独
+       bgm/haengbok.mp3  = 행복 / 幸せ
+       bgm/buran.mp3     = 불안 / 不安
+       bgm/pyeonon.mp3   = 평온 / 安らぎ
+       카드를 직접 뒤집으면 해당 MP3 재생. 없으면 조용히 진행됨.
+       일본어 해설은 화면에서만 번역하며 수집/일기 로컬 저장 데이터는 공유합니다.
+  -->
 </body>
 </html>
