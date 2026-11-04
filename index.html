@@ -732,8 +732,6 @@
 </style>
 </head>
 <body>
-  <audio id="emotion-bgm" preload="auto" loop></audio>
- 
   <header class="site-header">
     <div class="shell header-inner">
       <button class="brand" type="button" data-goto="presentation" aria-label="처음 화면으로 이동">
@@ -1695,43 +1693,6 @@
     renderEntries();renderArchive();updateStats();
     applyLanguage(currentLang);
     initCommunity();
-    // 업로드한 mp3 파일명과 감정 이름 매핑
-    const bgmList = {
-      '그리움': 'geurium.mp3',
-      '설렘': 'seollem.mp3',
-      '슬픔': 'seulpeum.mp3',
-      '희망': 'huimang.mp3',
-      '외로움': 'oeroum.mp3',
-      '행복': 'haengbok.mp3',
-      '불안': 'buran.mp3',
-      '평온': 'pyeonon.mp3'
-    };
-
-    const bgmAudio = document.getElementById('emotion-bgm');
-    bgmAudio.volume = 0.4; // 볼륨 설정 (0.0 ~ 1.0)
-
-    function playEmotionBGM(feeling) {
-      const fileName = bgmList[feeling];
-      if (!fileName) return;
-
-      if (bgmAudio.src.indexOf(fileName) === -1) {
-        bgmAudio.src = fileName;
-        bgmAudio.load();
-      }
-
-      bgmAudio.play().catch(err => {
-        console.log("자동 재생 대기 중:", err);
-      });
-    }
-
-    // 감정 버튼들과 연동
-    document.querySelectorAll('.mood-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const selectedFeeling = button.getAttribute('data-mood');
-        playEmotionBGM(selectedFeeling);
-      });
-    });
-
   </script>
 
   <!-- WAKA ORACLE: 업로드할 BGM의 정확한 이름 (MP3, 8곡)
