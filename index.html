@@ -786,6 +786,21 @@
     @media(max-width:600px){.vocab-list,.detail-lexicon .vocab-list{grid-template-columns:1fr 1fr;gap:7px}.vocab-entry{padding:10px 8px}.vocab-word{font-size:15px}.vocab-meaning{font-size:10px}.ruby-switch{font-size:11px;padding:7px 10px}.poem-study-label{font-size:10px}}
     @media(max-width:380px){.vocab-list,.detail-lexicon .vocab-list{grid-template-columns:1fr}}
 
+  
+    /* 첫 화면: 실제 와카 카드 001번과 공통 뒷면을 겹쳐 보여주는 전시 */
+    .hero-card-pair{position:relative;z-index:1;width:100%;height:100%;min-height:440px}
+    .hero-card-img{position:absolute;top:50%;left:50%;width:235px;height:355px;object-fit:fill;border-radius:9px;box-shadow:0 18px 42px #76575245,0 0 0 5px #fff9f3aa;transition:transform .3s ease}
+    .hero-card-back{z-index:1;transform:translate(-75%,-52%) rotate(-12deg)}
+    .hero-card-front{z-index:2;transform:translate(-22%,-47%) rotate(9deg)}
+    @media (hover:hover){
+      .hero-card-pair:hover .hero-card-back{transform:translate(-80%,-54%) rotate(-15deg)}
+      .hero-card-pair:hover .hero-card-front{transform:translate(-18%,-50%) rotate(11deg)}
+    }
+    @media(max-width:730px){
+      .hero-card-pair{min-height:440px}
+      .hero-card-img{width:230px;height:345px}
+    }
+
   </style>
 </head>
 <body>
@@ -820,7 +835,10 @@
         </div>
         <div class="art-stage" aria-hidden="true">
           <span class="jp-decor">心に咲く言葉</span><span class="falling fall-1">✿</span><span class="falling fall-2">✿</span><span class="falling fall-3">✿</span>
-          <div class="art-card"><div class="art-card-inner"><span class="art-mini">百人一首</span><span class="art-jp">花ぞ昔の<br>香ににひける</span><span class="seal">和</span></div></div>
+          <div class="hero-card-pair">
+            <img class="hero-card-img hero-card-back" src="cards/back.webp" alt="" draggable="false">
+            <img class="hero-card-img hero-card-front" src="cards/card_001.webp" alt="" draggable="false">
+          </div>
         </div>
       </div>
       <section class="featured-writings shell" aria-label="오늘의 응원받는 글">
