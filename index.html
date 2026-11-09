@@ -892,6 +892,71 @@
 }
 
 </style>
+
+<style id="waka-all-pages-scenery">
+/* Share the original Heian landscape across all four sections without
+   copying the embedded image. Keep the main content readable on washi panels. */
+#view-demo, #view-community, #view-collection {
+  position: relative;
+  isolation: isolate;
+  min-height: calc(100svh - 90px);
+  background-color: #f9e9e8;
+  background-image:
+    linear-gradient(180deg, rgba(255,248,244,.35), rgba(255,247,243,.55) 48%, rgba(255,248,244,.68)),
+    var(--waka-hero-landscape);
+  background-size: cover, cover;
+  background-position: center top, center top;
+  background-repeat: no-repeat;
+}
+#view-demo::before, #view-community::before, #view-collection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse at 50% 32%, rgba(255,249,246,.45), transparent 65%);
+}
+#view-demo .demo-intro, #view-community .community-heading,
+#view-collection .archive-header {
+  width: min(100%, 700px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 18px;
+  padding-right: 18px;
+  border-radius: 22px;
+  background: rgba(255,249,246,.72);
+  box-shadow: 0 10px 35px rgba(118,74,92,.08);
+  backdrop-filter: blur(5px);
+}
+#view-demo .panel, #view-demo .overview-card,
+#view-community .community-compose, #view-community .community-feed,
+#view-collection .archive-summary, #view-collection .achievement-section {
+  background-color: rgba(255,251,247,.94);
+  backdrop-filter: blur(7px);
+  box-shadow: 0 10px 30px rgba(91,54,70,.10);
+}
+#view-collection .archive-header { padding-top: 20px; padding-bottom: 20px; }
+#view-community .community-heading { padding-top: 18px; padding-bottom: 18px; }
+@media(max-width:730px) {
+  #view-demo, #view-community, #view-collection {
+    background-image:
+      linear-gradient(180deg, rgba(255,249,245,.40), rgba(255,247,244,.65) 38%, rgba(255,249,246,.78)),
+      var(--waka-hero-landscape);
+    background-size: cover, auto 1000px;
+    background-position: center top, center top;
+    background-repeat: no-repeat, repeat-y;
+  }
+  #view-demo .demo-intro, #view-community .community-heading,
+  #view-collection .archive-header { border-radius: 16px; }
+}
+@media(prefers-reduced-transparency:reduce) {
+  #view-demo .panel, #view-demo .overview-card,
+  #view-community .community-compose, #view-community .community-feed,
+  #view-collection .archive-summary, #view-collection .achievement-section {
+    background-color: #fffaf7;
+  }
+}
+</style>
 </head>
 <body>
   <header class="site-header">
