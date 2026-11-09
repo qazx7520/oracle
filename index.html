@@ -1149,6 +1149,27 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
         <label class="waka-ar-control"><span id="waka-ar-size-label">글자 크기 (58px)</span><input id="waka-ar-size" type="range" min="10" max="200" step="1" value="58"></label>
         <label class="waka-ar-control"><span id="waka-ar-color-label">글자 색상</span><input id="waka-ar-color" type="color" value="#fff5df"></label>
         <label class="waka-ar-control"><span id="waka-ar-depth-label">입체감</span><input id="waka-ar-depth" type="range" min="1" max="12" value="6"></label>
+        <label class="waka-ar-control">
+  <span id="waka-ar-font-label">글씨체</span>
+  <select id="waka-ar-font">
+    <option value="brush">붓글씨 / 筆文字</option>
+    <option value="serif">명조체 / 明朝体</option>
+    <option value="sans">고딕체 / ゴシック体</option>
+  </select>
+</label>
+
+<label class="waka-ar-control">
+  <span id="waka-ar-effect-label">낙하 효과</span>
+  <select id="waka-ar-effect">
+    <option value="none">효과 없음 / なし</option>
+    <option value="petal">🌸 벚꽃잎 / 桜</option>
+    <option value="snow">❄️ 눈 / 雪</option>
+    <option value="heart">❤️ 하트 / ハート</option>
+    <option value="clover">🍀 클로버 / クローバー</option>
+    <option value="rain">🌧️ 비 / 雨</option>
+    <option value="maple">🍁 단풍잎 / 紅葉</option>
+  </select>
+</label>
       </div>
       <div class="waka-ar-actions">
         <button type="button" class="btn btn-outline btn-small" id="waka-ar-reset">위치 초기화</button>
@@ -2009,7 +2030,14 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
       const startY=arY*h-totalH/2;
       arCtx.save();
       arCtx.textAlign='center';arCtx.textBaseline='middle';
-      arCtx.font=`${Math.round(size)}px "Yuji Syuku", "Noto Serif JP", serif`;
+     const fontType = $('#waka-ar-font').value;
+const fontFamily = {
+  brush: '"Yuji Syuku", "Noto Serif JP", serif',
+  serif: '"Noto Serif JP", serif',
+  sans: '"Noto Sans JP", sans-serif'
+}[fontType];
+
+arCtx.font = `${Math.round(size)}px ${fontFamily}`;
       arCtx.lineJoin='round';
       poem.forEach((column,i)=>{
         const x=startX-i*lineGap;
@@ -2028,7 +2056,44 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
       arCtx.restore();
       arCtx.save();arCtx.font=`${Math.max(16,size*.28)}px "Gowun Batang",serif`;arCtx.textAlign='center';
       arCtx.fillStyle=color;arCtx.shadowColor='rgba(0,0,0,.65)';arCtx.shadowBlur=8;
-      arCtx.fillText('— '+currentWaka.author,arX*w,Math.min(h-24,startY+totalH+size*.65));arCtx.restore();
+      arCtx.fillText('— '+currentWaka.author,arX*w,Math.min(h-24,startY+totalH+size*.65));arCtx.restore();      const effect = $('#waka-ar-effect').value;
+
+      if (effect !== 'none') {
+        const symbols = {
+          petal: '🌸',
+          snow: '❄',
+          heart: '♥',
+          clover: '🍀',
+          maple: '🍁'
+        };
+
+        arCtx.save();
+
+        // 사진 위에 장식이 골고루 배치되도록 설정
+        for (let i = 0; i < 35; i++) {
+          const x = ((i * 73.7) % 100) / 100 * w;
+          const y = ((i * 41.3) % 100) / 100 * h;
+          const s = Math.max(14, w * (0.018 + (i % 4) * 0.007));
+
+          arCtx.globalAlpha = 0.35 + (i % 4) * 0.12;
+
+          if (effect === 'rain') {
+            arCtx.strokeStyle = '#c5e5ff';
+            arCtx.lineWidth = Math.max(1, w * 0.002);
+            arCtx.beginPath();
+            arCtx.moveTo(x, y);
+            arCtx.lineTo(x - s * 0.3, y + s);
+            arCtx.stroke();
+          } else {
+            arCtx.font = `${s}px sans-serif`;
+            arCtx.textAlign = 'center';
+            arCtx.fillStyle = effect === 'heart' ? '#ff709a' : '#ffffff';
+            arCtx.fillText(symbols[effect], x, y);
+          }
+        }
+
+        arCtx.restore();
+      }
     }
     function openWakaAR(){
       if(!currentWaka){notify(T('먼저 오늘의 와카를 만나 주세요.','先に今日の和歌を引いてください。'));return}
@@ -2041,6 +2106,11 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
       $('#waka-ar-size-label').textContent=T('글자 크기','文字サイズ')+` (${$('#waka-ar-size').value}px)`;
       $('#waka-ar-color-label').textContent=T('글자 색상','文字色');
       $('#waka-ar-depth-label').textContent=T('입체감','立体感');
+      $('#waka-ar-font-label').textContent =
+  T('글씨체', 'フォント');
+
+$('#waka-ar-effect-label').textContent =
+  T('낙하 효과', '落下エフェクト');
       $('#waka-ar-reset').textContent=T('위치 초기화','位置をリセット');
       $('#waka-ar-save').textContent=T('↓ 완성 사진 저장','↓ 完成画像を保存');
     }
@@ -2064,7 +2134,16 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
     arPhoto.addEventListener('change',()=>{loadArPhoto(arPhoto.files?.[0]);arPhoto.value=''});
     $('#waka-ar-camera').addEventListener('change',e=>{loadArPhoto(e.target.files?.[0]);e.target.value=''});
     $('#waka-ar-size').addEventListener('input',()=>{$('#waka-ar-size-label').textContent=T('글자 크기','文字サイズ')+` (${$('#waka-ar-size').value}px)`;});
-    ['waka-ar-size','waka-ar-depth','waka-ar-color'].forEach(id=>$('#'+id).addEventListener('input',drawWakaOverlay));
+    [
+  'waka-ar-size',
+  'waka-ar-depth',
+  'waka-ar-color',
+  'waka-ar-font',
+  'waka-ar-effect'
+].forEach(id => {
+  $('#' + id).addEventListener('input', drawWakaOverlay);
+  $('#' + id).addEventListener('change', drawWakaOverlay);
+});.forEach(id=>$('#'+id).addEventListener('input',drawWakaOverlay));
     $('#waka-ar-reset').addEventListener('click',()=>{arX=.5;arY=.48;drawWakaOverlay()});
     function arPoint(e){const r=arCanvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*arCanvas.width,y:(e.clientY-r.top)/r.height*arCanvas.height}}
     arCanvas.addEventListener('pointerdown',e=>{if(!arImage)return;arDragging=true;arPointer=arPoint(e);arCanvas.setPointerCapture(e.pointerId)});
