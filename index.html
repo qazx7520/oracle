@@ -2143,7 +2143,7 @@ $('#waka-ar-effect-label').textContent =
 ].forEach(id => {
   $('#' + id).addEventListener('input', drawWakaOverlay);
   $('#' + id).addEventListener('change', drawWakaOverlay);
-});.forEach(id=>$('#'+id).addEventListener('input',drawWakaOverlay));
+});
     $('#waka-ar-reset').addEventListener('click',()=>{arX=.5;arY=.48;drawWakaOverlay()});
     function arPoint(e){const r=arCanvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*arCanvas.width,y:(e.clientY-r.top)/r.height*arCanvas.height}}
     arCanvas.addEventListener('pointerdown',e=>{if(!arImage)return;arDragging=true;arPointer=arPoint(e);arCanvas.setPointerCapture(e.pointerId)});
