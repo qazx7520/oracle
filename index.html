@@ -1931,5 +1931,42 @@
   Notes: Anonymous accounts are browser-bound; production needs moderation, abuse
   protections and CAPTCHA/rate limiting. The public feed isn't yet a moderated product.
   -->
+  
+<style>
+  .home-petal {
+    position: fixed;
+    top: -40px;
+    pointer-events: none;
+    z-index: 45;
+    animation: home-petal-fall linear forwards;
+  }
+  @keyframes home-petal-fall {
+    from { transform: translate3d(0,-40px,0) rotate(0deg); opacity: 0; }
+    10% { opacity: .8; }
+    90% { opacity: .8; }
+    to { transform: translate3d(90px,110vh,0) rotate(540deg); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-petal { display: none; }
+  }
+</style>
+<script>
+  (function () {
+    function addPetal() {
+      const home = document.querySelector('#view-home');
+      if (!home || !home.classList.contains('active')) return;
+      const petal = document.createElement('span');
+      petal.className = 'home-petal';
+      petal.textContent = '🌸';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.fontSize = (12 + Math.random() * 12) + 'px';
+      petal.style.animationDuration = (6 + Math.random() * 5) + 's';
+      document.body.appendChild(petal);
+      petal.addEventListener('animationend', () => petal.remove());
+    }
+    setInterval(addPetal, 650);
+  })();
+</script>
+　
 </body>
 </html>
