@@ -752,6 +752,40 @@
     .waka-ar-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
     @media(max-width:600px){.waka-ar-panel{padding:15px}.waka-ar-controls{grid-template-columns:1fr 1fr}.waka-ar-head h2{font-size:19px}#waka-ar-canvas{max-height:48vh}}
 
+    #poem-author ruby,#detail-author ruby{ruby-position:over;white-space:normal}
+    #poem-author rt{font-size:9px;font-weight:450;color:#8d7684;line-height:1}
+    #detail-author rt{font-size:10px;font-weight:450;color:#a46f82;line-height:1.2}
+    #detail-author.furigana-on{line-height:1.8;margin-top:10px}
+    /* Original verse furigana is opt-in. Always starts OFF when a card is opened. */
+    .poem-study-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:13px 0 7px}
+    .poem-study-label{color:#8f6675;font-size:11px;letter-spacing:.05em;font-weight:750}
+    .ruby-switch{border:1px solid #d9a5ad;border-radius:999px;padding:8px 14px;background:#fff8f7;color:#975b70;cursor:pointer;font-size:12px;font-weight:800;transition:background .2s,box-shadow .2s;min-width:124px}
+    .ruby-switch[aria-pressed="true"]{background:#ab647d;color:#fff;border-color:#ab647d;box-shadow:0 3px 12px #ab647d29}
+    .ruby-switch:focus-visible{outline:3px solid #bd90bc;outline-offset:3px}
+    .waka-with-ruby{white-space:normal;line-height:2.15;overflow-wrap:anywhere}
+    .waka-with-ruby ruby{ruby-position:over;white-space:nowrap}
+    .waka-with-ruby rt{font-family:'Noto Sans JP',sans-serif;font-size:.6em;font-weight:550;letter-spacing:0;color:#a14f77;line-height:1.1;text-align:center}
+    .waka-with-ruby.furigana-on{line-height:3.05}
+    .waka-with-ruby.furigana-on rt{visibility:visible}
+    .waka-with-ruby:not(.furigana-on) rt{display:none}
+    .vocab-intro{font-size:11px;color:#9b8186;line-height:1.75;margin:4px 0 11px}
+    .vocab-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:11px 0 15px}
+    .vocab-entry{background:#fffaf8;border:1px solid #eedbd8;border-radius:11px;padding:11px 12px;min-width:0;display:flex;flex-direction:column;gap:7px}
+    .vocab-word{font-size:17px;line-height:1.9;color:#84546b;font-family:'Noto Sans JP',sans-serif;font-weight:750}
+    .vocab-word ruby{ruby-position:over;white-space:nowrap}
+    .vocab-word rt{font-size:10px;line-height:1;color:#a46e80;font-weight:500}
+    .vocab-meaning{font-size:11px;line-height:1.6;color:#584a4e;word-break:keep-all}
+    .classical-note{border-left:3px solid #cfa7af;padding:12px 14px;background:#fdf5f3;border-radius:0 9px 9px 0;color:#705966;font-size:12px;line-height:2;word-break:keep-all;white-space:pre-line}
+    .classical-note strong{color:#a46d80}
+    .core-expression{margin-top:17px;padding-top:14px;border-top:1px dashed #e7cbd0}
+    .core-expression-heading{display:block;color:#ad7182;font-size:12px;margin-bottom:8px}
+    .detail-lexicon{margin-top:14px;padding:14px 0;border-top:1px solid #efdfdc;border-bottom:1px solid #efdfdc}
+    .detail-lexicon>strong{display:block;font-size:14px;color:#835e6c}
+    .detail-lexicon .vocab-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .detail-lexicon #detail-term{font-size:12px;line-height:1.9}
+    @media(max-width:600px){.vocab-list,.detail-lexicon .vocab-list{grid-template-columns:1fr 1fr;gap:7px}.vocab-entry{padding:10px 8px}.vocab-word{font-size:15px}.vocab-meaning{font-size:10px}.ruby-switch{font-size:11px;padding:7px 10px}.poem-study-label{font-size:10px}}
+    @media(max-width:380px){.vocab-list,.detail-lexicon .vocab-list{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -876,10 +910,11 @@
             <p class="oracle-placeholder" id="oracle-placeholder">당신의 마음을 위한 한 수가 도착했어요.<br>직접 카드를 뒤집기 전까지 내용은 비밀이에요.</p>
             <div class="interpretation" id="interpretation" aria-live="polite">
               <div class="poem-meta"><span class="chip" id="poem-category"></span><span class="author-txt" id="poem-author"></span></div>
-              <p class="poem-original" id="poem-original"></p><p class="translated" id="poem-translation"></p>
+              <div class="poem-study-toolbar"><span class="poem-study-label">✦ 원문 읽기 도움</span><button type="button" class="ruby-switch" data-furigana-toggle aria-pressed="false" aria-label="와카 원문의 후리가나 켜기">후리가나 OFF</button></div>
+              <p class="poem-original waka-with-ruby" id="poem-original"></p><p class="translated" id="poem-translation"></p>
               <p class="interpret-notice">※ 우리말은 뜻을 이해하기 위한 의역입니다. 감정 분류는 현대적 감상으로, 시인의 원래 의도를 단정하지 않습니다.</p>
               <div class="poetry-explainer">
-                <div class="explainer-block"><span class="explainer-index">01 · WORD & ORIGIN</span><h4>이 말은 무슨 뜻일까요?</h4><div class="term-chip" id="poem-term"></div><p id="poem-usage"></p></div>
+                <div class="explainer-block"><span class="explainer-index">01 · WORD & ORIGIN</span><h4>시 속 한자·고전어 전체 풀이</h4><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><div class="vocab-list" id="poem-vocab"></div><div class="classical-note" id="poem-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div class="term-chip" id="poem-term"></div><p id="poem-usage"></p></div></div>
                 <div class="explainer-block"><span class="explainer-index">02 · HISTORICAL CONTEXT</span><h4>와카에 담긴 시대와 배경</h4><p id="poem-background"></p></div>
               </div>
               <div class="advice"><strong>✦ 오늘의 마음과 연결하기</strong><span id="poem-advice"></span></div>
@@ -962,7 +997,7 @@
     </section>
   </main>
 
-  <dialog id="card-detail-dialog" class="detail-dialog" aria-label="수집한 와카 상세 보기"><div class="detail-close-bar"><button type="button" id="detail-close">닫기 ✕</button></div><div class="detail-inner"><img id="detail-img" class="detail-img" alt="수집한 카드 일러스트"><div class="detail-info"><span id="detail-number" class="detail-number"></span><h3 id="detail-author"></h3><p id="detail-poem" class="detail-original"></p><p id="detail-translation"></p><p><strong>표현과 유래</strong><br><span id="detail-term"></span></p><p><strong>시대적 배경</strong><br><span id="detail-background"></span></p><p><strong>오늘의 운세</strong><br><span id="detail-fortune"></span></p><p><strong>행운 아이템 · 색상</strong><br><span id="detail-item"></span></p><div class="detail-save-wrap"><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-detail-card">↓ 이 카드 이미지 저장</button></div><div class="detail-footer"><p class="detail-meta"><strong>획득일</strong> · <span id="detail-date"></span></p><p class="detail-meta"><strong>그날의 마음</strong> · <span id="detail-note"></span></p></div></div></div></dialog>
+  <dialog id="card-detail-dialog" class="detail-dialog" aria-label="수집한 와카 상세 보기"><div class="detail-close-bar"><button type="button" id="detail-close">닫기 ✕</button></div><div class="detail-inner"><img id="detail-img" class="detail-img" alt="수집한 카드 일러스트"><div class="detail-info"><span id="detail-number" class="detail-number"></span><h3 id="detail-author"></h3><div class="poem-study-toolbar"><span class="poem-study-label">✦ 원문 읽기 도움</span><button type="button" class="ruby-switch" data-furigana-toggle aria-pressed="false" aria-label="와카 원문의 후리가나 켜기">후리가나 OFF</button></div><p id="detail-poem" class="detail-original waka-with-ruby"></p><p id="detail-translation"></p><section class="detail-lexicon"><strong>시 속 한자·고전어 전체 풀이</strong><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><div class="vocab-list" id="detail-vocab"></div><div class="classical-note" id="detail-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div id="detail-term"></div></div></section><p><strong>시대적 배경</strong><br><span id="detail-background"></span></p><p><strong>오늘의 운세</strong><br><span id="detail-fortune"></span></p><p><strong>행운 아이템 · 색상</strong><br><span id="detail-item"></span></p><div class="detail-save-wrap"><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-detail-card">↓ 이 카드 이미지 저장</button></div><div class="detail-footer"><p class="detail-meta"><strong>획득일</strong> · <span id="detail-date"></span></p><p class="detail-meta"><strong>그날의 마음</strong> · <span id="detail-note"></span></p></div></div></div></dialog>
   <footer><div class="shell footer-inner"><span class="footer-brand">和 · 오늘의 와카 오라클</span><span>일본 고전 문학 × 감정 기록 · 경진대회 시연용 웹앱</span><span>Made with a little poetry ✿</span></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -982,8 +1017,6 @@
         <label class="waka-ar-control"><span id="waka-ar-size-label">글자 크기</span><input id="waka-ar-size" type="range" min="24" max="120" value="58"></label>
         <label class="waka-ar-control"><span id="waka-ar-color-label">글자 색상</span><input id="waka-ar-color" type="color" value="#fff5df"></label>
         <label class="waka-ar-control"><span id="waka-ar-depth-label">입체감</span><input id="waka-ar-depth" type="range" min="1" max="12" value="6"></label>
-        <label class="waka-ar-control"><span id="waka-ar-font-label">글씨체</span><select id="waka-ar-font"><option value="brush">붓글씨 / 筆文字</option><option value="serif">명조체 / 明朝体</option><option value="sans">고딕체 / ゴシック体</option></select></label>
-        <label class="waka-ar-control"><span id="waka-ar-effect-label">낙하 효과</span><select id="waka-ar-effect"><option value="none">효과 없음 / なし</option><option value="petal">🌸 벚꽃잎 / 桜</option><option value="snow">❄️ 눈 / 雪</option><option value="heart">❤️ 하트 / ハート</option><option value="clover">🍀 클로버 / クローバー</option><option value="rain">🌧️ 비 / 雨</option><option value="maple">🍁 단풍 / 紅葉</option></select></label>
       </div>
       <div class="waka-ar-actions">
         <button type="button" class="btn btn-outline btn-small" id="waka-ar-reset">위치 초기화</button>
@@ -1033,6 +1066,83 @@
         return `<ruby>${escapeHTML(word)}<rp>（</rp><rt>${escapeHTML(reading)}</rt><rp>）</rp></ruby>`;
       }).join('<span class="term-divider">・</span>');
     }
+    // 80-source-poem kanji inventory: every uninterrupted kanji span has a verified reading
+    // and contextual gloss. Source catalog order is distinct from Hyakunin Isshu numbering.
+    const WAKA_AUTHOR_READINGS=["そうじょうへんじょう","ようぜいいん","かわらのさだいじん","さんじょうのうだいじん","ちゅうなごんかねすけ","さんぎひとし","たいらのかねもり","みぶのただみ","ふじわらのよしたか","すおうのないし","あべのなかまろ","ちゅうなごんゆきひら","ふじわらのとしゆきあそん","いせ","そせいほうし","みぶのただみね","きのつらゆき","きよはらのもとすけ","むらさきしきぶ","だいにのさんみ","さるまるだゆう","おののこまち","おおえのちさと","うこん","ちゅうなごんあさただ","けんとくこう","みなもとのしげゆき","うだいしょうみちつなのはは","さがみ","いんぷもんいんのたいふ","せみまる","こうこうてんのう","かんけ","ていしんこう","だいなごんきんとう","ごんちゅうなごんまさふさ","ふじわらのもととし","すとくいん","かまくらのうだいじん","さきのだいそうじょうじえん","かきのもとのひとまろ","みなもとのむねゆきあそん","ふじわらのおきかぜ","えぎょうほうし","さきのだいそうじょうぎょうそん","りょうぜんほうし","みなもとのかねまさ","しゅんえほうし","ごきょうごくせっしょうさきのだじょうだいじん","ごんちゅうなごんさだいえ","じとうてんのう","やまべのあかひと","ありわらのなりひらあそん","おおしこうちのみつね","さかのうえのこれのり","はるみちのつらき","きのとものり","きよはらのふかやぶ","ふんやのあさやす","いせのたいふ","もとよししんのう","そねのよしただ","おおなかとみのよしのぶあそん","ふじわらのさねかたあそん","ふじわらのみちのぶあそん","ぎどうさんしのはは","さきょうのだいぶみちまさ","ゆうしないしんのうけのきい","みなもとのとしよりあそん","たいけんもんいんのほりかわ","てんじてんのう","ちゅうなごんやかもち","きせんほうし","ふんやのやすひで","ごんちゅうなごんさだより","のういんほうし","みなもとのつねのぶ","ほっしょうじにゅうどうさきのかんぱくだじょうだいじん","さきょうのだいぶあきすけ","じゅにいいえたか"];
+    const WAKA_KANJI_LEXICON={"天":["あま","하늘, 하늘을 가리키는 말","天・大空"],"風":["かぜ","바람","風"],"雲":["くも","구름","雲"],"通":["かよ","오가다, 지나가다","通う"],"路":["じ","길, 통로","道・通り道"],"吹":["ふ","불다(바람)","風が吹く"],"姿":["すがた","모습, 자태","姿"],"筑波嶺":["つくばね","쓰쿠바산 봉우리","筑波山の峰"],"峰":["みね","산봉우리","山の頂"],"落":["お","떨어지다, 흘러내리다","落ちる・流れ落ちる"],"男女川":["みなのがわ","미나노가와 강; 남녀의 사랑을 암시하는 이름","男女川という川の名"],"恋":["こい","사랑, 그리워하는 마음","恋心"],"淵":["ふち","깊은 소, 깊은 물웅덩이","川の深み"],"陸奥":["みちのく","미치노쿠, 옛 도호쿠 지방","東北地方の古称"],"誰":["たれ","누구; 누구 때문에","誰"],"乱":["みだ","어지러워지다, 마음이 흔들리다","乱れる"],"名":["な","이름, 소문, 평판","名前・評判"],"負":["お","지니다, 이름에 걸맞다","負う・名に持つ"],"逢坂山":["おうさかやま","오사카산, 교토와 오미의 경계에 있는 산","逢坂山という地名"],"人":["ひと","사람, 상대","人"],"知":["し","알다, 알아차리다","知る"],"原":["はら","벌판, 들","原"],"流":["なが","흐르다","流れる"],"泉川":["いずみがわ","이즈미가와 강; '언제 보았나'의 말놀이와 연결","泉川という川の名"],"見":["み","보다, 만나다","見る・会う"],"浅茅生":["あさぢふ","띠풀이 듬성듬성 난 들판","丈の低い茅が生えた野原"],"小野":["おの","작은 들판","小さな野"],"篠原":["しのはら","조릿대가 우거진 들판","篠竹の生えた原"],"忍":["しの","숨기다, 참다(마음)","忍ぶ"],"色":["いろ","안색, 겉으로 드러나는 기색","顔色・様子"],"出":["い","나오다, 드러나다","出る・現れる"],"物":["もの","사물, 일, 마음속 생각","もの・物事"],"思":["おも","생각하다, 연모하다","思う"],"問":["と","묻다, 알아보다","尋ねる"],"立":["た","서다; 소문이 나다","立つ・噂が立つ"],"人知":["ひとし","사람들이 알다","人に知られる"],"初":["そ","처음 시작하다(思ひ初む)","初める"],"君":["きみ","그대, 사랑하는 사람","あなた"],"惜":["お","아깝게 여기다","惜しい・惜しむ"],"命":["いのち","목숨, 생명","命"],"長":["なが","길다; 오래 지속되다","長い"],"春":["はる","봄","春"],"夜":["よ","밤","夜"],"夢":["ゆめ","꿈","夢"],"手枕":["たまくら","팔을 베개 삼아 주는 일","腕を枕にすること"],"春日":["かすが","가스가, 나라의 지명","春日という地名"],"三笠":["みかさ","미카사산, 나라의 산","三笠山"],"山":["やま","산","山"],"月":["つき","달","月"],"別":["わか","헤어지다, 이별하다","別れる"],"生":["お","자라다, 돋다","生える"],"聞":["き","듣다, 소식을 전해 듣다","聞く"],"今帰":["いまかえ","지금 돌아오다","今すぐ帰る"],"来":["こ","오다","来る"],"住":["す","살다, 머무르다","住む"],"江":["え","후미, 강어귀, 바닷가","江・入り江"],"岸":["きし","물가, 해안","岸"],"波":["なみ","물결, 파도","波"],"難波潟":["なにわがた","나니와의 얕은 바닷가·갯벌","難波の入り江"],"葦":["あし","갈대","葦"],"間":["ま","사이, 짧은 시간","間・時間"],"逢":["あ","만나다, 재회하다","会う"],"世":["よ","세상, 인생","世の中"],"過":["す","지나가다, 세월을 보내다","過ごす"],"今来":["いまこ","지금 오다(今来む)","今すぐ来る"],"言":["い","말하다","言う"],"長月":["ながつき","음력 9월, 긴 밤의 달","旧暦九月"],"有明":["ありあけ","새벽까지 하늘에 남은 달의 상태","夜明けに残る月"],"待":["ま","기다리다","待つ"],"暁":["あかつき","동틀 무렵, 새벽","夜明け頃"],"憂":["う","괴롭다, 서럽다, 마음 아프다","つらい・憂鬱な"],"心":["こころ","마음","心"],"花":["はな","꽃","花"],"昔":["むかし","옛날, 지난 시절","昔"],"香":["か","향기","香り"],"匂":["にお","향기롭게 피다, 빛나다","香る・美しく咲く"],"契":["ちぎ","약속하다, 맹세하다","約束する"],"袖":["そで","소매; 눈물로 젖는 옷소매","袖"],"末":["すえ","끝, 장래","末・将来"],"松山":["まつやま","소나무가 난 산, '末の松山' 지명 일부","松の生えた山"],"波越":["なみこ","파도가 넘다; 불가능함의 비유","波が越える"],"分":["わ","분간하다, 알아보다","分かる"],"雲隠":["くもがく","구름에 숨다, 모습을 감추다","雲に隠れる"],"夜半":["よわ","한밤중","夜中"],"有馬山":["ありまやま","아리마산, 지명","有馬山という地名"],"猪名":["いな","이나, 지명","猪名という地名"],"笹原":["ささはら","조릿대가 자라는 벌판","笹の生えた原"],"風吹":["かぜふ","바람이 불다","風が吹く"],"忘":["わす","잊다","忘れる"],"奥山":["おくやま","깊은 산속","山奥"],"踏":["ふ","밟다","踏む"],"鳴":["な","울다(동물·벌레)","鳴く"],"鹿":["しか","사슴","鹿"],"声聞":["こえき","소리를 듣다","声が聞こえる"],"時":["とき","때","時"],"秋":["あき","가을","秋"],"悲":["かな","슬프다","悲しい"],"身世":["みよ","내 몸과 세월, 살아온 세상","身と世"],"月見":["つきみ","달을 바라보다","月を見る"],"千々":["ちぢ","수많은 갈래로, 여러 가지로","さまざまに"],"身":["み","자신, 이 몸","身・自分"],"誓":["ちか","맹세하다","誓う"],"絶":["た","끊어지다, 사라지다","絶える"],"恨":["うら","원망하다, 서운해하다","恨む"],"岩":["いわ","바위","岩"],"嘆":["なげ","한탄하다, 한숨 쉬다","嘆く"],"寝":["ぬ","자다(고어에서는 'ぬ'로 읽음)","寝る（古語では「ぬ」）"],"明":["あ","날이 밝다","夜が明ける"],"久":["ひさ","길다, 오래다(시간)","長い・久しい"],"朽":["く","썩다, 낡아 사라지다","朽ちる"],"雄島":["おじま","오지마섬, 지명","雄島という地名"],"行":["ゆ","가다","行く"],"帰":["かえ","돌아가다","帰る"],"逢坂":["おうさか","오사카 고개, 만남의 경계","逢坂の関"],"関":["せき","관문, 통행을 통제하던 곳","関所"],"野":["の","들, 들판","野"],"若菜":["わかな","봄에 돋는 어린 나물","春の若い草"],"衣手":["ころもで","옷소매","衣の袖"],"雪":["ゆき","눈","雪"],"降":["ふ","내리다(눈·비)","降る"],"幣":["ぬさ","신에게 바치는 예물·종이 또는 천","神に供える布や紙"],"手向山":["たむけやま","다무케산, 제물을 바치는 산","手向山という地名"],"紅葉":["もみじ","단풍잎","紅葉"],"錦":["にしき","화려한 비단, 단풍의 비유","錦織物"],"神":["かみ","신, 신령","神"],"小倉山":["おぐらやま","교토의 오구라산","小倉山"],"葉":["は","잎","葉"],"滝":["たき","폭포","滝"],"音":["おと","소리","音"],"高砂":["たかさご","다카사고, 높은 모래 언덕·지명","高砂という地名"],"尾":["お","산꼭대기, 산등성이(尾の上)","山の尾根・頂"],"上":["え","위(「尾の上」에서는 'え')","上"],"桜":["さくら","벚꽃","桜"],"咲":["さ","피다","咲く"],"外山":["とやま","마을 가까운 낮은 산","人里に近い山"],"霞":["かすみ","안개, 아지랑이","霞"],"露":["つゆ","이슬","露"],"今年":["ことし","올해","今年"],"瀬":["せ","물살이 빠른 여울","川の瀬"],"滝川":["たきがわ","급히 흐르는 물줄기","激しく流れる川"],"中":["なか","안, 가운데","中"],"常":["つね","늘, 영원히","いつも・永遠に"],"渚":["なぎさ","물가, 해변","波打ち際"],"小舟":["おぶね","작은 배","小さな舟"],"綱手":["つなで","배를 끄는 밧줄","舟を引く綱"],"民":["たみ","백성, 사람들","民衆"],"杣":["そま","나무를 베는 산, 수행하는 산","木を伐る山・修行の山"],"墨染":["すみぞめ","먹물로 물들인 승려의 옷","墨色に染めた僧衣"],"山鳥":["やまどり","산꿩","山鳥"],"山里":["やまざと","산골 마을","山里"],"冬":["ふゆ","겨울","冬"],"人目":["ひとめ","사람의 발길, 사람들의 눈","人の往来・人の目"],"草":["くさ","풀","草"],"松":["まつ","소나무","松"],"友":["とも","친구, 벗","友人"],"八重葎":["やえむぐら","겹겹이 우거진 덩굴풀","幾重にも茂る蔓草"],"宿":["やど","집, 머무는 곳","住まい・宿"],"山桜":["やまざくら","산벚꽃","山桜"],"同":["おな","같다","同じ"],"夕暮":["ゆうぐ","해 질 녘","夕暮れ"],"淡路島":["あわじしま","아와지섬","淡路島"],"千鳥":["ちどり","물떼새","千鳥"],"夜寝覚":["よねざ","한밤중에 잠에서 깨다","夜中に目覚める"],"須磨":["すま","스마, 해안 지명","須磨という地名"],"関守":["せきもり","관문지기","関所を守る人"],"物思":["ものおも","근심하다, 생각에 잠기다","物思いにふける"],"閨":["ねや","침실, 잠자리","寝室"],"霜夜":["しもよ","서리가 내리는 밤","霜の降りる夜"],"衣":["ころも","옷","衣"],"松帆":["まつほ","마쓰호, 해안 지명","松帆という地名"],"浦":["うら","바닷가, 만","入り江・海辺"],"夕":["ゆう","저녁","夕方"],"焼":["や","태우다, 굽다","焼く"],"藻塩":["もしお","해초를 태워 만든 소금","海藻から作る塩"],"春過":["はるす","봄이 지나가다","春が過ぎる"],"夏来":["なつき","여름이 찾아오다","夏が来る"],"白妙":["しろたえ","새하얀 베, 순백의 비유","白い布・純白"],"香具山":["かぐやま","가구산, 나라의 산","香具山"],"田子":["たご","다고, 해변 지명","田子という地名"],"富士":["ふじ","후지산","富士山"],"高嶺":["たかね","높은 봉우리","高い峰"],"神代":["かみよ","신들의 시대, 신화 시대","神々の時代"],"竜田川":["たつたがわ","다쓰타강","竜田川という川の名"],"水":["みず","물","水"],"折":["お","꺾다","折る"],"初霜":["はつしも","첫서리","初霜"],"置":["お","내리다, 내려앉다(서리)","霜が降りる"],"白菊":["しらぎく","하얀 국화","白い菊"],"朝":["あさ","아침(朝ぼらけ: 새벽빛)","朝・明け方"],"吉野":["よしの","요시노, 지명","吉野という地名"],"里":["さと","마을","里"],"白雪":["しらゆき","흰 눈","白い雪"],"山川":["やまがわ","산속 계곡물","山あいの川"],"光":["ひかり","빛, 햇살","光"],"日":["ひ","해, 날","日・太陽"],"散":["ち","흩날리다, 지다(꽃)","散る"],"夏":["なつ","여름","夏"],"宵":["よい","초저녁","宵"],"月宿":["つきやど","달이 머무르다","月が宿る"],"白露":["しらつゆ","맑은 이슬","白い露"],"玉":["たま","구슬","珠・玉"],"奈良":["なら","나라, 옛 수도가 있었던 곳","奈良"],"都":["みやこ","도읍, 수도","都"],"八重桜":["やえざくら","겹벚꽃","八重桜"],"九重":["ここのえ","아홉 겹; 궁궐의 비유","九重・宮中"],"今":["いま","지금","今"],"難波":["なにわ","나니와, 옛 오사카 지역","難波という地名"],"由良":["ゆら","유라, 해협 지명","由良という地名"],"渡":["わた","건너다","渡る"],"舟人":["ふなびと","뱃사람","船乗り"],"道":["みち","길, 경로","道"],"衛士":["えじ","궁궐을 지키는 병사","宮中の警備兵"],"火":["ひ","불","火"],"燃":["も","타오르다","燃える"],"昼":["ひる","낮","昼"],"消":["き","꺼지다, 사라지다","消える"],"暮":["く","날이 저물다","暮れる"],"今日":["きょう","오늘","今日"],"限":["かぎ","한계, 마지막","限り"],"高師":["たかし","다카시, 해안 지명","高師という地名"],"浜":["はま","해변","浜"],"初瀬":["はつせ","하쓰세, 나라의 지명","初瀬という地名"],"祈":["いの","기도하다","祈る"],"黒髪":["くろかみ","검은 머리카락","黒髪"],"今朝":["けさ","오늘 아침","今朝"],"田":["た","논","田"],"庵":["いおり","초가집, 임시 오두막","庵"],"苫":["とま","초가 지붕을 덮는 거적","粗い屋根覆い"],"橋":["はし","다리","橋"],"霜":["しも","서리","霜"],"白":["しろ","흰색, 하얗다","白い"],"草木":["くさき","풀과 나무","草木"],"山風":["やまかぜ","산바람","山から吹く風"],"嵐":["あらし","거센 산바람, 폭풍","嵐"],"宇治":["うじ","우지, 교토 근교 지명","宇治という地名"],"川霧":["かわぎり","강에 피는 안개","川霧"],"瀬々":["せぜ","여울들","いくつもの瀬"],"網代木":["あじろぎ","강에 세운 어살 말뚝","魚を捕る仕掛けの杭"],"嵐吹":["あらしふ","거센 바람이 불다","嵐が吹く"],"三室":["みむろ","미무로, 산 이름","三室という地名"],"竜田":["たつた","다쓰타, 강 이름","竜田"],"川":["かわ","강","川"],"門田":["かどた","집 앞의 논","家の前の田"],"稲葉":["いなば","벼 잎","稲の葉"],"芦":["あし","갈대","葦"],"秋風":["あきかぜ","가을바람","秋風"],"漕":["こ","노를 젓다","漕ぐ"],"雲居":["くもい","구름이 있는 하늘","雲の居る空"],"沖":["おき","먼바다","沖"],"白波":["しらなみ","흰 파도","白い波"],"影":["かげ","빛, 광채(달빛)","月の光・輝き"],"小川":["おがわ","시냇물","小川"],"声":["こえ","울음소리, 목소리","声"]};
+    const WAKA_CLASSICAL_NOTES=[["「つ」は 소유·연결을 나타내는 고어 관형격 조사. 「とぢよ」는 ‘닫아 다오’라는 명령형.","「つ」は古語の連体助詞。「とぢよ」は「閉じよ」という命令形。"],["「ぞ」는 강조 조사. 「つもりて」는 사랑이 차곡차곡 쌓임을 뜻한다.","「ぞ」は強調。「つもりて」は恋心が積もるさま。"],["「しのぶ」는 지명과 ‘참고 숨기다’를 겹친 말놀이. 「ならなくに」는 ‘그런 것이 아닌데’.","「しのぶ」は地名と「忍ぶ」の掛詞。「ならなくに」は「そうではないのに」。"],["「さねかづら」는 덩굴 식물이자 ‘함께 잠들다(寝)’를 연상시키는 표현. 「もがな」는 간절한 소망.","「さねかづら」は植物名で「寝」を連想させる語。「もがな」は願望。"],["「いつ見き」는 ‘언제 만난 적이 있는가’라는 반어적 물음. 「泉川」의 소리와 연결된다.","「いつ見き」は「いつ会ったというのか」という問い。地名と音が響き合う。"],["「しのぶ」는 ‘숨기다’라는 뜻. 「などか」는 ‘어찌하여’라는 반문.","「しのぶ」は「心を隠す」。「などか」は「どうして」。"],["「忍ぶれど」는 ‘숨기려 하지만’. 「物や思ふ」는 ‘상사병을 앓느냐’고 묻는 말.","「忍ぶれど」は「隠しているけれど」。「物や思ふ」は恋の悩みを問う言葉。"],["「恋すてふ」의 「てふ」는 ‘~라고 한다’라는 고어. 「こそ」는 강조.","「てふ」は「という」。「こそ」は強調の係助詞。"],["「さへ」는 ‘~조차’. 「もがな」는 ‘그랬으면 좋겠다’라는 바람.","「さへ」は「さえ」。「もがな」は願望を表す。"],["「手枕」는 팔베개. 「かひなく」는 ‘보람 없이’, 「名」는 세간의 평판.","「手枕」は腕枕。「かひなく」は「甲斐もなく」、「名」は評判。"],["「ふりさけ見る」는 멀리 우러러보다. 고향에서 보았던 달을 떠올린다.","「ふりさけ見る」は遠く仰ぎ見ること。故郷の月を思い出す。"],["「いなば」는 지명 ‘이나바’와 ‘떠나면’을 연상. 「まつ」는 소나무와 ‘기다리다’의 중의어.","「いなば」は地名と「去なば」、「まつ」は松と「待つ」の掛詞。"],["「よる」는 파도가 밀려오다와 밤이라는 뜻을 겹친다. 「人め」는 남의 시선.","「よる」は「寄る」と「夜」の掛詞。「人め」は人目。"],["「ふし」는 갈대 마디와 짧은 시간의 겹뜻. 「逢はで」는 ‘만나지 못한 채’.","「ふし」は葦の節と短い時間を掛ける。「逢はで」は会わずに。"],["「今来む」은 ‘금방 오겠다’. 「待ち出で」는 오랜 기다림 끝에 달을 맞이함.","「今来む」は「今すぐ来よう」。「待ち出で」は待つうちに月が出ること。"],["「つれなく」는 냉담하게, 「暁」는 사랑하는 이와 헤어지는 새벽.","「つれなく」は冷淡なさま。「暁」は別れの夜明け。"],["「ふるさと」는 오래전부터 익숙한 장소. 「花ぞ」는 꽃만큼은 변함없다는 강조.","「ふるさと」はなじみの旧所。「花ぞ」は花を強調する。"],["「契りきな」는 ‘분명 맹세했지’. 「末の松山」를 넘지 않는 파도는 변치 않는 약속의 비유.","「契りきな」は誓いの回想。「末の松山」を越えない波は不変の約束の象徴。"],["「めぐり逢ひて」는 오랜만에 재회하여. 달이 구름 뒤로 사라지는 속도에 짧은 만남을 비긴다.","「めぐり逢ひて」は再会。「雲隠れ」は短い逢瀬の比喩。"],["「いでそよ」는 ‘그러게요, 맞아요’라는 응답. 「忘れやはする」는 ‘어찌 잊겠는가’라는 반어.","「いでそよ」は相づち。「忘れやはする」は反語で「忘れない」。"],["「もみぢ」는 단풍. 「ぞ」는 사슴 울음이 가을의 슬픔을 일깨운다는 강조.","「もみぢ」は紅葉。「ぞ」は秋の悲しさを強調。"],["「ながめ」는 긴 비(長雨)와 멍하니 바라봄(眺め)을 겹친다.","「ながめ」は「長雨」と「眺め」の掛詞。"],["「千々に」는 마음이 수천 갈래로 흔들림. 「こそ…けれ」는 강조의 호응.","「千々に」はさまざまに。「こそ…けれ」は係り結び。"],["「忘らるる」는 ‘잊히는’, 「誓ひてし」는 예전에 굳게 맹세한.","「忘らるる」は忘れられること。「誓ひてし」はかつて誓ったこと。"],["「絶えてしなくは」는 ‘아예 만남이 없었다면’. 「ざらまし」는 반사실적 가정의 결말.","「絶えてしなくは」はもし全く逢わなかったなら。「ざらまし」は反実仮想。"],["「あはれとも」는 불쌍하게 여겨 달라는 말. 「いたづらに」는 덧없이·허무하게.","「あはれとも」は情けを求める語。「いたづらに」はむなしく。"],["「いたみ」는 바람이 거세기 때문에. 「くだけて」는 파도처럼 마음이 부서지는 비유.","「いたみ」は風が激しいので。「くだけて」は心が砕ける比喩。"],["「寝る」는 여기서 ぬる라고 읽는다. 「つつ」는 계속됨을, 「かは」는 ‘알 리가 있겠는가’라는 반어를 나타낸다.","「寝る」はここではぬる。「つつ」は反復・継続、「かは」は反語を表す。"],["「わび」는 괴로워 지치다. 「名こそ惜しけれ」는 자신의 평판만큼은 아끼고 싶다는 말.","「わび」はつらく思い悩むこと。「名こそ惜しけれ」は評判を惜しむ意味。"],["「見せばやな」는 ‘보여주고 싶구나’. 「あま」는 섬의 어부 또는 해녀를 뜻한다.","「見せばやな」は見せたいという願い。「あま」は海人。"],["「これやこの」는 ‘바로 여기가 그곳인가’. 왕래와 만남·이별이 교차하는 고개를 말한다.","「これやこの」は「これがあの」。「逢坂」は往来と出会いの関。"],["「若菜つむ」는 봄나물을 뜯다. 「衣手」는 옷소매를 뜻한다.","「若菜つむ」は春の若菜を摘むこと。「衣手」は袖。"],["「たび」는 이번 여행과 ‘예물(幣)’의 소리를 연결한다. 「まにまに」는 신의 뜻대로.","「たび」は旅と幣の言葉遊び。「まにまに」は神意のままに。"],["「みゆき」는 천황의 행차. 「待たなむ」는 꼭 기다려 주기를 바라는 표현.","「みゆき」は天皇の行幸。「待たなむ」は待ってほしいという願望。"],["「絶えて」는 그쳐서. 폭포 소리는 멎어도 이름은 후대에 흐른다는 말놀이.","「絶えて」は途絶えて。滝の流れと名声が続くことを重ねる。"],["「尾の上」는 산마루. 「立たずもあらなむ」는 안개가 피지 않기를 바람.","「尾の上」は山の頂。「立たずもあらなむ」は霞が立たないでほしいという願望。"],["「させもが露」는 쑥잎에 맺힌 이슬과 기대했던 약속을 떠올리게 한다. 「いぬめり」는 지나간 듯하다.","「させもが露」は頼みとされた露。「いぬめり」は過ぎてしまったようだ。"],["「瀬をはやみ」는 여울의 물살이 빨라서. 갈라진 물이 다시 만나듯 재회를 바란다.","「瀬をはやみ」は川の流れが速いため。離れても再び逢う願い。"],["「もがもな」는 ‘그랬으면 좋겠다’는 소원. 「綱手」는 배를 끌어당기는 밧줄.","「もがもな」は願望。「綱手」は舟を引く綱。"],["「おほけなく」는 분수에 넘치게. 「墨染の袖」는 승복을 가리킨다.","「おほけなく」は身の程を越えて。「墨染の袖」は僧衣。"],["「あしびきの」는 ‘산’에 붙는 베개말(枕詞). 긴 산꿩 꼬리로 긴 밤을 비유한다.","「あしびきの」は山にかかる枕詞。山鳥の尾で長い夜を表す。"],["「かれ」는 사람의 발길이 끊기다(離れ)와 풀이 마르다(枯れ)를 겹친다.","「かれ」は「離れ」と「枯れ」の掛詞。"],["「知る人」는 친한 벗, 「昔の友」는 오래된 친구를 뜻한다.","「知る人」は親しい友。「昔の友」は古くからの友人。"],["「八重葎」는 잡초가 우거진 폐가를 암시한다. 사람은 없어도 가을은 찾아온다.","「八重葎」は荒れた宿を示す。人が来なくても秋は来る。"],["「もろともに」는 함께. 사람이 아닌 산벚꽃에게 마음을 알아 달라고 청한다.","「もろともに」は一緒に。山桜に共感を求める歌。"],["「ながむれば」는 멀리 바라보니. 「いづこも」는 어디를 봐도.","「ながむれば」は眺めれば。「いづこも」はどこも。"],["「いく夜」는 몇 밤이나. 「寝覚めぬ」는 잠에서 깨어났다는 완료의 의미.","「いく夜」は幾晩。「寝覚めぬ」は目覚めたこと。"],["「夜もすがら」는 밤새도록. 「明けやらで」는 날이 완전히 밝지 않아.","「夜もすがら」は一晩中。「明けやらで」は夜が明けきらず。"],["「さむしろ」는 차가운 거적자리와 ‘쓸쓸함’을 겹친다. 「衣かたしき」는 혼자 자는 모습을 뜻한다.","「さむしろ」は寒い筵と寂しさ。「衣かたしき」は一人寝の表現。"],["「来ぬ」는 ‘오지 않는’. 「藻塩」를 굽는 불과 그리움에 타는 마음을 겹친다.","「来ぬ」は来ないこと。「藻塩」の火と恋の焦がれを重ねる。"],["「白妙」는 새하얀 베. 「てふ」는 ‘~라고 한다’라는 고어.","「白妙」は白い布。「てふ」は「という」。"],["「うち出でて」는 탁 트인 곳으로 나아가. 「白妙」는 후지산 설경의 흰빛을 묘사한다.","「うち出でて」は見晴らしのよい所に出て。「白妙」は雪の白さ。"],["「ちはやぶる」는 신에 붙는 베개말(枕詞). 「からくれなゐ」는 짙은 붉은빛.","「ちはやぶる」は神にかかる枕詞。「からくれなゐ」は濃い紅色。"],["「心あてに」는 짐작으로. 「折らばや折らむ」은 꺾을 수 있을까 하는 망설임.","「心あてに」は当て推量。「折らばや折らむ」は折れるだろうかという迷い。"],["「朝ぼらけ」는 희미하게 날이 밝는 시간. 눈 덮인 들판을 달빛에 비긴다.","「朝ぼらけ」は夜明けの薄明かり。雪景色を月の光にたとえる。"],["「しがらみ」는 물길을 막는 울타리. 걸려 쌓인 단풍을 그 울타리에 비긴다.","「しがらみ」は水をせき止める柵。溜まった紅葉に見立てる。"],["「ひさかたの」는 빛에 붙는 베개말. 「しづ心なく」는 마음이 가라앉지 못하고.","「ひさかたの」は光にかかる枕詞。「しづ心なく」は落ち着かず。"],["「宵」는 초저녁. 「月宿る」는 달이 구름 어딘가에 머무는 듯하다는 의인화.","「宵」は夜の初め。「月宿る」は月が雲に宿るような擬人法。"],["「つらぬきとめぬ」는 실로 꿰어 붙잡아 놓지 않은. 이슬을 흩어진 구슬에 비긴다.","「つらぬきとめぬ」は糸を通して留めていない。露を珠に見立てる。"],["「いにしへ」는 옛날. 「九重」는 아홉 겹이자 궁궐을 가리키는 말.","「いにしへ」は昔。「九重」は宮中を指す語。"],["「わびぬれば」는 괴로워졌으니. 「みをつくし」는 항로 표지와 ‘몸을 다 바치다’의 겹뜻.","「わびぬれば」は思い悩んだので。「みをつくし」は澪標と身を尽くすの掛詞。"],["「かぢ」는 노 또는 키. 「ゆくへも知らぬ」는 어디로 갈지 모른다는 불안.","「かぢ」は舟の舵や櫂。「ゆくへも知らぬ」は行き先も分からない。"],["「みかきもり」는 궁궐 담을 지키는 사람. 밤의 횃불이 사랑의 불길을 상징한다.","「みかきもり」は宮中の警備兵。火は恋の思いの比喩。"],["「さしも草」는 뜸에 쓰는 쑥. 「燃ゆる」는 비밀스러운 사랑이 불타오르는 모습.","「さしも草」はお灸に使う蓬。「燃ゆる」は恋心の比喩。"],["「朝ぼらけ」는 여명이 밝는 때. 밤이 다시 올 줄 알아도 새벽의 이별은 원망스럽다.","「朝ぼらけ」は明け方。夜がまた来ると知っていても朝の別れがつらい。"],["「忘れじ」는 잊지 않겠다는 약속. 「ともがな」는 ‘그랬으면 좋겠다’는 소망.","「忘れじ」は忘れないという誓い。「ともがな」は願望。"],["「人づて」는 남의 말을 통해 전함. 「よしもがな」는 직접 말할 방법이 있기를 바람.","「人づて」は人を介した伝言。「よしもがな」は方法を求める願い。"],["「あだ波」는 거칠게 일어 금세 사라지는 파도, 변덕스러운 사랑의 비유.","「あだ波」ははかなく立つ波。浮ついた恋の比喩。"],["「憂かりける」는 냉정했던. 「山おろし」는 산에서 불어 내려오는 강풍.","「憂かりける」は冷淡だった。「山おろし」は山から吹き下ろす風。"],["「黒髪の乱れ」는 흐트러진 머리와 혼란스러운 마음을 겹친다. 「物思ふ」는 근심하다.","「黒髪の乱れ」は髪と心の乱れ。「物思ふ」は思い悩む。"],["「かりほ」는 추수철의 임시 오두막. 「苫をあらみ」는 거적이 성기기 때문에.","「かりほ」は仮の小屋。「苫をあらみ」は屋根の覆いが粗いので。"],["「かささぎの渡せる橋」는 칠석 전설 속 다리. 그 위의 서리로 깊은 밤을 묘사한다.","「かささぎの橋」は七夕伝説の橋。霜から夜更けを表す。"],["「たつみ」는 남동쪽. 「うぢ山」는 우지산과 ‘괴로운 세상’을 겹친다.","「たつみ」は南東。「うぢ山」は宇治山と「憂し」を響かせる。"],["「むべ」는 ‘과연 그렇구나’. 「嵐」는 산과 바람을 합친 한자라는 말놀이.","「むべ」は「なるほど」。「嵐」は山と風を合わせた漢字遊び。"],["「たえだえに」는 끊겼다 이어졌다. 「網代木」는 물고기를 잡기 위해 세운 말뚝.","「たえだえに」は途切れ途切れに。「網代木」は漁の仕掛けの杭。"],["「錦」는 오색 비단. 강을 뒤덮은 단풍잎을 비단에 비긴다.","「錦」は色鮮やかな織物。川を流れる紅葉の比喩。"],["「夕されば」는 저녁이 되면. 「おとづれて」는 소리를 내며 찾아오다.","「夕されば」は夕方になると。「おとづれて」は音を立てて訪れる。"],["「わたの原」는 넓은 바다. 「雲居にまがふ」는 구름처럼 보일 만큼 닮았다는 말.","「わたの原」は大海原。「雲居にまがふ」は雲と見紛うほど似ること。"],["「たなびく」는 길게 걸쳐 떠 있다. 「さやけさ」는 맑고 선명한 빛.","「たなびく」は横に長く漂う。「さやけさ」は澄んだ明るさ。"],["「みそぎ」는 몸을 씻는 정화 의례. 여름 저녁인데도 바람이 가을처럼 선선하다는 정취.","「みそぎ」は身を清める儀式。夏の夕暮れの涼しさを詠む。"]];
+    const WAKA_READING_OVERRIDES={"41":{"寝":"ね"},"49":{"寝":"ね"},"55":{"朝":"あさ"},"77":{"芦":"あし"}};
+    let furiganaVisible=false;
+    function kanjiEntriesFor(w){
+      const spans=w.original.match(/[一-龯々]+/g)||[];
+      return [...new Set(spans)].map(word=>{
+        const row=WAKA_KANJI_LEXICON[word];
+        if(!row)throw new Error('한자 풀이 누락: '+w.deckId+'번 '+word);
+        const reading=WAKA_READING_OVERRIDES[w.deckId]?.[word]||row[0];
+        return {word,reading,ko:row[1],ja:row[2]};
+      });
+    }
+    function rubyPoemHTML(w){
+      return w.original.replace(/[一-龯々]+/g,word=>{
+        const row=WAKA_KANJI_LEXICON[word];
+        if(!row)throw new Error('후리가나 누락: '+w.deckId+'번 '+word);
+        const reading=WAKA_READING_OVERRIDES[w.deckId]?.[word]||row[0];
+        return `<ruby>${escapeHTML(word)}<rp>（</rp><rt>${escapeHTML(reading)}</rt><rp>）</rp></ruby>`;
+      });
+    }
+    function renderVerseWithFurigana(w,elementId){
+      const target=document.getElementById(elementId);
+      if(furiganaVisible)target.innerHTML=rubyPoemHTML(w);
+      else target.textContent=w.original; // no hidden pronunciation content when OFF
+      target.classList.toggle('furigana-on',furiganaVisible);
+    }
+    function renderAuthorWithFurigana(w,elementId){
+      const target=document.getElementById(elementId);
+      const prefix=elementId==='poem-author'?'✎ ':'';
+      if(furiganaVisible){
+        const reading=WAKA_AUTHOR_READINGS[w.deckId-1];
+        target.innerHTML=prefix+`<ruby>${escapeHTML(w.author)}<rp>（</rp><rt>${escapeHTML(reading)}</rt><rp>）</rp></ruby>`;
+      }else target.textContent=prefix+w.author;
+      target.classList.toggle('furigana-on',furiganaVisible);
+    }
+    function renderFullKanjiGlossary(w,elementId,noteId){
+      const entries=kanjiEntriesFor(w);
+      document.getElementById(elementId).innerHTML=entries.map(({word,reading,ko,ja})=>
+        `<div class="vocab-entry"><div class="vocab-word"><ruby>${escapeHTML(word)}<rp>（</rp><rt>${escapeHTML(reading)}</rt><rp>）</rp></ruby></div>`+
+        `<div class="vocab-meaning">${escapeHTML(T(ko,ja))}</div></div>`
+      ).join('');
+      const note=WAKA_CLASSICAL_NOTES[w.deckId-1];
+      document.getElementById(noteId).innerHTML=`<strong>${escapeHTML(T('✧ 고전어·문법 포인트','✧ 古語・文法のポイント'))}</strong>\n${escapeHTML(T(note[0],note[1]))}`;
+    }
+    function syncFuriganaUI(){
+      document.querySelectorAll('[data-furigana-toggle]').forEach(button=>{
+        button.textContent=`${T('후리가나','ふりがな')} ${furiganaVisible?'ON':'OFF'}`;
+        button.setAttribute('aria-pressed',String(furiganaVisible));
+        button.setAttribute('aria-label',furiganaVisible?T('후리가나 끄기','ふりがなを非表示'):T('후리가나 켜기','ふりがなを表示'));
+      });
+      if(currentWaka){
+        renderVerseWithFurigana(currentWaka,'poem-original');
+        renderAuthorWithFurigana(currentWaka,'poem-author');
+      }
+      if(detailWaka){
+        renderVerseWithFurigana(detailWaka,'detail-poem');
+        renderAuthorWithFurigana(detailWaka,'detail-author');
+      }
+    }
+    document.querySelectorAll('[data-furigana-toggle]').forEach(button=>button.addEventListener('click',()=>{
+      furiganaVisible=!furiganaVisible;
+      syncFuriganaUI();
+    }));
+    const resetFurigana=()=>{furiganaVisible=false;syncFuriganaUI()};
+    // Dynamic bilingual headings; card imagery still contains printed text.
+    Object.assign(JP_STATIC,{
+      '✦ 원문 읽기 도움':'✦ 原文の読み方',
+      '시 속 한자·고전어 전체 풀이':'歌の漢字・古語をすべて解説',
+      '원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.':'原文に出てくる漢字と古語を順に解説します。',
+      '✿ 작품의 핵심 표현':'✿ 注目の表現',
+      '와카 원문의 후리가나 켜기':'和歌原文のふりがなを表示'
+    });
+
     // Browser playback is user-gesture initiated; missing tracks simply stay silent.
     // Upload one MP3 for each of the eight stable slugs below, e.g. bgm/seollem.mp3.
     const BGM_SLUGS = Object.freeze({'설렘':'seollem','그리움':'geurium','슬픔':'seulpeum','희망':'huimang','외로움':'oeroum','행복':'haengbok','불안':'buran','평온':'pyeonon'});
@@ -1098,12 +1208,15 @@
         el.classList.toggle('selected',yes);el.setAttribute('aria-pressed',String(yes));
       });
       updateBgmUI();
+      syncFuriganaUI();
     }
     function renderPoemLocalized(w){
       if(!w)return;
       document.querySelector('#poem-category').textContent=wakaCategory(w);
-      document.querySelector('#poem-author').textContent='✎ '+w.author;
-      document.querySelector('#poem-original').textContent=w.original;
+      renderAuthorWithFurigana(w,'poem-author');
+      renderVerseWithFurigana(w,'poem-original');
+      renderFullKanjiGlossary(w,'poem-vocab','poem-classical-note');
+      syncFuriganaUI();
       document.querySelector('#poem-translation').textContent='“'+localizedField(w,'translation')+'”';
       document.querySelector('#poem-advice').textContent=localizedField(w,'advice');
       document.querySelector('#poem-term').innerHTML=furiganaFor(w);
@@ -1122,9 +1235,11 @@
       document.querySelector('#detail-img').src=w.image;
       document.querySelector('#detail-img').alt=T(`${w.tag} 카드 ${w.deckId}번 일러스트`,`${moodLabel(w.tag)}・和歌カード${w.deckId}番の絵`);
       document.querySelector('#detail-number').textContent=`NO. ${String(w.deckId).padStart(3,'0')} · ${moodLabel(w.tag)} · ${T('백인일수 제','百人一首 第')}${w.number}${T('수','首')}`;
-      document.querySelector('#detail-poem').textContent=w.original;
+      renderVerseWithFurigana(w,'detail-poem');
+      renderFullKanjiGlossary(w,'detail-vocab','detail-classical-note');
+      syncFuriganaUI();
       document.querySelector('#detail-translation').textContent=localizedField(w,'translation');
-      document.querySelector('#detail-author').textContent=w.author;
+      renderAuthorWithFurigana(w,'detail-author');
       document.querySelector('#detail-term').innerHTML=furiganaFor(w)+' — '+escapeHTML(localizedField(w,'usage'));
       document.querySelector('#detail-background').textContent=localizedField(w,'background');
       document.querySelector('#detail-fortune').textContent=localizedField(w,'fortune');
@@ -1429,6 +1544,7 @@
       const delay=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:900;
       revealTimer=setTimeout(()=>{
         if(!$('#oracle-card').classList.contains('flipped')||$('#ritual-page').hidden)return;
+        resetFurigana();
         renderPoemLocalized(currentWaka);
         $('#interpretation').classList.add('visible');
         $('#ritual-page').className='ritual-page reading';
@@ -1496,6 +1612,7 @@
     $('#archive-filter').addEventListener('change',e=>{activeFilter=e.target.value;renderArchive()});
     function openArchiveCard(w){
       detailWaka=w;
+      resetFurigana();
       renderArchiveDetailLocalized(w);
       const dlg=$('#card-detail-dialog');if(typeof dlg.showModal==='function')dlg.showModal();else dlg.setAttribute('open','');
     }
@@ -1740,33 +1857,10 @@
     const arPhoto=$('#waka-ar-photo'), arPlaceholder=$('#waka-ar-placeholder');
     let arImage=null, arX=.5, arY=.5, arDragging=false, arPointer=null;
     function arText(){return currentWaka?currentWaka.original:''}
-    let arParticles=[], arAnimationFrame=0, arLastFrame=0;
-    function resetArParticles(){
-      const kind=$('#waka-ar-effect').value;
-      arParticles=kind==='none'?[]:Array.from({length:kind==='rain'?95:38},()=>({x:Math.random(),y:Math.random(),r:Math.random()*0.7+0.55,speed:Math.random()*0.00012+0.00008,drift:Math.random()*6.28,angle:Math.random()*6.28}));
-    }
-    function drawArParticles(){
-      const kind=$('#waka-ar-effect').value;if(kind==='none')return;
-      const w=arCanvas.width,h=arCanvas.height,base=Math.max(8,Math.min(w,h)*.022);
-      arCtx.save();
-      for(const p of arParticles){
-        const x=p.x*w+Math.sin(p.drift)*base*.6,y=p.y*h,r=base*p.r;
-        if(kind==='rain'){arCtx.strokeStyle='rgba(195,225,255,.75)';arCtx.lineWidth=Math.max(1,r*.13);arCtx.beginPath();arCtx.moveTo(x,y);arCtx.lineTo(x-r*.35,y+r*2.3);arCtx.stroke();continue;}
-        if(kind==='snow'){arCtx.fillStyle='rgba(255,255,255,.92)';arCtx.beginPath();arCtx.arc(x,y,r*.38,0,Math.PI*2);arCtx.fill();continue;}
-        const symbol={petal:'🌸',heart:'❤️',clover:'🍀',maple:'🍁'}[kind];
-        arCtx.translate(x,y);arCtx.rotate(Math.sin(p.angle)*.45);arCtx.font=`${Math.round(r*1.55)}px serif`;arCtx.textAlign='center';arCtx.textBaseline='middle';arCtx.fillText(symbol,0,0);arCtx.rotate(-Math.sin(p.angle)*.45);arCtx.translate(-x,-y);
-      }arCtx.restore();
-    }
-    function animateAr(time){
-      if(!arModal.classList.contains('open')){arAnimationFrame=0;return;}
-      const delta=Math.min(50,time-(arLastFrame||time));arLastFrame=time;
-      if(arImage&&arParticles.length){for(const p of arParticles){p.y+=delta*p.speed*(arCanvas.width/arCanvas.height);p.x+=Math.sin(p.drift)*delta*.000012;p.angle+=delta*.001;p.drift+=delta*.001;if(p.y>1.08){p.y=-.08;p.x=Math.random();}if(p.x>1.08)p.x=-.08;if(p.x<-.08)p.x=1.08;}drawWakaOverlay();}
-      arAnimationFrame=requestAnimationFrame(animateAr);
-    }
     function drawWakaOverlay(){
       if(!arImage)return;
       const w=arCanvas.width,h=arCanvas.height;
-      arCtx.clearRect(0,0,w,h);arCtx.drawImage(arImage,0,0,w,h);drawArParticles();
+      arCtx.clearRect(0,0,w,h);arCtx.drawImage(arImage,0,0,w,h);
       const poem=arText().trim().split(/\s+/).filter(Boolean);
       if(!poem.length)return;
       const size=Number($('#waka-ar-size').value),depth=Number($('#waka-ar-depth').value),color=$('#waka-ar-color').value;
@@ -1778,8 +1872,7 @@
       const startY=arY*h-totalH/2;
       arCtx.save();
       arCtx.textAlign='center';arCtx.textBaseline='middle';
-      const font={'brush':'"Yuji Syuku", "Noto Serif JP", serif','serif':'"Noto Serif JP", "Yu Mincho", serif','sans':'"Noto Sans JP", "Yu Gothic", sans-serif'}[$('#waka-ar-font').value]||'serif';
-      arCtx.font=`${Math.round(size)}px ${font}`;
+      arCtx.font=`${Math.round(size)}px "Yuji Syuku", "Noto Serif JP", serif`;
       arCtx.lineJoin='round';
       poem.forEach((column,i)=>{
         const x=startX-i*lineGap;
@@ -1810,13 +1903,10 @@
       $('#waka-ar-size-label').textContent=T('글자 크기','文字サイズ');
       $('#waka-ar-color-label').textContent=T('글자 색상','文字色');
       $('#waka-ar-depth-label').textContent=T('입체감','立体感');
-      $('#waka-ar-font-label').textContent=T('글씨체','書体');
-      $('#waka-ar-effect-label').textContent=T('낙하 효과','降るエフェクト');
-      if(!arAnimationFrame){arLastFrame=0;arAnimationFrame=requestAnimationFrame(animateAr);}
       $('#waka-ar-reset').textContent=T('위치 초기화','位置をリセット');
       $('#waka-ar-save').textContent=T('↓ 완성 사진 저장','↓ 完成画像を保存');
     }
-    function closeWakaAR(){arModal.classList.remove('open');document.body.style.overflow='';if(arAnimationFrame)cancelAnimationFrame(arAnimationFrame);arAnimationFrame=0;}
+    function closeWakaAR(){arModal.classList.remove('open');document.body.style.overflow=''}
     $('#open-waka-ar').addEventListener('click',openWakaAR);
     $('#close-waka-ar').addEventListener('click',closeWakaAR);
     arModal.addEventListener('click',e=>{if(e.target===arModal)closeWakaAR()});
@@ -1827,14 +1917,13 @@
       const url=URL.createObjectURL(file),img=new Image();
       img.onload=()=>{
         arImage=img;arCanvas.width=img.naturalWidth;arCanvas.height=img.naturalHeight;
-        arX=.5;arY=.48;arCanvas.hidden=false;arPlaceholder.hidden=true;resetArParticles();
+        arX=.5;arY=.48;arCanvas.hidden=false;arPlaceholder.hidden=true;
         $('#waka-ar-save').disabled=false;drawWakaOverlay();URL.revokeObjectURL(url);
       };
       img.onerror=()=>{URL.revokeObjectURL(url);notify(T('사진을 불러오지 못했어요. 다른 사진을 선택해 주세요.','写真を読み込めませんでした。別の写真を選んでください。'))};
       img.src=url;
     });
-    ['waka-ar-size','waka-ar-depth','waka-ar-color','waka-ar-font'].forEach(id=>$('#'+id).addEventListener('input',drawWakaOverlay));
-    $('#waka-ar-effect').addEventListener('change',()=>{resetArParticles();drawWakaOverlay()});
+    ['waka-ar-size','waka-ar-depth','waka-ar-color'].forEach(id=>$('#'+id).addEventListener('input',drawWakaOverlay));
     $('#waka-ar-reset').addEventListener('click',()=>{arX=.5;arY=.48;drawWakaOverlay()});
     function arPoint(e){const r=arCanvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*arCanvas.width,y:(e.clientY-r.top)/r.height*arCanvas.height}}
     arCanvas.addEventListener('pointerdown',e=>{if(!arImage)return;arDragging=true;arPointer=arPoint(e);arCanvas.setPointerCapture(e.pointerId)});
@@ -1933,40 +2022,85 @@
   -->
   
 <style>
-  .home-petal {
+  #sakura-layer {
     position: fixed;
-    top: -40px;
+    inset: 0;
+    overflow: hidden;
     pointer-events: none;
-    z-index: 45;
-    animation: home-petal-fall linear forwards;
+    z-index: 20;
   }
-  @keyframes home-petal-fall {
-    from { transform: translate3d(0,-40px,0) rotate(0deg); opacity: 0; }
-    10% { opacity: .8; }
-    90% { opacity: .8; }
-    to { transform: translate3d(90px,110vh,0) rotate(540deg); opacity: 0; }
+
+  .sakura-petal {
+    position: absolute;
+    top: -30px;
+    background: #f8b9cc;
+    border-radius: 100% 0 100% 0;
+    opacity: 0.7;
+    animation: sakura-fall linear forwards;
+    will-change: transform;
   }
+
+  @keyframes sakura-fall {
+    0% {
+      transform: translate3d(0, -30px, 0) rotate(0deg);
+      opacity: 0;
+    }
+    10% { opacity: 0.7; }
+    85% { opacity: 0.7; }
+    100% {
+      transform: translate3d(
+        var(--drift), 110vh, 0
+      ) rotate(var(--spin));
+      opacity: 0;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .home-petal { display: none; }
+    #sakura-layer { display: none; }
   }
 </style>
+
+<div id="sakura-layer" aria-hidden="true"></div>
+
 <script>
-  (function () {
-    function addPetal() {
-      const home = document.querySelector('#view-home');
-      if (!home || !home.classList.contains('active')) return;
-      const petal = document.createElement('span');
-      petal.className = 'home-petal';
-      petal.textContent = '🌸';
-      petal.style.left = Math.random() * 100 + 'vw';
-      petal.style.fontSize = (12 + Math.random() * 12) + 'px';
-      petal.style.animationDuration = (6 + Math.random() * 5) + 's';
-      document.body.appendChild(petal);
-      petal.addEventListener('animationend', () => petal.remove());
+(function () {
+  const layer = document.getElementById("sakura-layer");
+  const colors = ["#f8b9cc", "#ffd5e2", "#ffe6ee", "#fff0f5"];
+
+  function createPetal() {
+    if (!layer || document.hidden) return;
+
+    const petal = document.createElement("span");
+    petal.className = "sakura-petal";
+
+    const size = 7 + Math.random() * 9;
+    const duration = 7 + Math.random() * 7;
+
+    petal.style.left = Math.random() * 100 + "%";
+    petal.style.width = size + "px";
+    petal.style.height = size * 0.75 + "px";
+    petal.style.background =
+      colors[Math.floor(Math.random() * colors.length)];
+    petal.style.animationDuration = duration + "s";
+    petal.style.setProperty(
+      "--drift", (Math.random() - 0.5) * 240 + "px"
+    );
+    petal.style.setProperty(
+      "--spin", (Math.random() * 720 - 360) + "deg"
+    );
+
+    layer.appendChild(petal);
+    petal.addEventListener("animationend", () => petal.remove());
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setInterval(createPetal, 350);
+    for (let i = 0; i < 12; i++) {
+      setTimeout(createPetal, i * 180);
     }
-    setInterval(addPetal, 650);
-  })();
+  }
+})();
 </script>
-　
+
 </body>
 </html>
