@@ -1901,5 +1901,87 @@
   Notes: Anonymous accounts are browser-bound; production needs moderation, abuse
   protections and CAPTCHA/rate limiting. The public feed isn't yet a moderated product.
   -->
+  
+<style>
+  #sakura-layer {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  .sakura-petal {
+    position: absolute;
+    top: -30px;
+    background: #f8b9cc;
+    border-radius: 100% 0 100% 0;
+    opacity: 0.7;
+    animation: sakura-fall linear forwards;
+    will-change: transform;
+  }
+
+  @keyframes sakura-fall {
+    0% {
+      transform: translate3d(0, -30px, 0) rotate(0deg);
+      opacity: 0;
+    }
+    10% { opacity: 0.7; }
+    85% { opacity: 0.7; }
+    100% {
+      transform: translate3d(
+        var(--drift), 110vh, 0
+      ) rotate(var(--spin));
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #sakura-layer { display: none; }
+  }
+</style>
+
+<div id="sakura-layer" aria-hidden="true"></div>
+
+<script>
+(function () {
+  const layer = document.getElementById("sakura-layer");
+  const colors = ["#f8b9cc", "#ffd5e2", "#ffe6ee", "#fff0f5"];
+
+  function createPetal() {
+    if (!layer || document.hidden) return;
+
+    const petal = document.createElement("span");
+    petal.className = "sakura-petal";
+
+    const size = 7 + Math.random() * 9;
+    const duration = 7 + Math.random() * 7;
+
+    petal.style.left = Math.random() * 100 + "%";
+    petal.style.width = size + "px";
+    petal.style.height = size * 0.75 + "px";
+    petal.style.background =
+      colors[Math.floor(Math.random() * colors.length)];
+    petal.style.animationDuration = duration + "s";
+    petal.style.setProperty(
+      "--drift", (Math.random() - 0.5) * 240 + "px"
+    );
+    petal.style.setProperty(
+      "--spin", (Math.random() * 720 - 360) + "deg"
+    );
+
+    layer.appendChild(petal);
+    petal.addEventListener("animationend", () => petal.remove());
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setInterval(createPetal, 350);
+    for (let i = 0; i < 12; i++) {
+      setTimeout(createPetal, i * 180);
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
