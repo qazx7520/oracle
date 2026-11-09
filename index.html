@@ -801,7 +801,97 @@
       .hero-card-img{width:230px;height:345px}
     }
 
-  </style>
+  
+/* WAKA ORACLE — Heian fantasy homepage, responsive and functional */
+#view-presentation{position:relative;isolation:isolate;overflow:hidden;background:
+ radial-gradient(ellipse at 80% 22%,rgba(212,153,191,.22),transparent 38%),
+ radial-gradient(ellipse at 12% 39%,rgba(251,187,195,.28),transparent 42%),
+ linear-gradient(180deg,#fff8f2 0%,#fff5f1 34%,#f9f0ed 72%,#faf5ef 100%)}
+#view-presentation:before{content:"";position:absolute;z-index:-1;inset:0 0 auto;height:900px;pointer-events:none;opacity:.5;
+ background:radial-gradient(circle at 82% 30%,#fff3d4 0 48px,transparent 50px),
+ radial-gradient(ellipse at 0% 62%,#dbb7cf44,transparent 42%),
+ repeating-radial-gradient(ellipse at 92% 72%,transparent 0 23px,#c99dba19 24px 25px,transparent 26px 45px)}
+#view-presentation:after{content:"✿";position:absolute;z-index:-1;top:150px;left:-24px;font-size:155px;line-height:1;color:#e7a6b86b;transform:rotate(-23deg);pointer-events:none}
+#view-presentation .hero{position:relative;max-width:1120px;min-height:610px;gap:22px}
+#view-presentation .hero:before{content:"";position:absolute;pointer-events:none;right:1%;top:9%;width:290px;height:290px;border-radius:50%;background:radial-gradient(circle,#ffeccf88,#e9c8d33b 60%,transparent 70%);filter:blur(8px)}
+#view-presentation .hero-copy{padding:18px 0}
+#view-presentation .hero-title{color:#342a34}
+#view-presentation .hero-title em{color:#bc657f}
+#view-presentation .eyebrow{color:#ad7a67}
+#view-presentation .hero-lead{color:#6b5e65}
+#view-presentation .btn-primary{background:linear-gradient(120deg,#c97890,#a83f62);border:1px solid #e7acb7;box-shadow:0 9px 25px #ae668a42}
+#view-presentation .btn-primary:hover{background:linear-gradient(120deg,#b9637d,#963351)}
+#view-presentation .art-stage{height:470px}
+#view-presentation .art-stage:before{width:420px;height:420px;background:radial-gradient(circle at 50% 50%,#f6dfe9 0,#f5d9e3a0 49%,transparent 72%)}
+#view-presentation .art-stage:after{border-color:#cda6a35c}
+#view-presentation .hero-card-pair{min-height:0}
+#view-presentation .hero-card-img{width:210px;height:320px;object-fit:fill;box-shadow:0 22px 36px #70455a45,0 0 0 5px #fff9f5ad}
+#view-presentation .hero-card-back{transform:translate(-77%,-52%) rotate(-13deg)}
+#view-presentation .hero-card-front{transform:translate(-20%,-48%) rotate(10deg)}
+#view-presentation .jp-decor{color:#ae7991}
+.fantasy-shortcuts{position:relative;padding-top:10px;padding-bottom:55px}
+.fantasy-shortcuts-title{text-align:center;font:700 clamp(19px,2.6vw,27px)/1.5 var(--serif);color:#5c3b4a;margin:0 0 23px}
+.fantasy-shortcuts-title span{color:#c77890;font-size:17px;margin:0 12px}
+.fantasy-shortcuts-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;max-width:880px;margin:auto}
+.fantasy-shortcut{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;min-height:147px;padding:16px 8px;border:1px solid #e9bbc6;border-radius:28% 28% 25% 25% / 24% 24% 20% 20%;background:linear-gradient(150deg,#fff8f8f5,#fce7ecdc);box-shadow:inset 0 0 0 4px #fff9f5a8,0 7px 20px #aa69821b;color:#613f4f;transition:transform .2s,box-shadow .2s}
+.fantasy-shortcut:hover{transform:translateY(-4px);box-shadow:0 11px 25px #aa69822d}
+.fantasy-shortcut-icon{font-size:32px;line-height:1;color:#c17691}
+.fantasy-shortcut strong{font:700 16px var(--serif)}
+.fantasy-shortcut small{font-size:11px;color:#9b7080}
+@media(max-width:730px){
+ .site-header{background:#fff8f2f0;border-bottom:1px solid #e8cad1}
+ .header-inner{padding-top:9px;padding-bottom:11px}
+ .nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-color:#e9b9c9;background:#f9e8ee;width:100%;border-radius:999px;padding:4px;gap:0}
+ .nav-btn{min-width:0;padding:10px 2px;min-height:43px;font-size:clamp(10px,2.8vw,13px);white-space:normal;overflow-wrap:anywhere;line-height:1.2}
+ .site-controls{justify-content:center;gap:12px;flex-wrap:wrap}
+ #view-presentation .hero{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding-top:25px;padding-bottom:18px}
+ #view-presentation .hero-copy{display:contents}
+ #view-presentation .eyebrow{order:1;letter-spacing:.18em;font-size:10px;margin:0 0 10px}
+ #view-presentation .hero-title{order:2;font-size:clamp(32px,8.8vw,43px);line-height:1.38;letter-spacing:-.06em;margin:7px 0 17px;overflow-wrap:anywhere;word-break:keep-all;white-space:normal}
+ #view-presentation .hero-lead{order:3;font-size:clamp(12px,3.35vw,14px);line-height:1.95;margin:0 auto 5px;max-width:390px;overflow-wrap:anywhere;word-break:keep-all}
+ #view-presentation .hero-lead br{display:none}
+ #view-presentation .art-stage{order:4;transform:none;width:100%;height:290px;margin:4px auto 0;overflow:visible}
+ #view-presentation .art-stage:before{width:275px;height:275px;background:radial-gradient(circle,#f8dfeb 0,#f1d7e45e 54%,transparent 73%)}
+ #view-presentation .art-stage:after{width:280px;height:280px}
+ #view-presentation .hero-card-pair{height:100%;min-height:0}
+ #view-presentation .hero-card-img{width:154px;height:236px;border-radius:7px;box-shadow:0 12px 23px #76475d48,0 0 0 3px #fffaf5aa}
+ #view-presentation .hero-card-back{transform:translate(-82%,-50%) rotate(-14deg)}
+ #view-presentation .hero-card-front{transform:translate(-17%,-48%) rotate(11deg)}
+ #view-presentation .jp-decor{right:0;font-size:10px}
+ #view-presentation .falling{font-size:22px}
+ #view-presentation .hero-actions{order:5;display:flex;justify-content:center;width:100%;max-width:390px;margin:3px auto 0}
+ #view-presentation .hero-actions .btn-primary{width:100%;min-height:56px;font-size:16px;border-radius:999px;border:2px solid #fff;box-shadow:0 0 0 2px #dba6b5,0 9px 22px #b7678542}
+ #view-presentation .hero-actions .btn-outline{display:none}
+ #view-presentation .hero-foot{order:6;margin:15px auto 0;font-size:10px;justify-content:center}
+ #view-presentation:after{top:195px;font-size:110px;opacity:.45}
+ .fantasy-shortcuts{padding-top:19px;padding-bottom:32px}
+ .fantasy-shortcuts-title{font-size:clamp(16px,4.7vw,21px);margin-bottom:16px;overflow-wrap:anywhere}
+ .fantasy-shortcuts-title span{margin:0 5px}
+ .fantasy-shortcuts-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+ .fantasy-shortcut{min-height:105px;padding:11px 3px;border-radius:28% 28% 24% 24% / 24% 24% 20% 20%;gap:6px}
+ .fantasy-shortcut-icon{font-size:25px}
+ .fantasy-shortcut strong{font-size:clamp(10px,2.8vw,13px);line-height:1.25;overflow-wrap:anywhere}
+ .fantasy-shortcut small{font-size:clamp(8px,2.25vw,10px);line-height:1.25;overflow-wrap:anywhere}
+}
+@media(max-width:370px){
+ #view-presentation .hero-title{font-size:31px}
+ #view-presentation .art-stage{height:268px}
+ #view-presentation .hero-card-img{width:139px;height:215px}
+ .fantasy-shortcuts-grid{gap:5px}
+ .fantasy-shortcut{min-height:97px}
+}
+@media(max-width:730px){
+ html[lang="ja"] .brand-name{font-size:clamp(12px,3.5vw,16px);white-space:normal}
+ html[lang="ja"] .hero-title{font-size:clamp(27px,7.7vw,37px)!important;line-height:1.45;letter-spacing:-.025em}
+ html[lang="ja"] .hero-lead{font-size:clamp(11px,3vw,13px);line-height:1.85}
+ html[lang="ja"] .nav-btn{font-size:clamp(9px,2.55vw,12px);overflow-wrap:anywhere;word-break:normal;white-space:normal}
+ html[lang="ja"] .fantasy-shortcut strong{font-size:clamp(9px,2.6vw,12px)}
+ html[lang="ja"] .fantasy-shortcut small{font-size:clamp(8px,2.1vw,10px)}
+ html[lang="ja"] .btn,html[lang="ja"] .feature-card h3{white-space:normal;overflow-wrap:anywhere;word-break:normal}
+ html[lang="ja"] .section-title,html[lang="ja"] .featured-head h2{overflow-wrap:anywhere;word-break:normal}
+}
+
+</style>
 </head>
 <body>
   <header class="site-header">
@@ -841,6 +931,15 @@
           </div>
         </div>
       </div>
+      <section class="fantasy-shortcuts shell" aria-label="와카 오라클에서 할 수 있는 것">
+        <h2 class="fantasy-shortcuts-title"><span aria-hidden="true">✿</span> 와카 오라클에서 할 수 있는 것 <span aria-hidden="true">✿</span></h2>
+        <div class="fantasy-shortcuts-grid">
+          <button type="button" data-goto="collection" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true">▧</span><strong>와카 수집</strong><small>80편의 와카</small></button>
+          <button type="button" id="fantasy-study" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true">✎</span><strong>학습하기</strong><small>어휘·한자 해설</small></button>
+          <button type="button" data-goto="community" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true">❀</span><strong>마음 기록</strong><small>시·다짐 작성</small></button>
+          <button type="button" data-goto="demo" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true">▣</span><strong>AR로 기록</strong><small>나만의 와카 사진</small></button>
+        </div>
+      </section>
       <section class="featured-writings shell" aria-label="오늘의 응원받는 글">
         <div class="featured-head"><div><span class="section-kicker">WORDS THAT BLOOM</span><h2>오늘, 마음을 울린 문장들</h2><p>와카를 읽고 남긴 시와 다짐. 좋아요를 많이 받은 글을 소개해요.</p></div><button type="button" class="btn btn-small btn-outline" data-goto="community">마음 광장 전체 보기 ↗</button></div>
         <div class="featured-grid" id="featured-writings"><div class="featured-empty">아직 소개할 글이 없어요. 첫 문장을 남겨 보세요. ✿</div></div><p id="featured-note" class="featured-note"></p>
@@ -2120,5 +2219,20 @@
 })();
 </script>
 
-</body>
+<script>
+  document.getElementById('fantasy-study')?.addEventListener('click',()=>{
+    document.getElementById('how-it-works')?.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+  const fantasyLabels={
+    ko:['와카 오라클에서 할 수 있는 것','와카 수집','80편의 와카','학습하기','어휘·한자 해설','마음 기록','시·다짐 작성','AR로 기록','나만의 와카 사진'],
+    ja:['和歌オラクルでできること','和歌を集める','80首の和歌','和歌を学ぶ','語彙・漢字の解説','心を記す','詩・決意を書く','ARで記録','私だけの和歌写真']
+  };
+  function refreshFantasyLabels(){
+    const labels=fantasyLabels[document.documentElement.lang==='ja'?'ja':'ko'];
+    const nodes=[document.querySelector('.fantasy-shortcuts-title'),...document.querySelectorAll('.fantasy-shortcut strong,.fantasy-shortcut small')];
+    nodes.forEach((n,i)=>{if(!n)return;if(i===0){const spans=n.querySelectorAll('span');n.textContent='';if(spans[0])n.append(spans[0]);n.append(' '+labels[0]+' ');if(spans[1])n.append(spans[1]);}else n.textContent=labels[i];});
+  }
+  document.querySelectorAll('[data-select-lang]').forEach(b=>b.addEventListener('click',refreshFantasyLabels));
+  refreshFantasyLabels();
+</script></body>
 </html>
