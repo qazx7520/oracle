@@ -904,7 +904,22 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
 #view-demo .demo-intro,#view-community .community-heading,#view-collection .archive-header{background:rgba(255,249,245,.82)!important;border:1px solid rgba(218,170,180,.6);border-radius:20px;padding:22px;backdrop-filter:blur(5px);}
 #view-demo .panel,#view-demo .overview-card,#view-community .community-compose,#view-community .community-feed,#view-collection .archive-summary,#view-collection .achievement-section{background-color:rgba(255,251,248,.92)!important;backdrop-filter:blur(7px);}
 @media(max-width:730px){body,body:has(#view-presentation.active){background-size:cover,auto 100svh!important;background-attachment:scroll,scroll!important;background-repeat:no-repeat,repeat-y!important;}#view-demo>.shell,#view-community>.shell,#view-collection>.shell{padding-top:18px;padding-bottom:45px;}#view-demo .demo-intro,#view-community .community-heading,#view-collection .archive-header{padding:15px;border-radius:15px;}}
-</style></head>
+</style>
+<!-- WAKA ORACLE language-aware typography: Korean MaruBuri / Japanese Shippori Mincho -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style id="waka-language-fonts-20261110">
+@font-face{font-family:'Waka MaruBuri';src:url('https://cdn.jsdelivr.net/gh/naver/maruburi@master/MaruBuri-Regular.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Waka MaruBuri';src:url('https://cdn.jsdelivr.net/gh/naver/maruburi@master/MaruBuri-SemiBold.woff2') format('woff2');font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:'Waka MaruBuri';src:url('https://cdn.jsdelivr.net/gh/naver/maruburi@master/MaruBuri-Bold.woff2') format('woff2');font-style:normal;font-weight:700 900;font-display:swap}
+html[lang="ko"]{--serif:'Waka MaruBuri','Noto Serif KR',serif;--sans:'Waka MaruBuri','Noto Serif KR',serif}
+html[lang="ja"]{--serif:'Shippori Mincho','Noto Serif JP',serif;--sans:'Shippori Mincho','Noto Serif JP',serif}
+html[lang="ko"] body,html[lang="ja"] body{font-family:var(--sans)!important}
+html[lang="ko"] button,html[lang="ko"] input,html[lang="ko"] textarea,html[lang="ko"] select,
+html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang="ja"] select{font-family:var(--sans)}
+</style>
+</head>
 <body>
   <header class="site-header">
     <div class="shell header-inner">
@@ -2742,6 +2757,44 @@ html {scroll-padding-top:16px!important}
   #view-presentation .art-stage::after {
     content:none !important;display:none !important;
   }
+}
+</style>
+
+<style id="waka-mobile-readability-and-overflow-20261110">
+/* Readable copy on photographic backgrounds, without an opaque box. */
+#view-presentation .hero-lead {
+ color:#17131a!important;font-weight:750!important;
+ -webkit-text-stroke:0.7px rgba(255,231,232,.92)!important;
+ paint-order:stroke fill;
+ text-shadow:0 1px 1px rgba(255,231,232,.8),0 2px 3px rgba(22,12,20,.28)!important;
+}
+/* Contain the full-screen ritual and allow Japanese prose to wrap. */
+#ritual-page,.ritual-shell,.ritual-result,.ritual-page .result-panel,
+#interpretation,.poetry-explainer,.explainer-block,.fortune-panel {
+ box-sizing:border-box;max-width:100%;min-width:0;
+}
+#ritual-page{overflow-x:hidden!important;overscroll-behavior-x:none;}
+#ritual-page .ritual-shell{width:100%;}
+#ritual-page .ritual-result{width:100%;}
+#ritual-page .interpretation{width:100%;}
+#interpretation p,#interpretation div,#interpretation section,
+#poem-translation,#poem-original,.translated,.fortune-message,
+.explainer-block p,.interpret-notice,.poem-original,.advice {
+ max-width:100%;min-width:0;white-space:normal!important;
+ overflow-wrap:anywhere!important;word-wrap:break-word!important;
+ word-break:normal!important;
+}
+/* The classical verse retains its explicit original line breaks. */
+#poem-original{white-space:pre-line!important;}
+@media(max-width:730px){
+ html,body{max-width:100%;overflow-x:clip;}
+ #ritual-page .ritual-shell{padding-left:16px!important;padding-right:16px!important;}
+ #ritual-page .ritual-result{padding-left:0!important;padding-right:0!important;}
+ #ritual-page .interpretation{padding:19px 16px!important;margin-left:auto!important;margin-right:auto!important;}
+ #poem-translation{font-size:clamp(15px,4vw,17px)!important;line-height:1.85!important;letter-spacing:0!important;}
+ #interpretation .poetry-explainer,#interpretation .explainer-block,#interpretation .fortune-panel{width:100%;}
+ #interpretation .vocab-list,#interpretation .vocab-grid{min-width:0;max-width:100%;}
+ #view-presentation .hero-lead{color:#131016!important;}
 }
 </style>
 </body>
