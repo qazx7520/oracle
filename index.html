@@ -934,8 +934,8 @@ main,main>.view,main>.view.active,#view-demo,#view-community,#view-collection{ba
         <div class="art-stage" aria-hidden="true">
           <span class="jp-decor">心に咲く言葉</span><span class="falling fall-1">✿</span><span class="falling fall-2">✿</span><span class="falling fall-3">✿</span>
           <div class="hero-card-pair">
-            <img class="hero-card-img hero-card-back" src="cards/back.webp" alt="" draggable="false">
-            <img class="hero-card-img hero-card-front" src="cards/card_001.webp" alt="" draggable="false">
+            <img class="hero-card-img hero-card-back" src="waka_assets/hero-back.webp" alt="" draggable="false">
+            <img class="hero-card-img hero-card-front" src="waka_assets/hero-front.webp" alt="" draggable="false">
           </div>
         </div>
           <div class="hero-actions">
@@ -2648,5 +2648,51 @@ body:has(#view-presentation.active)::before{display:none!important}
 #view-presentation .hero-actions{border:0!important;outline:0!important}
 @media(max-width:730px){body:has(#view-presentation.active){background-image:var(--waka-final-background)!important;background-size:auto 100vh!important;background-position:50% top!important;background-attachment:fixed!important}#view-presentation .hero-copy,#view-presentation .hero-actions{background:transparent!important}}
 </style>
+
+<style id="waka-20261110-layout-patch">
+/* Targeted overrides; game, collection, and other cards remain unchanged. */
+#view-community .shell > section, #view-community .community-shell,
+#view-community .community-panel, #view-community .community-featured,
+#view-community .community-wrap { background-color:rgba(255,248,249,.90); }
+/* Community readable overlay without hiding the whole landscape */
+#view-community .shell { background:rgba(255,249,249,.88)!important; border:1px solid rgba(209,156,168,.45); border-radius:24px; padding-top:26px; padding-bottom:28px; box-shadow:0 12px 45px rgba(80,35,54,.10); }
+#view-community .shell .shell {background:transparent!important;box-shadow:none!important;border:0!important}
+#view-community h1,#view-community h2,#view-community p{overflow-wrap:anywhere}
+/* Header collapses while scrolling down, returns when scrolling up */
+.site-header {transition:transform .28s ease, opacity .28s ease!important;will-change:transform}
+.site-header.waka-scroll-hidden {transform:translateY(-105%)!important;pointer-events:none}
+html {scroll-padding-top:16px!important}
+/* Replace only homepage exhibition cards; transparent assets need no white outline */
+#view-presentation .hero-card-img {object-fit:contain!important; border-radius:0!important; box-shadow:0 15px 34px rgba(74,36,49,.23)!important}
+@media(max-width:730px){
+  body:has(#view-presentation.active){background-image:url('waka_assets/mobile-background.webp')!important;background-size:100% auto!important;background-position:center 0!important;background-attachment:scroll!important;background-repeat:no-repeat!important;background-color:#eec6d8!important}
+  #view-presentation .hero {display:flex!important;flex-direction:column!important;gap:0!important;padding-top:24px!important;padding-bottom:18px!important;min-height:0!important}
+  #view-presentation .hero-copy {order:1!important;margin:0 auto!important;padding:0 10px!important;width:100%!important}
+  #view-presentation .hero-title{margin:12px 0 14px!important;font-size:clamp(32px,9vw,49px)!important;line-height:1.35!important}
+  #view-presentation .hero-lead{margin:10px 0 0!important;line-height:1.7!important}
+  #view-presentation .hero-foot{margin-top:12px!important}
+  #view-presentation .art-stage{order:2!important;transform:none!important;width:100%!important;height:315px!important;min-height:315px!important;margin:-8px auto 0!important;overflow:visible!important}
+  #view-presentation .hero-card-pair{position:relative!important;top:0!important;left:0!important;width:100%!important;height:315px!important;min-height:315px!important;transform:none!important}
+  #view-presentation .hero-card-img{width:clamp(164px,48vw,235px)!important;height:auto!important;max-height:300px!important;top:50%!important;left:50%!important}
+  #view-presentation .hero-card-back{transform:translate(-77%,-48%) rotate(-11deg)!important}
+  #view-presentation .hero-card-front{transform:translate(-20%,-47%) rotate(9deg)!important}
+  #view-presentation .hero-actions{order:3!important;margin:0 auto!important;position:relative!important;z-index:5!important}
+  #view-presentation .hero-actions .btn-primary{min-height:49px!important}
+  #view-community .shell{border-radius:14px!important;padding:16px!important;background:rgba(255,249,249,.93)!important}
+}
+@media(max-width:380px){#view-presentation .art-stage,#view-presentation .hero-card-pair{height:280px!important;min-height:280px!important}#view-presentation .hero-card-img{width:46vw!important}}
+</style>
+<script id="waka-20261110-header-scroll">
+(function(){
+ var header=document.querySelector('.site-header');if(!header)return;
+ var last=window.scrollY||0;
+ window.addEventListener('scroll',function(){
+  var now=window.scrollY||0;
+  if(now<90 || now<last-9)header.classList.remove('waka-scroll-hidden');
+  else if(now>last+5 && now>145)header.classList.add('waka-scroll-hidden');
+  last=now;
+ },{passive:true});
+})();
+</script>
 </body>
 </html>
