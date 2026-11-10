@@ -451,6 +451,12 @@
     .archive-image{aspect-ratio:600/920;background:linear-gradient(150deg,#eee6df,#e5d3d1);position:relative;display:grid;place-items:center;overflow:hidden}
     .archive-image img{width:100%;height:100%;object-fit:cover;display:block}
     .archive-card.locked .archive-image{background:radial-gradient(circle,#ead7db,#c7afb6);}
+    /* Locked collection cards: preview the artwork without revealing the poem. */
+    .archive-card.locked .archive-image img{filter:blur(13px) saturate(.8) brightness(.87);transform:scale(1.12);pointer-events:none}
+    .archive-card.locked .archive-image::after{content:"";position:absolute;inset:0;background:rgba(65,35,65,.19);pointer-events:none}
+    .archive-card.locked .archive-lock{position:absolute;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;inset:0;color:#fff;font:700 27px/1.2 var(--serif);text-shadow:0 2px 9px #382038,0 1px 2px #382038;pointer-events:none}
+    .archive-card.locked .archive-lock small{font:700 11px/1.3 sans-serif;letter-spacing:.06em}
+    .archive-card.locked .archive-image:before{z-index:2;pointer-events:none}
     .archive-card.locked .archive-image:before{content:'';position:absolute;inset:8px;border:1px solid #f7eceb;outline:1px solid #b18e9a;border-radius:5px}
     .archive-lock{font:700 42px var(--serif);color:#f7efea;box-shadow:none;text-shadow:0 1px 16px #a67790}
     .archive-card-footer{display:flex;justify-content:space-between;gap:4px;align-items:center;padding:9px 8px;color:#816d74;font-size:10px;background:#fffcf9}
@@ -1766,7 +1772,11 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
         btn.setAttribute('aria-label',isOwned?T(`${w.deckId}번 ${w.tag} 카드 자세히 보기`,`カード${w.deckId}・${moodLabel(w.tag)}の詳細を見る`):T(`${w.deckId}번 아직 획득하지 않은 카드`,`カード${w.deckId}・未獲得`));
         const art=document.createElement('div');art.className='archive-image';
         if(isOwned){const img=document.createElement('img');img.src=w.image;img.loading='lazy';img.alt='';art.appendChild(img)}
-        else{const mark=document.createElement('span');mark.className='archive-lock';mark.textContent='✦';art.appendChild(mark)}
+        else{
+          const img=document.createElement('img');img.src=w.image;img.loading='lazy';img.alt='';img.setAttribute('aria-hidden','true');art.appendChild(img);
+          const mark=document.createElement('span');mark.className='archive-lock';mark.setAttribute('aria-hidden','true');
+          mark.append('🔒');const label=document.createElement('small');label.textContent=T('미수집','未獲得');mark.appendChild(label);art.appendChild(mark);
+        }
         const footer=document.createElement('div');footer.className='archive-card-footer';
         const left=document.createElement('span');left.textContent=`NO. ${String(w.deckId).padStart(3,'0')}`;
         const right=document.createElement('span');right.textContent=isOwned?moodLabel(w.tag):T('미수집','未獲得');
