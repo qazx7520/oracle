@@ -2092,7 +2092,7 @@ arCtx.font = `${Math.round(size)}px ${fontFamily}`;
       arCtx.restore();
       arCtx.save();arCtx.font=`${Math.max(16,size*.28)}px "Gowun Batang",serif`;arCtx.textAlign='center';
       arCtx.fillStyle=color;arCtx.shadowColor='rgba(0,0,0,.65)';arCtx.shadowBlur=8;
-      arCtx.fillText('— '+currentWaka.author,arX*w,Math.min(h-24,startY+totalH+size*.65));arCtx.restore();      const effect = $('#waka-ar-effect').value;
+      arCtx.fillText('— '+(arSelectedWaka?.author || ''),arX*w,Math.min(h-24,startY+totalH+size*.65));arCtx.restore();      const effect = $('#waka-ar-effect').value;
 
       if (effect !== 'none') {
         const symbols = {
@@ -2192,10 +2192,39 @@ $('#waka-ar-effect-label').textContent =
     arCanvas.addEventListener('pointermove',e=>{if(!arDragging||!arPointer)return;const p=arPoint(e);arX=Math.max(.08,Math.min(.92,arX+(p.x-arPointer.x)/arCanvas.width));arY=Math.max(.12,Math.min(.88,arY+(p.y-arPointer.y)/arCanvas.height));arPointer=p;drawWakaOverlay()});
     arCanvas.addEventListener('pointerup',()=>{arDragging=false;arPointer=null});
     arCanvas.addEventListener('pointercancel',()=>{arDragging=false;arPointer=null});
-    $('#waka-ar-save').addEventListener('click',()=>{
-      if(!arImage)return;
-      try{const a=document.createElement('a');a.download=`waka-ar-${currentWaka.deckId||'photo'}.png`;a.href=arCanvas.toDataURL('image/png');a.click();notify(T('와카 사진을 저장했어요.','和歌の写真を保存しました。'))}
-      catch{notify(T('사진을 저장하지 못했어요.','画像を保存できませんでした。'))}
+    $('#waka-ar-save').addEventListener('click',async()=>{
+      if(!arImage || !arSelectedWaka){
+        notify(T('먼저 와카와 사진을 선택해 주세요.','先に和歌と写真を選んでください。'));return;
+      }
+      const saveButton=$('#waka-ar-save');
+      const filename=`waka-ar-${arSelectedWaka.deckId||'photo'}.png`;
+      saveButton.disabled=true;
+      try{
+        // 선택된 도감 카드 기준으로 저장하며, iOS에서는 공유/이미지 저장 시트를 우선 사용합니다.
+        const blob=await new Promise((resolve,reject)=>{
+          arCanvas.toBlob(b=>b?resolve(b):reject(new Error('Canvas export failed')),'image/png');
+        });
+        const file=new File([blob],filename,{type:'image/png'});
+        if(navigator.canShare && navigator.share && navigator.canShare({files:[file]})){
+          try{
+            await navigator.share({files:[file],title:'WAKA ORACLE'});
+            notify(T('사진 저장 또는 공유를 완료했어요.','画像の保存または共有が完了しました。'));
+            return;
+          }catch(err){
+            if(err?.name==='AbortError')return; // 사용자가 공유 창을 닫음
+            // 공유가 지원되지 않는 경우 다운로드 방식으로 전환
+          }
+        }
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);
+        a.click();a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),60000);
+        notify(T('사진 다운로드를 요청했어요. 저장 위치를 확인해 주세요.','画像のダウンロードを開始しました。保存先をご確認ください。'));
+      }catch(err){
+        console.error('WAKA AR save failed:',err);
+        notify(T('사진 저장에 실패했어요. 다른 사진으로 다시 시도해 주세요.','画像の保存に失敗しました。別の写真でお試しください。'));
+      }finally{saveButton.disabled=false;}
     });
 
 
