@@ -756,6 +756,24 @@
     .waka-ar-control input[type=range]{width:100%;accent-color:#b9637b}
     .waka-ar-control input[type=color]{width:100%;height:34px;border:1px solid #e4d6cf;border-radius:7px;background:#fff;padding:3px}
     .waka-ar-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+
+    /* AR export: a prepared PNG avoids losing mobile share user activation. */
+    .waka-ar-export-status{margin:10px 2px 0;font-size:12px;color:#806a72;line-height:1.55;overflow-wrap:anywhere}
+    .waka-ar-export-status[data-state="ready"]{color:#466450}
+    .waka-ar-export-status[data-state="error"]{color:#a23d51}
+    #waka-ar-save:disabled,#waka-ar-preview-open:disabled{opacity:.52;cursor:not-allowed}
+    .waka-ar-output[hidden]{display:none!important}
+    .waka-ar-output{position:absolute;inset:0;z-index:8;background:rgba(30,23,28,.78);display:flex;justify-content:center;align-items:flex-start;overflow-y:auto;padding:16px}
+    .waka-ar-output-panel{width:min(550px,100%);margin:auto 0;background:#fffaf3;color:#3a2e34;border:1px solid #e8cbd0;border-radius:16px;padding:16px;box-shadow:0 14px 56px #0006}
+    .waka-ar-output-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:17px}
+    .waka-ar-output-head button{border:1px solid #e5cbd0;background:#fff;border-radius:8px;font-size:16px;min-width:36px;min-height:36px;cursor:pointer}
+    .waka-ar-output-help{font-size:13px;color:#745b65;line-height:1.6;margin:10px 0}
+    #waka-ar-output-image{display:block;max-width:100%;max-height:58vh;width:auto;height:auto;object-fit:contain;margin:0 auto;border:1px solid #ecdde0;border-radius:9px;background:#eee}
+    .waka-ar-output-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:13px 0 0}
+    .waka-ar-output-actions .btn{min-width:0;white-space:normal;text-align:center;font-size:12px}
+    .waka-ar-output-error{color:#a13d53;line-height:1.45;font-size:12px;overflow-wrap:anywhere}
+    @media(max-width:600px){.waka-ar-output{padding:10px}.waka-ar-output-panel{padding:12px}.waka-ar-output-actions .btn{width:100%}}
+
     @media(max-width:600px){.waka-ar-panel{padding:15px}.waka-ar-controls{grid-template-columns:1fr 1fr}.waka-ar-head h2{font-size:19px}#waka-ar-canvas{max-height:48vh}}
 
     #poem-author ruby,#detail-author ruby{ruby-position:over;white-space:normal}
@@ -1198,6 +1216,21 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       <div class="waka-ar-actions">
         <button type="button" class="btn btn-outline btn-small" id="waka-ar-reset">위치 초기화</button>
         <button type="button" class="btn btn-primary btn-small" id="waka-ar-save" disabled>↓ 완성 사진 저장</button>
+        <button type="button" class="btn btn-outline btn-small" id="waka-ar-preview-open" disabled>완성 이미지 보기</button>
+      </div>
+      <p class="waka-ar-export-status" id="waka-ar-export-status" role="status" aria-live="polite">사진을 선택하면 저장용 PNG를 미리 준비합니다.</p>
+    </div>
+    <div id="waka-ar-output" class="waka-ar-output" role="dialog" aria-modal="true" aria-label="완성 이미지 저장" hidden>
+      <div class="waka-ar-output-panel">
+        <div class="waka-ar-output-head"><strong id="waka-ar-output-title">완성한 와카 사진</strong><button id="waka-ar-output-close" type="button" aria-label="미리보기 닫기">✕</button></div>
+        <p class="waka-ar-output-help" id="waka-ar-output-help">사진을 길게 누르고 ‘사진에 저장’을 선택하거나, 공유 버튼을 눌러 저장해 주세요.</p>
+        <img id="waka-ar-output-image" alt="와카가 합성된 사진 미리보기">
+        <div class="waka-ar-output-actions">
+          <button type="button" class="btn btn-primary btn-small" id="waka-ar-output-share">📤 사진 앱에 저장 / 공유</button>
+          <a id="waka-ar-output-download" class="btn btn-outline btn-small" download="waka-oracle.png">↓ PNG 파일 다운로드</a>
+          <button type="button" class="btn btn-outline btn-small" id="waka-ar-output-back">편집 화면으로</button>
+        </div>
+        <p class="waka-ar-output-error" id="waka-ar-output-error" role="status" aria-live="polite"></p>
       </div>
     </div>
   </section>
@@ -2045,189 +2078,335 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     });
 
 
-    // Photo-based AR-style waka overlay (not spatially anchored live AR).
-    const arModal=$('#waka-ar-modal'), arCanvas=$('#waka-ar-canvas'), arCtx=arCanvas.getContext('2d');
-    const arPhoto=$('#waka-ar-photo'), arPlaceholder=$('#waka-ar-placeholder');
-    let arImage=null, arX=.5, arY=.5, arDragging=false, arPointer=null;
-    let arSelectedWaka=null; // 도감에서 선택한 작품 또는 현재 뽑은 작품
-    function arText(){return arSelectedWaka?arSelectedWaka.original:''}
-    function drawWakaOverlay(){
-      if(!arImage)return;
-      const w=arCanvas.width,h=arCanvas.height;
-      arCtx.clearRect(0,0,w,h);arCtx.drawImage(arImage,0,0,w,h);
-      const poem=arText().trim().split(/\s+/).filter(Boolean);
-      if(!poem.length)return;
-      const size=Number($('#waka-ar-size').value),depth=Number($('#waka-ar-depth').value),color=$('#waka-ar-color').value;
-      const lineGap=size*1.35, charGap=size*1.12;
-      const totalW=Math.max(size,poem.length*lineGap);
-      const startX=arX*w+totalW/2;
-      const maxChars=Math.max(...poem.map(x=>Array.from(x).length));
-      const totalH=maxChars*charGap;
-      const startY=arY*h-totalH/2;
-      arCtx.save();
-      arCtx.textAlign='center';arCtx.textBaseline='middle';
-     const fontType = $('#waka-ar-font').value;
-const fontFamily = {
-  brush: '"Yuji Syuku", "Noto Serif JP", serif',
-  serif: '"Noto Serif JP", serif',
-  sans: '"Noto Sans JP", sans-serif'
-}[fontType];
-
-arCtx.font = `${Math.round(size)}px ${fontFamily}`;
-      arCtx.lineJoin='round';
-      poem.forEach((column,i)=>{
-        const x=startX-i*lineGap;
-        Array.from(column).forEach((ch,j)=>{
-          const y=startY+j*charGap;
-          for(let d=depth;d>=1;d--){
-            arCtx.fillStyle=`rgba(25,15,18,${.16+(.025*(depth-d))})`;
-            arCtx.fillText(ch,x+d*1.15,y+d*1.15);
-          }
-          arCtx.shadowColor='rgba(0,0,0,.55)';arCtx.shadowBlur=size*.12;arCtx.shadowOffsetX=1;arCtx.shadowOffsetY=2;
-          arCtx.lineWidth=Math.max(1,size*.035);arCtx.strokeStyle='rgba(35,24,25,.58)';arCtx.strokeText(ch,x,y);
-          arCtx.fillStyle=color;arCtx.fillText(ch,x,y);
-          arCtx.shadowColor='transparent';arCtx.shadowBlur=0;arCtx.shadowOffsetX=0;arCtx.shadowOffsetY=0;
-        });
+    // AR-style photo compositor: user-uploaded images are only processed locally.
+    // No backend upload, no external image renderer. iOS-safe bounded canvas + prepared PNG.
+    const arModal=$('#waka-ar-modal'),arCanvas=$('#waka-ar-canvas');
+    const arCtx=arCanvas.getContext('2d',{alpha:false});
+    const arPhoto=$('#waka-ar-photo'),arPlaceholder=$('#waka-ar-placeholder');
+    const arSaveButton=$('#waka-ar-save'),arPreviewButton=$('#waka-ar-preview-open');
+    const arStatus=$('#waka-ar-export-status'),arOutput=$('#waka-ar-output');
+    const arOutputImg=$('#waka-ar-output-image'),arOutputLink=$('#waka-ar-output-download');
+    let arImage=null,arX=.5,arY=.48,arDragging=false,arPointer=null;
+    let arSelectedWaka=null;
+    let arExportBlob=null,arExportFile=null,arExportURL=null;
+    let arExportTimer=null,arExportVersion=0,arExportPromise=null;
+    const AR_MAX_EDGE=1800, AR_MAX_PIXELS=2600000; // significantly below phone photo resolution
+    const arIsIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    const arText=()=>arSelectedWaka?arSelectedWaka.original:'';
+    const arFilename=()=>`waka-oracle-${String(arSelectedWaka?.deckId||'photo').padStart(3,'0')}.png`;
+    function arStatusMessage(ko,ja,state='info'){
+      arStatus.textContent=T(ko,ja);arStatus.dataset.state=state;
+    }
+    function arSetReady(isReady){arSaveButton.disabled=!isReady;arPreviewButton.disabled=!isReady;}
+    function arClearPrepared(){
+      arExportBlob=null;arExportFile=null;
+      if(arExportURL){URL.revokeObjectURL(arExportURL);arExportURL=null;}
+      arSetReady(false);
+    }
+    function arToBlob(canvas){
+      return new Promise((resolve,reject)=>{
+        try{
+          if(typeof canvas.toBlob==='function'){
+            canvas.toBlob(blob=>{
+              if(blob&&blob.size>0)resolve(blob);
+              else reject(new Error('EMPTY_PNG_BLOB'));
+            },'image/png');
+          }else reject(new Error('TO_BLOB_UNSUPPORTED'));
+        }catch(e){reject(e)}
       });
-      arCtx.restore();
-      arCtx.save();arCtx.font=`${Math.max(16,size*.28)}px "Gowun Batang",serif`;arCtx.textAlign='center';
-      arCtx.fillStyle=color;arCtx.shadowColor='rgba(0,0,0,.65)';arCtx.shadowBlur=8;
-      arCtx.fillText('— '+(arSelectedWaka?.author || ''),arX*w,Math.min(h-24,startY+totalH+size*.65));arCtx.restore();      const effect = $('#waka-ar-effect').value;
-
-      if (effect !== 'none') {
-        const symbols = {
-          petal: '🌸',
-          snow: '❄',
-          heart: '♥',
-          clover: '🍀',
-          maple: '🍁'
-        };
-
-        arCtx.save();
-
-        // 사진 위에 장식이 골고루 배치되도록 설정
-        for (let i = 0; i < 35; i++) {
-          const x = ((i * 73.7) % 100) / 100 * w;
-          const y = ((i * 41.3) % 100) / 100 * h;
-          const s = Math.max(14, w * (0.018 + (i % 4) * 0.007));
-
-          arCtx.globalAlpha = 0.35 + (i % 4) * 0.12;
-
-          if (effect === 'rain') {
-            arCtx.strokeStyle = '#c5e5ff';
-            arCtx.lineWidth = Math.max(1, w * 0.002);
-            arCtx.beginPath();
-            arCtx.moveTo(x, y);
-            arCtx.lineTo(x - s * 0.3, y + s);
-            arCtx.stroke();
-          } else {
-            arCtx.font = `${s}px sans-serif`;
-            arCtx.textAlign = 'center';
-            arCtx.fillStyle = effect === 'heart' ? '#ff709a' : '#ffffff';
-            arCtx.fillText(symbols[effect], x, y);
-          }
+    }
+    // Only used as a fallback when toBlob fails. The reduced canvas makes this safer on iOS.
+    function arDataURLToBlob(canvas){
+      const data=canvas.toDataURL('image/png');
+      if(!data||!data.startsWith('data:image/png;base64,'))throw new Error('PNG_DATA_URL_FAILED');
+      const binary=atob(data.split(',')[1]);
+      const arr=new Uint8Array(binary.length);
+      for(let i=0;i<binary.length;i++)arr[i]=binary.charCodeAt(i);
+      return new Blob([arr],{type:'image/png'});
+    }
+    async function arPreparePNG(version){
+      if(!arImage||!arSelectedWaka||version!==arExportVersion)return;
+      try{
+        let blob;
+        try{blob=await arToBlob(arCanvas)}
+        catch(mainError){
+          console.warn('[WAKA AR] toBlob failed, trying reduced canvas dataURL:',mainError);
+          blob=arDataURLToBlob(arCanvas);
         }
-
-        arCtx.restore();
+        if(version!==arExportVersion)return;
+        if(!blob||!blob.size)throw new Error('EMPTY_PNG');
+        arClearPrepared();
+        arExportBlob=blob;
+        arExportFile=new File([blob],arFilename(),{type:'image/png',lastModified:Date.now()});
+        arExportURL=URL.createObjectURL(arExportBlob);
+        arSetReady(true);
+        arStatusMessage(`PNG 준비 완료 · ${arCanvas.width} × ${arCanvas.height}px · ${(blob.size/1048576).toFixed(1)}MB`,
+          `PNGの準備完了 · ${arCanvas.width} × ${arCanvas.height}px · ${(blob.size/1048576).toFixed(1)}MB`,'ready');
+      }catch(error){
+        if(version!==arExportVersion)return;
+        console.error('[WAKA AR] PNG preparation error',error);
+        arClearPrepared();
+        arStatusMessage(`사진 생성 오류 (${error?.message||'PNG'}). 사진을 다시 선택하거나 JPG 사진으로 시도해 주세요.`,
+          `画像生成エラー (${error?.message||'PNG'})。写真を選び直すか、JPGでお試しください。`,'error');
       }
     }
+    function arScheduleExport(){
+      const version=++arExportVersion;
+      if(arExportTimer!==null){clearTimeout(arExportTimer);arExportTimer=null;}
+      arClearPrepared();
+      if(!arImage||!arSelectedWaka)return;
+      arStatusMessage('완성 사진을 PNG로 준비하고 있어요…','完成画像をPNGに変換しています…');
+      // Delay/coalesce slider changes. Export always finishes BEFORE the save button is enabled.
+      arExportTimer=setTimeout(()=>{
+        arExportTimer=null;
+        arExportPromise=arPreparePNG(version);
+      },180);
+    }
+    function drawWakaOverlay(){
+      if(!arImage||!arSelectedWaka)return;
+      const w=arCanvas.width,h=arCanvas.height;
+      if(!w||!h)return;
+      try{
+        arCtx.clearRect(0,0,w,h);
+        arCtx.drawImage(arImage,0,0,w,h);
+        const poem=arText().trim().split(/\s+/).filter(Boolean);
+        if(!poem.length){arScheduleExport();return;}
+        const size=Number($('#waka-ar-size').value);
+        const depth=Number($('#waka-ar-depth').value),color=$('#waka-ar-color').value;
+        const lineGap=size*1.35,charGap=size*1.12;
+        const maxChars=Math.max(...poem.map(x=>Array.from(x).length));
+        const totalW=Math.max(size,poem.length*lineGap);
+        const totalH=maxChars*charGap;
+        const startX=arX*w+totalW/2;
+        const startY=arY*h-totalH/2;
+        const type=$('#waka-ar-font').value;
+        const fontFamily=({brush:'"Yuji Syuku","Noto Serif JP",serif',serif:'"Noto Serif JP",serif',sans:'"Noto Sans JP",sans-serif'})[type]||'serif';
+        arCtx.save();
+        arCtx.textAlign='center';arCtx.textBaseline='middle';
+        arCtx.font=`${Math.round(size)}px ${fontFamily}`;
+        arCtx.lineJoin='round';
+        poem.forEach((column,i)=>{
+          const x=startX-i*lineGap;
+          Array.from(column).forEach((ch,j)=>{
+            const y=startY+j*charGap;
+            for(let d=depth;d>=1;d--){
+              arCtx.fillStyle=`rgba(25,15,18,${.16+(.025*(depth-d))})`;
+              arCtx.fillText(ch,x+d*1.15,y+d*1.15);
+            }
+            arCtx.shadowColor='rgba(0,0,0,.55)';
+            arCtx.shadowBlur=size*.12;arCtx.shadowOffsetX=1;arCtx.shadowOffsetY=2;
+            arCtx.lineWidth=Math.max(1,size*.035);
+            arCtx.strokeStyle='rgba(35,24,25,.58)';arCtx.strokeText(ch,x,y);
+            arCtx.fillStyle=color;arCtx.fillText(ch,x,y);
+            arCtx.shadowColor='transparent';arCtx.shadowBlur=0;
+            arCtx.shadowOffsetX=0;arCtx.shadowOffsetY=0;
+          });
+        });
+        arCtx.restore();
+        arCtx.save();
+        arCtx.font=`${Math.max(16,size*.28)}px "Gowun Batang",serif`;
+        arCtx.textAlign='center';arCtx.fillStyle=color;
+        arCtx.shadowColor='rgba(0,0,0,.65)';arCtx.shadowBlur=8;
+        arCtx.fillText('— '+(arSelectedWaka.author||''),arX*w,Math.min(h-24,startY+totalH+size*.65));
+        arCtx.restore();
+        const effect=$('#waka-ar-effect').value;
+        if(effect!=='none'){
+          const symbols={petal:'🌸',snow:'❄',heart:'♥',clover:'🍀',maple:'🍁'};
+          arCtx.save();
+          for(let i=0;i<35;i++){
+            const x=((i*73.7)%100)/100*w,y=((i*41.3)%100)/100*h;
+            const symbolSize=Math.max(14,w*(.018+(i%4)*.007));
+            arCtx.globalAlpha=.35+(i%4)*.12;
+            if(effect==='rain'){
+              arCtx.strokeStyle='#c5e5ff';arCtx.lineWidth=Math.max(1,w*.002);
+              arCtx.beginPath();arCtx.moveTo(x,y);arCtx.lineTo(x-symbolSize*.3,y+symbolSize);arCtx.stroke();
+            }else if(symbols[effect]){
+              arCtx.font=`${symbolSize}px sans-serif`;
+              arCtx.textAlign='center';arCtx.fillStyle=effect==='heart'?'#ff709a':'#ffffff';
+              arCtx.fillText(symbols[effect],x,y);
+            }
+          }
+          arCtx.restore();
+        }
+        arScheduleExport();
+      }catch(error){
+        console.error('[WAKA AR] render failed:',error);
+        arSetReady(false);
+        arStatusMessage(`사진 합성 오류 (${error?.message||'RENDER'}). 다른 사진으로 시도해 주세요.`,
+          `画像合成エラー (${error?.message||'RENDER'})。別の写真でお試しください。`,'error');
+      }
+    }
+    function arCloseOutput(){arOutput.hidden=true;$('#waka-ar-output-error').textContent='';}
     function openWakaAR(archiveWaka=null){
-      // 도감에서는 획득한 작품만 선택 가능. 기존 뽑기 AR은 공개된 카드만 사용.
-      if(archiveWaka && typeof archiveWaka==='object' && owned(archiveWaka)){
-        arSelectedWaka=archiveWaka;
-      }else{
-        if(!currentWaka){notify(T('먼저 오늘의 와카를 만나 주세요.','先に今日の和歌を引いてください。'));return}
-        if(!$('#oracle-card').classList.contains('flipped')){notify(T('카드를 뒤집어 와카를 공개한 뒤 이용해 주세요.','カードをめくって和歌を公開してからご利用ください。'));return}
+      if(archiveWaka&&typeof archiveWaka==='object'&&owned(archiveWaka))arSelectedWaka=archiveWaka;
+      else{
+        if(!currentWaka){notify(T('먼저 오늘의 와카를 만나 주세요.','先に今日の和歌を引いてください。'));return;}
+        if(!$('#oracle-card').classList.contains('flipped')){
+          notify(T('카드를 뒤집어 와카를 공개한 뒤 이용해 주세요.','カードをめくって和歌を公開してからご利用ください。'));return;
+        }
         arSelectedWaka=currentWaka;
       }
+      arCloseOutput();
       arModal.classList.add('open');document.body.style.overflow='hidden';
       $('#waka-ar-title').textContent=T('✧ 나만의 와카 AR 기록','✧ 自分だけの和歌AR');
-      $('#waka-ar-desc').textContent=T('주변 풍경을 촬영하거나 사진을 선택한 뒤, 와카를 붓글씨로 올려 보세요. 글자를 누른 채 움직이면 위치를 바꿀 수 있어요.','周囲の風景を撮影または選択し、和歌を筆文字で重ねましょう。文字をドラッグすると位置を変えられます。');
+      $('#waka-ar-desc').textContent=T('사진을 촬영하거나 앨범에서 골라 와카를 올려 보세요. 손가락으로 글귀를 움직일 수 있어요.',
+        '撮影・選択した写真に和歌を重ねられます。指で文字を動かせます。');
       $('#waka-ar-photo-label').textContent=T('🖼️ 앨범에서 선택','🖼️ アルバムから選択');
       $('#waka-ar-camera-label').textContent=T('📷 사진 촬영','📷 写真を撮影');
       $('#waka-ar-size-label').textContent=T('글자 크기','文字サイズ')+` (${$('#waka-ar-size').value}px)`;
       $('#waka-ar-color-label').textContent=T('글자 색상','文字色');
       $('#waka-ar-depth-label').textContent=T('입체감','立体感');
-      $('#waka-ar-font-label').textContent =
-  T('글씨체', 'フォント');
-
-$('#waka-ar-effect-label').textContent =
-  T('낙하 효과', '落下エフェクト');
+      $('#waka-ar-font-label').textContent=T('글씨체','フォント');
+      $('#waka-ar-effect-label').textContent=T('낙하 효과','落下エフェクト');
       $('#waka-ar-reset').textContent=T('위치 초기화','位置をリセット');
-      $('#waka-ar-save').textContent=T('↓ 완성 사진 저장','↓ 完成画像を保存');
+      arSaveButton.textContent=T('↓ 완성 사진 저장','↓ 完成画像を保存');
+      arPreviewButton.textContent=T('완성 이미지 보기','完成画像を表示');
+      if(arImage)drawWakaOverlay();
+      else{arSetReady(false);arStatusMessage('사진을 선택하면 저장용 PNG를 미리 준비합니다.','写真を選ぶと保存用PNGを準備します。');}
     }
-    function closeWakaAR(){arModal.classList.remove('open');document.body.style.overflow=''}
+    function closeWakaAR(){arCloseOutput();arModal.classList.remove('open');document.body.style.overflow='';}
     $('#open-waka-ar').addEventListener('click',()=>openWakaAR());
     $('#close-waka-ar').addEventListener('click',closeWakaAR);
     arModal.addEventListener('click',e=>{if(e.target===arModal)closeWakaAR()});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&arModal.classList.contains('open'))closeWakaAR()});
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'&&!arOutput.hidden)arCloseOutput();
+      else if(e.key==='Escape'&&arModal.classList.contains('open'))closeWakaAR();
+    });
     function loadArPhoto(file){
       if(!file)return;
-      if(!file.type.startsWith('image/')){notify(T('이미지 파일을 선택해 주세요.','画像ファイルを選択してください。'));return}
+      if(!file.type.startsWith('image/')){
+        arStatusMessage('이미지 파일을 선택해 주세요.','画像ファイルを選んでください。','error');return;
+      }
+      ++arExportVersion;
+      arClearPrepared();arCloseOutput();
+      arStatusMessage('사진을 읽는 중이에요…','写真を読み込んでいます…');
       const url=URL.createObjectURL(file),img=new Image();
+      let settled=false;
+      function done(){if(!settled){settled=true;URL.revokeObjectURL(url);}}
       img.onload=()=>{
-        arImage=img;arCanvas.width=img.naturalWidth;arCanvas.height=img.naturalHeight;
-        arX=.5;arY=.48;arCanvas.hidden=false;arPlaceholder.hidden=true;
-        $('#waka-ar-save').disabled=false;drawWakaOverlay();URL.revokeObjectURL(url);
+        try{
+          const nativeW=img.naturalWidth,nativeH=img.naturalHeight;
+          if(!nativeW||!nativeH)throw new Error('INVALID_IMAGE_SIZE');
+          const ratio=Math.min(1,AR_MAX_EDGE/Math.max(nativeW,nativeH),Math.sqrt(AR_MAX_PIXELS/(nativeW*nativeH)));
+          const w=Math.max(1,Math.round(nativeW*ratio)),h=Math.max(1,Math.round(nativeH*ratio));
+          const base=document.createElement('canvas');base.width=w;base.height=h;
+          const baseCtx=base.getContext('2d',{alpha:false});
+          if(!baseCtx)throw new Error('CANVAS_CONTEXT_UNAVAILABLE');
+          baseCtx.drawImage(img,0,0,w,h);
+          arImage=base;
+          arCanvas.width=w;arCanvas.height=h;
+          arX=.5;arY=.48;
+          arCanvas.hidden=false;arPlaceholder.hidden=true;
+          done();
+          // Unload high-resolution source; subsequent operations use downsized in-memory pixels.
+          img.onload=null;img.onerror=null;img.removeAttribute('src');
+          drawWakaOverlay();
+        }catch(error){
+          done();console.error('[WAKA AR] load photo failed:',error);
+          arStatusMessage(`사진 처리 오류 (${error?.message||'IMAGE'}). JPG나 PNG로 다시 시도해 주세요.`,
+            `写真処理エラー (${error?.message||'IMAGE'})。JPGまたはPNGで再試行してください。`,'error');
+        }
       };
-      img.onerror=()=>{URL.revokeObjectURL(url);notify(T('사진을 불러오지 못했어요. 다른 사진을 선택해 주세요.','写真を読み込めませんでした。別の写真を選んでください。'))};
+      img.onerror=()=>{
+        done();console.error('[WAKA AR] unsupported photo type:',file.type,file.name);
+        arStatusMessage('사진을 열 수 없어요. 아이폰 HEIC 파일이라면 사진 앱에서 JPG로 내보내 다시 선택해 주세요.',
+          '画像を開けません。HEIC形式の場合はJPGに変換してお試しください。','error');
+      };
       img.src=url;
     }
-    arPhoto.addEventListener('change',()=>{loadArPhoto(arPhoto.files?.[0]);arPhoto.value=''});
-    $('#waka-ar-camera').addEventListener('change',e=>{loadArPhoto(e.target.files?.[0]);e.target.value=''});
+    arPhoto.addEventListener('change',()=>{const file=arPhoto.files?.[0];arPhoto.value='';loadArPhoto(file);});
+    $('#waka-ar-camera').addEventListener('change',e=>{const file=e.target.files?.[0];e.target.value='';loadArPhoto(file);});
     $('#waka-ar-size').addEventListener('input',()=>{$('#waka-ar-size-label').textContent=T('글자 크기','文字サイズ')+` (${$('#waka-ar-size').value}px)`;});
-    [
-  'waka-ar-size',
-  'waka-ar-depth',
-  'waka-ar-color',
-  'waka-ar-font',
-  'waka-ar-effect'
-].forEach(id => {
-  $('#' + id).addEventListener('input', drawWakaOverlay);
-  $('#' + id).addEventListener('change', drawWakaOverlay);
-});
-    $('#waka-ar-reset').addEventListener('click',()=>{arX=.5;arY=.48;drawWakaOverlay()});
-    function arPoint(e){const r=arCanvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*arCanvas.width,y:(e.clientY-r.top)/r.height*arCanvas.height}}
-    arCanvas.addEventListener('pointerdown',e=>{if(!arImage)return;arDragging=true;arPointer=arPoint(e);arCanvas.setPointerCapture(e.pointerId)});
-    arCanvas.addEventListener('pointermove',e=>{if(!arDragging||!arPointer)return;const p=arPoint(e);arX=Math.max(.08,Math.min(.92,arX+(p.x-arPointer.x)/arCanvas.width));arY=Math.max(.12,Math.min(.88,arY+(p.y-arPointer.y)/arCanvas.height));arPointer=p;drawWakaOverlay()});
-    arCanvas.addEventListener('pointerup',()=>{arDragging=false;arPointer=null});
-    arCanvas.addEventListener('pointercancel',()=>{arDragging=false;arPointer=null});
-    $('#waka-ar-save').addEventListener('click',async()=>{
-      if(!arImage || !arSelectedWaka){
-        notify(T('먼저 와카와 사진을 선택해 주세요.','先に和歌と写真を選んでください。'));return;
-      }
-      const saveButton=$('#waka-ar-save');
-      const filename=`waka-ar-${arSelectedWaka.deckId||'photo'}.png`;
-      saveButton.disabled=true;
-      try{
-        // 선택된 도감 카드 기준으로 저장하며, iOS에서는 공유/이미지 저장 시트를 우선 사용합니다.
-        const blob=await new Promise((resolve,reject)=>{
-          arCanvas.toBlob(b=>b?resolve(b):reject(new Error('Canvas export failed')),'image/png');
-        });
-        const file=new File([blob],filename,{type:'image/png'});
-        if(navigator.canShare && navigator.share && navigator.canShare({files:[file]})){
-          try{
-            await navigator.share({files:[file],title:'WAKA ORACLE'});
-            notify(T('사진 저장 또는 공유를 완료했어요.','画像の保存または共有が完了しました。'));
-            return;
-          }catch(err){
-            if(err?.name==='AbortError')return; // 사용자가 공유 창을 닫음
-            // 공유가 지원되지 않는 경우 다운로드 방식으로 전환
-          }
-        }
-        const url=URL.createObjectURL(blob);
-        const a=document.createElement('a');
-        a.href=url;a.download=filename;a.style.display='none';document.body.appendChild(a);
-        a.click();a.remove();
-        setTimeout(()=>URL.revokeObjectURL(url),60000);
-        notify(T('사진 다운로드를 요청했어요. 저장 위치를 확인해 주세요.','画像のダウンロードを開始しました。保存先をご確認ください。'));
-      }catch(err){
-        console.error('WAKA AR save failed:',err);
-        notify(T('사진 저장에 실패했어요. 다른 사진으로 다시 시도해 주세요.','画像の保存に失敗しました。別の写真でお試しください。'));
-      }finally{saveButton.disabled=false;}
+    ['waka-ar-size','waka-ar-depth','waka-ar-color','waka-ar-font','waka-ar-effect'].forEach(id=>{
+      $('#'+id).addEventListener('input',drawWakaOverlay);
+      $('#'+id).addEventListener('change',drawWakaOverlay);
     });
-
-
+    $('#waka-ar-reset').addEventListener('click',()=>{arX=.5;arY=.48;drawWakaOverlay();});
+    function arPoint(e){
+      const rect=arCanvas.getBoundingClientRect();
+      return{x:(e.clientX-rect.left)/rect.width*arCanvas.width,y:(e.clientY-rect.top)/rect.height*arCanvas.height};
+    }
+    arCanvas.addEventListener('pointerdown',e=>{
+      if(!arImage)return;
+      arDragging=true;arPointer=arPoint(e);arCanvas.setPointerCapture(e.pointerId);
+    });
+    arCanvas.addEventListener('pointermove',e=>{
+      if(!arDragging||!arPointer)return;
+      const p=arPoint(e);
+      arX=Math.max(.08,Math.min(.92,arX+(p.x-arPointer.x)/arCanvas.width));
+      arY=Math.max(.12,Math.min(.88,arY+(p.y-arPointer.y)/arCanvas.height));
+      arPointer=p;drawWakaOverlay();
+    });
+    arCanvas.addEventListener('pointerup',()=>{arDragging=false;arPointer=null;});
+    arCanvas.addEventListener('pointercancel',()=>{arDragging=false;arPointer=null;});
+    function arShowOutput(errorMessage=''){
+      if(!arExportURL||!arExportFile){
+        arStatusMessage('완성 사진을 준비하지 못했습니다. 사진을 다시 선택해 주세요.',
+          '完成画像を準備できません。写真を選び直してください。','error');return;
+      }
+      arOutputImg.src=arExportURL;
+      arOutputLink.href=arExportURL;arOutputLink.download=arFilename();
+      $('#waka-ar-output-title').textContent=T('완성한 와카 사진','完成した和歌の写真');
+      $('#waka-ar-output-help').textContent=arIsIOS()?
+        T('아이폰: 사진을 길게 눌러 “사진 앱에 저장”을 선택하거나, 공유 버튼에서 “이미지 저장”을 선택하세요.',
+          'iPhone：画像を長押しして「写真に保存」、または共有から「画像を保存」を選んでください。'):
+        T('PNG 다운로드를 누르면 파일로 저장할 수 있어요.','PNGをダウンロードして保存できます。');
+      $('#waka-ar-output-share').textContent=T('📤 사진 저장 / 공유','📤 写真を保存・共有');
+      $('#waka-ar-output-download').textContent=T('↓ PNG 파일 다운로드','↓ PNGをダウンロード');
+      $('#waka-ar-output-back').textContent=T('편집 화면으로','編集画面へ');
+      $('#waka-ar-output-error').textContent=errorMessage;
+      arOutput.hidden=false;
+    }
+    function arTriggerDownload(){
+      if(!arExportURL)return false;
+      const anchor=document.createElement('a');anchor.href=arExportURL;anchor.download=arFilename();
+      anchor.style.display='none';document.body.appendChild(anchor);
+      anchor.click();anchor.remove();return true;
+    }
+    function arTryNativeShare(){
+      if(!arExportFile||typeof navigator.share!=='function')return false;
+      try{
+        if(typeof navigator.canShare==='function'&&!navigator.canShare({files:[arExportFile]}))return false;
+        // Intentionally called synchronously from a click handler: no await/toBlob before share.
+        Promise.resolve(navigator.share({files:[arExportFile],title:'WAKA ORACLE'}))
+          .then(()=>{arStatusMessage('공유 메뉴가 닫혔어요. 실제 사진 앱 저장 여부를 확인해 주세요.',
+              '共有画面を閉じました。写真アプリへの保存をご確認ください。','ready');})
+          .catch(error=>{
+            if(error?.name==='AbortError')return;
+            console.warn('[WAKA AR] native share rejected:',error);
+            arShowOutput(T(`공유 기능이 차단됐어요 (${error?.name||'SHARE'}). 아래 PNG 다운로드나 이미지 길게 누르기를 이용해 주세요.`,
+              `共有できませんでした (${error?.name||'SHARE'})。下のPNGダウンロードか画像の長押しをご利用ください。`));
+          });
+        return true;
+      }catch(error){
+        console.warn('[WAKA AR] native share unavailable:',error);
+        return false;
+      }
+    }
+    arSaveButton.addEventListener('click',()=>{
+      if(!arExportFile){arStatusMessage('이미지 생성이 완료된 다음 저장해 주세요.','画像の生成が完了してから保存してください。');return;}
+      if(arIsIOS()){
+        if(!arTryNativeShare())arShowOutput();
+      }else{
+        // Standard browsers: download first. Preview is available separately and as a fallback.
+        try{
+          arTriggerDownload();
+          arStatusMessage('PNG 파일 다운로드를 요청했어요. 다운로드 폴더를 확인해 주세요.',
+            'PNGのダウンロードを開始しました。ダウンロードフォルダをご確認ください。','ready');
+        }catch(error){
+          console.error('[WAKA AR] download failed:',error);arShowOutput();
+        }
+      }
+    });
+    arPreviewButton.addEventListener('click',()=>arShowOutput());
+    $('#waka-ar-output-close').addEventListener('click',arCloseOutput);
+    $('#waka-ar-output-back').addEventListener('click',arCloseOutput);
+    $('#waka-ar-output-share').addEventListener('click',()=>{
+      if(!arTryNativeShare()){
+        $('#waka-ar-output-error').textContent=T('이 브라우저는 파일 공유를 지원하지 않습니다. 아래 PNG 다운로드나 이미지 길게 누르기를 사용해 주세요.',
+          'このブラウザではファイル共有できません。PNGダウンロードまたは画像の長押しをご利用ください。');
+      }
+    });
     // Main-page MP3 ambience and original synthesized bell sound.
     let oracleAudioContext=null, homeMusicOn=false;
     const homeBgmAudio=new Audio('bgm/stillness_under_wisteria.mp3');
