@@ -948,6 +948,52 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
 </style>
 </head>
 <body>
+
+<!-- WAKA ORACLE: first visit introduction, 1-day suppression, and replayable guide -->
+<div id="waka-guide-layer" hidden>
+  <section class="waka-guide-dialog" role="dialog" aria-modal="true" aria-labelledby="waka-guide-title" aria-describedby="waka-guide-subtitle" tabindex="-1">
+    <header class="waka-guide-top">
+      <div>
+        <p class="waka-guide-top-kicker">✿ WELCOME TO WAKA ORACLE</p>
+        <h2 id="waka-guide-title" class="waka-guide-heading" data-guide-ko="처음 만나는 와카, 반가워요" data-guide-ja="はじめての和歌へ、ようこそ">처음 만나는 와카, 반가워요</h2>
+        <p id="waka-guide-subtitle" class="waka-guide-lead" data-guide-ko="옛 일본의 짧은 시와 오늘의 마음을 연결하는 작은 여행" data-guide-ja="昔の和歌と、今日の心をつなぐ小さな旅">옛 일본의 짧은 시와 오늘의 마음을 연결하는 작은 여행</p>
+      </div>
+      <button type="button" id="waka-guide-close" class="waka-guide-close" aria-label="안내 닫기" title="닫기">×</button>
+    </header>
+    <div class="waka-guide-content">
+      <div class="waka-guide-columns">
+        <section class="waka-guide-about" aria-labelledby="waka-guide-about-heading">
+          <h3 id="waka-guide-about-heading" class="waka-guide-block-title"><span class="waka-guide-number">01</span><span  data-guide-ko="와카(和歌)란?" data-guide-ja="和歌（わか）とは？">와카(和歌)란?</span></h3>
+          <p class="waka-guide-copy" data-guide-ko="와카는 일본의 오래된 시가 문학이에요. 그중 대표적인 단가(短歌)는 자연과 계절, 사랑과 그리움 같은 마음을 짧은 노래에 담습니다." data-guide-ja="和歌は日本の伝統的な詩歌です。代表的な短歌では、季節や自然、恋や懐かしさなどの思いを短い歌に込めます。">와카는 일본의 오래된 시가 문학이에요. 그중 대표적인 단가(短歌)는 자연과 계절, 사랑과 그리움 같은 마음을 짧은 노래에 담습니다.</p>
+          <div class="waka-guide-meter" aria-label="5·7·5·7·7"><b>5</b>·<b>7</b>·<b>5</b>·<b>7</b>·<b>7</b><span>31<br>음 / 音</span></div>
+          <p class="waka-guide-copy" data-guide-ko="단가는 일본어의 음을 기준으로 5·7·5·7·7, 총 31음의 리듬이 기본이에요. WAKA ORACLE에서는 『오구라 백인일수』에서 고른 와카 80수를 만날 수 있어요." data-guide-ja="短歌は五・七・五・七・七、計31音を基本とします。WAKA ORACLEでは『小倉百人一首』から選んだ80首に出会えます。">단가는 일본어의 음을 기준으로 5·7·5·7·7, 총 31음의 리듬이 기본이에요. WAKA ORACLE에서는 『오구라 백인일수』에서 고른 와카 80수를 만날 수 있어요.</p>
+        </section>
+        <section aria-labelledby="waka-guide-how-heading">
+          <h3 id="waka-guide-how-heading" class="waka-guide-block-title"><span class="waka-guide-number">02</span><span  data-guide-ko="이용 방법" data-guide-ja="アプリの使い方">이용 방법</span></h3>
+          <div class="waka-guide-steps">
+            <div class="waka-guide-step"><span class="waka-guide-step-icon" aria-hidden="true">♡</span><div><span class="waka-guide-step-title" data-guide-ko="오늘의 감정 고르기" data-guide-ja="ときめきなど、今日の気持ちを選ぶ">오늘의 감정 고르기</span><p class="waka-guide-step-desc" data-guide-ko="8가지 감정 중 지금 마음과 가까운 것을 선택하고 확인하세요." data-guide-ja="8つの感情から今の気分を選び、確認ボタンを押します。">8가지 감정 중 지금 마음과 가까운 것을 선택하고 확인하세요.</p></div></div>
+<div class="waka-guide-step"><span class="waka-guide-step-icon" aria-hidden="true">✦</span><div><span class="waka-guide-step-title" data-guide-ko="와카 카드 뽑고 뒤집기" data-guide-ja="和歌カードを引いてめくる">와카 카드 뽑고 뒤집기</span><p class="waka-guide-step-desc" data-guide-ko="카드를 뽑고 직접 눌러 뒤집어야 원문과 운세가 나타나요." data-guide-ja="カードを引き、自分でタップしてめくると和歌とおみくじが現れます。">카드를 뽑고 직접 눌러 뒤집어야 원문과 운세가 나타나요.</p></div></div>
+<div class="waka-guide-step"><span class="waka-guide-step-icon" aria-hidden="true">文</span><div><span class="waka-guide-step-title" data-guide-ko="시와 운세 감상하기" data-guide-ja="和歌とおみくじを味わう">시와 운세 감상하기</span><p class="waka-guide-step-desc" data-guide-ko="와카 해석, 어휘·문법 설명, 오늘의 행운 아이템을 확인해요." data-guide-ja="和歌の訳・語彙・文法解説とラッキーアイテムを確認します。">와카 해석, 어휘·문법 설명, 오늘의 행운 아이템을 확인해요.</p></div></div>
+<div class="waka-guide-step"><span class="waka-guide-step-icon" aria-hidden="true">▣</span><div><span class="waka-guide-step-title" data-guide-ko="나의 도감 · 사진 AR" data-guide-ja="マイ図鑑・写真AR">나의 도감 · 사진 AR</span><p class="waka-guide-step-desc" data-guide-ko="수집한 와카를 도감에서 다시 읽고 사진 위에 글귀도 올릴 수 있어요." data-guide-ja="集めた和歌を図鑑で読み返し、写真に歌を重ねて保存できます。">수집한 와카를 도감에서 다시 읽고 사진 위에 글귀도 올릴 수 있어요.</p></div></div>
+<div class="waka-guide-step"><span class="waka-guide-step-icon" aria-hidden="true">✿</span><div><span class="waka-guide-step-title" data-guide-ko="마음 광장에 한마디 남기기" data-guide-ja="心の広場に思いを残す">마음 광장에 한마디 남기기</span><p class="waka-guide-step-desc" data-guide-ko="와카를 읽고 떠오른 감상이나 오늘의 다짐을 적어 보세요." data-guide-ja="和歌を読んだ感想や今日の決意を書き残せます。">와카를 읽고 떠오른 감상이나 오늘의 다짐을 적어 보세요.</p></div></div>
+          </div>
+        </section>
+      </div>
+      <p class="waka-guide-caution" data-guide-ko="※ 감정 분류와 오늘의 운세는 작품에서 영감을 받은 현대적 해석입니다. 미래를 예언하지 않아요." data-guide-ja="※ 感情の分類とおみくじは和歌に着想を得た現代的な表現であり、未来を予言するものではありません。">※ 감정 분류와 오늘의 운세는 작품에서 영감을 받은 현대적 해석입니다. 미래를 예언하지 않아요.</p>
+    </div>
+    <footer class="waka-guide-footer">
+      <label class="waka-guide-skip"><input type="checkbox" id="waka-guide-skip-today" /><span  data-guide-ko="오늘 하루 보지 않기" data-guide-ja="今日は表示しない">오늘 하루 보지 않기</span></label>
+      <div class="waka-guide-footer-controls">
+        <div class="waka-guide-language" role="group" aria-label="안내 언어 선택 / 案内の言語選択">
+          <button type="button" data-guide-select-lang="ko" aria-pressed="true">한국어</button>
+          <button type="button" data-guide-select-lang="ja" aria-pressed="false">日本語</button>
+        </div>
+        <button type="button" id="waka-guide-start" class="waka-guide-start">시작하기 ✦</button>
+      </div>
+    </footer>
+  </section>
+</div>
+
   <header class="site-header">
     <div class="shell header-inner">
       <button class="brand" type="button" data-goto="presentation" aria-label="처음 화면으로 이동">
@@ -1628,7 +1674,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
     }
     $$('[data-goto]').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.goto)));
-    $('#learn-more').addEventListener('click',()=>$('#how-it-works').scrollIntoView({behavior:'smooth'}));
+    $('#learn-more').addEventListener('click',()=>window.wakaWelcomeOpen?.());
     $$('[data-mood]').forEach(btn=>btn.addEventListener('click',()=>selectMood(btn.dataset.mood)));
     $('#mood-confirm').addEventListener('click',()=>{
       if(!currentMood){notify(T('먼저 오늘의 감정을 선택해 주세요.','先に今日の気持ちを選んでください。'));return}
@@ -3032,5 +3078,150 @@ html {scroll-padding-top:16px!important}
  #view-presentation .hero-lead{color:#131016!important;}
 }
 </style>
+<style id="waka-guide-style">\n/* WAKA ORACLE: first-visit waka introduction and usage guide. */
+body.waka-guide-open{overflow:hidden!important}
+#waka-guide-layer[hidden]{display:none!important}
+#waka-guide-layer{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(33,25,35,.69);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);overscroll-behavior:contain}
+#waka-guide-layer,#waka-guide-layer *{box-sizing:border-box}
+.waka-guide-dialog{width:min(866px,100%);max-height:min(90dvh,850px);display:flex;flex-direction:column;position:relative;overflow:hidden;background:#fffaf6;color:#342e34;border:1px solid #dfc6b0;border-radius:22px;box-shadow:0 24px 100px rgba(28,18,32,.36),inset 0 0 0 5px rgba(255,255,255,.7);font-family:var(--sans),sans-serif;isolation:isolate}
+.waka-guide-dialog::before{content:'';position:absolute;inset:5px;z-index:-1;pointer-events:none;border:1px solid rgba(184,143,103,.17);border-radius:17px}
+.waka-guide-top{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;position:relative;padding:29px 34px 18px;background:radial-gradient(circle at 90% 0,rgba(248,196,209,.34),transparent 40%),linear-gradient(115deg,#fff8f0,#fffcfa);border-bottom:1px solid #efe2d7}
+.waka-guide-top-kicker{margin:0 0 7px;font-size:11px;font-weight:700;letter-spacing:.2em;color:#ae7e83}
+.waka-guide-heading{font:700 clamp(23px,3vw,32px)/1.35 var(--serif);letter-spacing:-.045em;margin:0 0 7px;color:#55404b;word-break:keep-all}
+.waka-guide-lead{font-size:12px;line-height:1.7;color:#8e777b;margin:0}
+.waka-guide-close{flex:none;width:38px;height:38px;display:grid;place-items:center;border:1px solid #e7d2cf;border-radius:50%;background:rgba(255,255,255,.91);color:#805c68;font-size:24px;line-height:1;cursor:pointer;transition:background .15s,transform .15s}
+.waka-guide-close:hover{background:#f9e4e8;transform:rotate(8deg)}
+.waka-guide-content{overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:25px 34px 19px;scrollbar-width:thin;scrollbar-color:#ddbcc3 transparent}
+.waka-guide-columns{display:grid;grid-template-columns:minmax(0,.91fr) minmax(0,1.09fr);align-items:start;gap:27px}
+.waka-guide-block-title{display:flex;gap:10px;align-items:center;margin:0 0 11px;color:#694954;font:700 18px/1.5 var(--serif);letter-spacing:-.03em}
+.waka-guide-block-title .waka-guide-number{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;border:1px solid #dfb7a5;color:#aa7880;background:#fff6f4;font:700 11px var(--sans);letter-spacing:0}
+.waka-guide-about{border-radius:16px;padding:20px 20px 19px;background:linear-gradient(145deg,#fef1ef,#fffaf5 64%);border:1px solid #f0dad7}
+.waka-guide-copy{margin:0 0 12px;font-size:13px;line-height:1.95;word-break:keep-all;color:#65585a}
+.waka-guide-copy:last-child{margin-bottom:0}
+.waka-guide-meter{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:16px 0 13px;padding:15px 8px;border-top:1px solid #edd2ce;border-bottom:1px solid #edd2ce;color:#aa667b;font-family:'Shippori Mincho',var(--serif);font-size:24px;letter-spacing:.025em;font-weight:700}
+.waka-guide-meter span{font:500 11px/1.4 var(--sans);color:#9b7b80;letter-spacing:0}
+.waka-guide-steps{display:grid;gap:10px}
+.waka-guide-step{display:flex;align-items:flex-start;gap:11px;padding:10px 12px;border:1px solid #eee2d8;border-radius:12px;background:#fffdfb}
+.waka-guide-step-icon{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:17px;background:#f9ebed;color:#b46779}
+.waka-guide-step-title{display:block;color:#573e47;font-size:13px;font-weight:700;line-height:1.5;margin:0 0 3px}
+.waka-guide-step-desc{display:block;color:#7f7073;font-size:12px;line-height:1.65;word-break:keep-all;margin:0}
+.waka-guide-caution{font-size:11px;line-height:1.7;color:#8f7979;margin:15px 0 0;text-align:center}
+.waka-guide-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:17px 34px 20px;background:#fffaf7;border-top:1px solid #efe3d9}
+.waka-guide-skip{display:inline-flex;align-items:center;gap:9px;cursor:pointer;color:#76696a;font-size:12px;line-height:1.5;user-select:none}
+.waka-guide-skip input{width:17px;height:17px;margin:0;accent-color:#ba6078;cursor:pointer}
+.waka-guide-footer-controls{display:flex;gap:8px;align-items:center;margin-left:auto}
+.waka-guide-language{display:inline-flex;gap:2px;padding:3px;border:1px solid #ecd5db;border-radius:999px;background:#f8ebed}
+.waka-guide-language button{padding:7px 10px;background:transparent;border:0;border-radius:999px;font-size:11px;color:#956d79}
+.waka-guide-language button[aria-pressed="true"]{background:#fff;color:#9e4662;box-shadow:0 2px 7px #ae8b8c28;font-weight:700}
+.waka-guide-start{min-height:41px;padding:10px 19px;border:0;border-radius:10px;background:#bb6579;color:white;font-weight:700;font-size:13px;box-shadow:0 5px 14px rgba(170,90,112,.22)}
+.waka-guide-start:hover{background:#ab4f69}
+#waka-guide-layer :is(button,input):focus-visible{outline:3px solid #bb6d87;outline-offset:3px}
+@media(max-width:700px){
+ #waka-guide-layer{padding:9px;align-items:center}
+ .waka-guide-dialog{max-height:calc(100dvh - 18px);border-radius:16px}
+ .waka-guide-top{padding:22px 20px 14px}
+ .waka-guide-top-kicker{font-size:10px}
+ .waka-guide-heading{font-size:23px}
+ .waka-guide-content{padding:17px 18px}
+ .waka-guide-columns{grid-template-columns:minmax(0,1fr);gap:20px}
+ .waka-guide-about{padding:16px 16px 15px}
+ .waka-guide-block-title{font-size:16px;margin-bottom:10px}
+ .waka-guide-copy{font-size:12px;line-height:1.85}
+ .waka-guide-meter{font-size:22px;margin:10px 0;padding:11px 6px}
+ .waka-guide-steps{gap:8px}
+ .waka-guide-step{padding:9px 10px}
+ .waka-guide-footer{padding:11px 17px 14px;gap:11px}
+ .waka-guide-footer-controls{width:100%;justify-content:space-between;margin-left:0}
+ .waka-guide-start{flex:1;text-align:center}
+}
+@media(max-height:520px) and (min-width:701px){.waka-guide-dialog{max-height:96dvh}.waka-guide-top{padding-top:13px;padding-bottom:10px}.waka-guide-content{padding-top:10px;padding-bottom:10px}.waka-guide-footer{padding:10px 24px}}
+@media(prefers-reduced-motion:reduce){.waka-guide-close{transition:none}}
+</style>
+<script id="waka-guide-script">
+(function(){
+  'use strict';
+  const overlay=document.getElementById('waka-guide-layer');
+  if(!overlay)return;
+  const dialog=overlay.querySelector('.waka-guide-dialog');
+  const skip=document.getElementById('waka-guide-skip-today');
+  const closeButton=document.getElementById('waka-guide-close');
+  const startButton=document.getElementById('waka-guide-start');
+  const storageKey='waka-oracle-guide-dismissed-date-v1';
+  let focusBefore=null;
+
+  // Local calendar date, not a 24-hour timer: resets after midnight on the visitor's device.
+  function localDate(){
+    const now=new Date();
+    return [now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('-');
+  }
+  function language(){return document.documentElement.lang==='ja'?'ja':'ko'}
+  function translate(){
+    const lang=language();
+    overlay.querySelectorAll('[data-guide-ko][data-guide-ja]').forEach(node=>{
+      node.textContent=node.getAttribute('data-guide-'+lang);
+    });
+    startButton.textContent=lang==='ja'?'はじめる ✦':'시작하기 ✦';
+    closeButton.setAttribute('aria-label',lang==='ja'?'案内を閉じる':'안내 닫기');
+    closeButton.title=lang==='ja'?'閉じる':'닫기';
+    overlay.querySelectorAll('[data-guide-select-lang]').forEach(button=>{
+      button.setAttribute('aria-pressed',String(button.dataset.guideSelectLang===lang));
+    });
+  }
+  function openGuide(){
+    if(!overlay.hidden)return;
+    focusBefore=document.activeElement;
+    skip.checked=false;
+    translate();
+    overlay.hidden=false;
+    document.body.classList.add('waka-guide-open');
+    dialog.scrollTop=0;
+    overlay.querySelector('.waka-guide-content').scrollTop=0;
+    closeButton.focus({preventScroll:true});
+  }
+  function closeGuide(){
+    if(overlay.hidden)return;
+    if(skip.checked){
+      try{localStorage.setItem(storageKey,localDate());}catch(_err){}
+    }
+    overlay.hidden=true;
+    document.body.classList.remove('waka-guide-open');
+    if(focusBefore && focusBefore.isConnected && typeof focusBefore.focus==='function'){
+      focusBefore.focus({preventScroll:true});
+    }
+  }
+  closeButton.addEventListener('click',closeGuide);
+  startButton.addEventListener('click',closeGuide);
+  overlay.addEventListener('click',(event)=>{if(event.target===overlay)closeGuide()});
+  document.addEventListener('keydown',(event)=>{
+    if(overlay.hidden)return;
+    if(event.key==='Escape'){event.preventDefault();closeGuide();return}
+    if(event.key!=='Tab')return;
+    const focusable=Array.from(overlay.querySelectorAll('button:not([disabled]),input:not([disabled])'));
+    if(!focusable.length)return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey && (document.activeElement===first || !overlay.contains(document.activeElement))){
+      event.preventDefault();last.focus();
+    }else if(!event.shiftKey && (document.activeElement===last || !overlay.contains(document.activeElement))){
+      event.preventDefault();first.focus();
+    }
+  });
+  overlay.querySelectorAll('[data-guide-select-lang]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const main=document.querySelector('.site-header [data-select-lang="'+button.dataset.guideSelectLang+'"]');
+      if(main)main.click();
+      translate();
+    });
+  });
+  document.querySelectorAll('[data-select-lang]').forEach(button=>{
+    button.addEventListener('click',()=>translate());
+  });
+  // Make the existing "How do I use it?" button show this guide again.
+  window.wakaWelcomeOpen=openGuide;
+  translate();
+  let suppressed=false;
+  try{suppressed=localStorage.getItem(storageKey)===localDate();}catch(_err){}
+  if(!suppressed)openGuide();
+})();
+</script>
 </body>
 </html>
