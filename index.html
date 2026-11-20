@@ -946,6 +946,45 @@ html[lang="ko"] body,html[lang="ja"] body{font-family:var(--sans)!important}
 html[lang="ko"] button,html[lang="ko"] input,html[lang="ko"] textarea,html[lang="ko"] select,
 html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang="ja"] select{font-family:var(--sans)}
 </style>
+
+<style id="waka-vocab-bookmark-style">
+/* Small bookmark toggles in both the draw result and archive details. */
+.vocab-entry{position:relative}
+.vocab-entry>.vocab-word{padding-right:30px;min-width:0}
+.vocab-bookmark-button{position:absolute;right:7px;top:7px;width:31px;height:31px;border-radius:50%;border:1px solid #dfc5ce;background:#fff9fb;color:#a27d91;display:grid;place-items:center;padding:0;font-family:Arial,sans-serif;font-size:21px;line-height:1;cursor:pointer;z-index:1;transition:background .15s,border .15s,color .15s}
+.vocab-bookmark-button:hover,.vocab-bookmark-button:focus-visible{background:#f6e3eb;border-color:#bf8098;color:#934667;outline-offset:2px}
+.vocab-bookmark-button.is-saved{background:#fff0bd;color:#a06a1b;border-color:#d7b875}
+.vocab-bookmark-hint{font-size:11px;color:#916b7e;margin:0 0 9px;line-height:1.6}
+/* Review page: use the original washi/pink vocabulary appearance. */
+.waka-study-shell{padding-top:40px;padding-bottom:85px;min-height:70vh}
+.waka-study-header{display:flex;justify-content:space-between;align-items:center;gap:22px;margin:0 0 20px;padding:25px 28px;border-radius:19px;background:#fff9f4ed;border:1px solid #ecd8d1;box-shadow:0 8px 30px #926c7920}
+.waka-study-header h2{font-family:var(--serif);font-size:clamp(25px,4vw,36px);color:#72495d;line-height:1.3;margin:5px 0 8px}
+.waka-study-header p{margin:0;color:#826b75;font-size:14px;line-height:1.8}
+.waka-study-back{flex-shrink:0}
+.waka-study-tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;background:#fff9f4ed;border:1px solid #ecd8d1;border-radius:15px;padding:13px 16px;margin-bottom:18px}
+.waka-study-count{display:flex;align-items:center;gap:7px;color:#94627b;font-size:15px;white-space:nowrap}
+.waka-study-count>span{color:#bc8a37;font-size:19px}
+.waka-study-search-label{flex:1;min-width:180px}
+#study-search{display:block;width:100%;min-height:40px;background:#fff;border:1px solid #dfc5ce;border-radius:10px;padding:9px 12px;color:#68465c;font:inherit;font-size:14px}
+#study-search:focus-visible{outline:2px solid #ba849c;outline-offset:1px}
+#study-hide-toggle[aria-pressed="true"]{background:#7c526d;color:#fff;border-color:#7c526d}
+.waka-study-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.waka-study-card{position:relative;min-width:0;min-height:144px;background:#fffaf8f2;border:1px solid #e8d1d5;border-radius:13px;padding:15px 16px;box-shadow:0 3px 14px #7c5c6b15}
+.waka-study-card .vocab-word{padding-right:28px;line-height:2;font-size:23px}
+.waka-study-card .vocab-meaning{font-size:13px;line-height:1.7;color:#66565c;margin-top:6px;white-space:pre-wrap;overflow-wrap:anywhere}
+.waka-study-card .waka-study-origin{font-size:11px;color:#927984;margin-top:12px;line-height:1.5}
+.waka-study-card .vocab-bookmark-button{top:11px;right:11px}
+#study-results.hide-meanings .vocab-meaning{visibility:hidden}
+.waka-study-empty{border:1px dashed #d8b5c4;border-radius:16px;padding:38px 22px;text-align:center;background:#fffaf9ed;color:#795d6e}
+.waka-study-empty[hidden]{display:none!important}
+.waka-study-empty-icon{font-size:36px;color:#b699a3}
+.waka-study-empty h3{font-size:18px;margin:6px 0 9px}
+.waka-study-empty p{font-size:13px;line-height:1.7;margin:0 0 18px}
+.waka-study-notice{font-size:12px;line-height:1.8;color:#7b6a72;margin:20px 3px 0}
+@media(max-width:820px){.waka-study-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.waka-study-shell{padding-top:17px;padding-bottom:65px}.waka-study-header{padding:19px 16px;flex-direction:column;align-items:stretch;gap:15px}.waka-study-header p{font-size:12px}.waka-study-back{align-self:flex-start}.waka-study-tools{gap:8px;padding:12px}.waka-study-count{width:100%}.waka-study-search-label{min-width:0;flex:1}.waka-study-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.waka-study-card{padding:12px 10px;min-height:146px}.waka-study-card .vocab-word{font-size:17px;padding-right:25px}.waka-study-card .vocab-meaning{font-size:11px}.vocab-entry>.vocab-word{padding-right:25px}.vocab-bookmark-button{width:29px;height:29px;font-size:20px}}
+@media(max-width:360px){.waka-study-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 
@@ -1036,7 +1075,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
         <h2 class="fantasy-shortcuts-title"><span aria-hidden="true">✿</span> 와카 오라클에서 할 수 있는 것 <span aria-hidden="true">✿</span></h2>
         <div class="fantasy-shortcuts-grid">
           <button type="button" data-goto="collection" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="21" rx="2" transform="rotate(-12 4 8)"/><rect x="12" y="4" width="16" height="21" rx="2" transform="rotate(10 12 4)"/><path d="M20 11v8M16 15h8"/></svg></span><strong>와카 수집</strong><small>80편의 와카</small></button>
-          <button type="button" id="fantasy-study" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8c-4-3-9-3-13-2v20c4-1 9-1 13 2 4-3 9-3 13-2V6c-4-1-9-1-13 2Z"/><path d="M16 8v20"/></svg></span><strong>학습하기</strong><small>어휘·한자 해설</small></button>
+          <button type="button" id="fantasy-study" data-goto="study" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8c-4-3-9-3-13-2v20c4-1 9-1 13 2 4-3 9-3 13-2V6c-4-1-9-1-13 2Z"/><path d="M16 8v20"/></svg></span><strong>학습하기</strong><small>어휘·한자 해설</small></button>
           <button type="button" data-goto="community" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 28Q14 9 27 3Q29 18 11 25Z" fill="currentColor" fill-opacity=".19"/><path d="M6 27Q13 19 24 8M11 22l-4-7M15 17l-3-7M18 15l8 1"/></svg></span><strong>마음 기록</strong><small>시·다짐 작성</small></button>
           <button type="button" data-goto="demo" class="fantasy-shortcut"><span class="fantasy-shortcut-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h7l2-4h8l2 4h7v18H3Z"/><circle cx="16" cy="19" r="6"/><path d="M7 14h2"/></svg></span><strong>AR로 기록</strong><small>나만의 와카 사진</small></button>
         </div>
@@ -1132,7 +1171,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
               <p class="poem-original waka-with-ruby" id="poem-original"></p><p class="translated" id="poem-translation"></p>
               <p class="interpret-notice">※ 우리말은 뜻을 이해하기 위한 의역입니다. 감정 분류는 현대적 감상으로, 시인의 원래 의도를 단정하지 않습니다.</p>
               <div class="poetry-explainer">
-                <div class="explainer-block"><span class="explainer-index">01 · WORD & ORIGIN</span><h4>시 속 한자·고전어 전체 풀이</h4><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><div class="vocab-list" id="poem-vocab"></div><div class="classical-note" id="poem-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div class="term-chip" id="poem-term"></div><p id="poem-usage"></p></div></div>
+                <div class="explainer-block"><span class="explainer-index">01 · WORD & ORIGIN</span><h4>시 속 한자·고전어 전체 풀이</h4><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><p class="vocab-bookmark-hint">☆을 누르면 학습하기에 저장돼요.</p><div class="vocab-list" id="poem-vocab"></div><div class="classical-note" id="poem-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div class="term-chip" id="poem-term"></div><p id="poem-usage"></p></div></div>
                 <div class="explainer-block"><span class="explainer-index">02 · HISTORICAL CONTEXT</span><h4>와카에 담긴 시대와 배경</h4><p id="poem-background"></p></div>
               </div>
               <div class="advice"><strong>✦ 오늘의 마음과 연결하기</strong><span id="poem-advice"></span></div>
@@ -1202,6 +1241,34 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       </div>
     </section>
 
+
+    <!-- Saved vocabulary review (local to this browser) -->
+    <section id="view-study" class="view" aria-label="저장한 어휘 학습">
+      <div class="shell waka-study-shell">
+        <header class="waka-study-header">
+          <div>
+            <span class="section-kicker">MY WAKA WORDS</span>
+            <h2 data-study-ko="나의 어휘 북마크" data-study-ja="私の語彙ブックマーク">나의 어휘 북마크</h2>
+            <p data-study-ko="와카에서 별표를 누른 한자와 고전어를 여기서 다시 공부해요." data-study-ja="和歌で星を付けた漢字や古語を、ここで復習できます。">와카에서 별표를 누른 한자와 고전어를 여기서 다시 공부해요.</p>
+          </div>
+          <button type="button" class="btn btn-small btn-outline waka-study-back" data-goto="presentation" data-study-ko="← 처음으로" data-study-ja="← ホームへ">← 처음으로</button>
+        </header>
+        <section class="waka-study-tools" aria-label="북마크 학습 도구">
+          <div class="waka-study-count"><span aria-hidden="true">★</span> <strong id="study-count" aria-live="polite">0개 저장</strong></div>
+          <label class="waka-study-search-label"><span class="sr-only" data-study-ko="저장한 단어 검색" data-study-ja="保存した語を検索">저장한 단어 검색</span><input type="search" id="study-search" placeholder="한자·읽기·뜻 검색" autocomplete="off" /></label>
+          <button type="button" id="study-hide-toggle" class="btn btn-small btn-outline" aria-pressed="false">뜻 가리기</button>
+        </section>
+        <div id="study-empty" class="waka-study-empty" hidden>
+          <span aria-hidden="true" class="waka-study-empty-icon">☆</span>
+          <h3 id="study-empty-title">아직 저장한 단어가 없어요.</h3>
+          <p id="study-empty-desc">와카를 뽑아 한자·고전어 풀이의 ☆을 눌러보세요.</p>
+          <button type="button" class="btn btn-small btn-primary" data-goto="demo" data-study-ko="와카 뽑으러 가기 →" data-study-ja="和歌を引きに行く →">와카 뽑으러 가기 →</button>
+        </div>
+        <div id="study-results" class="waka-study-grid" aria-label="북마크한 단어 목록"></div>
+        <p class="waka-study-notice" data-study-ko="✿ 북마크는 이 기기의 현재 브라우저에 저장돼요. 브라우저 데이터를 삭제하거나 다른 기기를 사용하면 이어지지 않아요." data-study-ja="✿ ブックマークはこのブラウザ内に保存されます。データを削除したり別の端末を使ったりすると、引き継がれません。">✿ 북마크는 이 기기의 현재 브라우저에 저장돼요. 브라우저 데이터를 삭제하거나 다른 기기를 사용하면 이어지지 않아요.</p>
+      </div>
+    </section>
+
     <section id="view-collection" class="view" aria-label="나의 와카 도감">
       <div class="shell archive-wrap">
         <div class="archive-header"><span class="section-kicker">MY WAKA COLLECTION</span><h2>나만의 와카 도감</h2><p>카드를 직접 뒤집어 만난 와카가 여기에 모여요.<br>획득한 카드만 자세한 원문·운세·그날의 마음을 다시 볼 수 있어요.</p></div>
@@ -1215,7 +1282,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     </section>
   </main>
 
-  <dialog id="card-detail-dialog" class="detail-dialog" aria-label="수집한 와카 상세 보기"><div class="detail-close-bar"><button type="button" id="detail-close">닫기 ✕</button></div><div class="detail-inner"><img id="detail-img" class="detail-img" alt="수집한 카드 일러스트"><div class="detail-info"><span id="detail-number" class="detail-number"></span><h3 id="detail-author"></h3><div class="poem-study-toolbar"><span class="poem-study-label">✦ 원문 읽기 도움</span><button type="button" class="ruby-switch" data-furigana-toggle aria-pressed="false" aria-label="와카 원문의 후리가나 켜기">후리가나 OFF</button></div><p id="detail-poem" class="detail-original waka-with-ruby"></p><p id="detail-translation"></p><section class="detail-lexicon"><strong>시 속 한자·고전어 전체 풀이</strong><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><div class="vocab-list" id="detail-vocab"></div><div class="classical-note" id="detail-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div id="detail-term"></div></div></section><p><strong>시대적 배경</strong><br><span id="detail-background"></span></p><p><strong>오늘의 운세</strong><br><span id="detail-fortune"></span></p><p><strong>행운 아이템 · 색상</strong><br><span id="detail-item"></span></p><div class="detail-save-wrap"><button type="button" class="btn btn-small btn-primary" id="archive-to-ar">✧ 이 와카로 사진 꾸미기 (AR)</button><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-detail-card">↓ 이 카드 이미지 저장</button></div><div class="detail-footer"><p class="detail-meta"><strong>획득일</strong> · <span id="detail-date"></span></p><p class="detail-meta"><strong>그날의 마음</strong> · <span id="detail-note"></span></p></div></div></div></dialog>
+  <dialog id="card-detail-dialog" class="detail-dialog" aria-label="수집한 와카 상세 보기"><div class="detail-close-bar"><button type="button" id="detail-close">닫기 ✕</button></div><div class="detail-inner"><img id="detail-img" class="detail-img" alt="수집한 카드 일러스트"><div class="detail-info"><span id="detail-number" class="detail-number"></span><h3 id="detail-author"></h3><div class="poem-study-toolbar"><span class="poem-study-label">✦ 원문 읽기 도움</span><button type="button" class="ruby-switch" data-furigana-toggle aria-pressed="false" aria-label="와카 원문의 후리가나 켜기">후리가나 OFF</button></div><p id="detail-poem" class="detail-original waka-with-ruby"></p><p id="detail-translation"></p><section class="detail-lexicon"><strong>시 속 한자·고전어 전체 풀이</strong><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><p class="vocab-bookmark-hint">☆을 누르면 학습하기에 저장돼요.</p><div class="vocab-list" id="detail-vocab"></div><div class="classical-note" id="detail-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div id="detail-term"></div></div></section><p><strong>시대적 배경</strong><br><span id="detail-background"></span></p><p><strong>오늘의 운세</strong><br><span id="detail-fortune"></span></p><p><strong>행운 아이템 · 색상</strong><br><span id="detail-item"></span></p><div class="detail-save-wrap"><button type="button" class="btn btn-small btn-primary" id="archive-to-ar">✧ 이 와카로 사진 꾸미기 (AR)</button><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-detail-card">↓ 이 카드 이미지 저장</button></div><div class="detail-footer"><p class="detail-meta"><strong>획득일</strong> · <span id="detail-date"></span></p><p class="detail-meta"><strong>그날의 마음</strong> · <span id="detail-note"></span></p></div></div></div></dialog>
   <footer><div class="shell footer-inner"><span class="footer-brand">和 · 오늘의 와카 오라클</span><span>일본 고전 문학 × 감정 기록 · 경진대회 시연용 웹앱</span><span>Made with a little poetry ✿</span></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1338,6 +1405,118 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
         return {word,reading,ko:row[1],ja:row[2]};
       });
     }
+
+    // Lexicon bookmarks — stored separately from the card collection and diary.
+    const WAKA_VOCAB_BOOKMARK_KEY='waka-oracle-vocab-bookmarks-v1';
+    function loadVocabBookmarks(){
+      try{
+        const value=JSON.parse(localStorage.getItem(WAKA_VOCAB_BOOKMARK_KEY)||'[]');
+        if(!Array.isArray(value))return [];
+        const seen=new Set();
+        return value.filter(item=>{
+          if(!item || typeof item.word!=='string' || typeof item.reading!=='string' || !Number.isInteger(Number(item.deckId)))return false;
+          const key=item.word+'\u0001'+item.reading;
+          if(seen.has(key))return false;
+          seen.add(key);
+          return true;
+        }).slice(0,1200);
+      }catch(e){return []}
+    }
+    let vocabBookmarks=loadVocabBookmarks();
+    let studySearchText='';
+    let studyHideMeanings=false;
+    const vocabKey=(word,reading)=>word+'\u0001'+reading;
+    const isVocabSaved=(word,reading)=>vocabBookmarks.some(x=>vocabKey(x.word,x.reading)===vocabKey(word,reading));
+    function saveVocabBookmarks(){
+      try{localStorage.setItem(WAKA_VOCAB_BOOKMARK_KEY,JSON.stringify(vocabBookmarks))}
+      catch(e){notify(T('브라우저 저장공간을 사용할 수 없어 이번 접속 중에만 유지돼요.','ブラウザに保存できないため、今回の利用中だけ残ります。'));}
+    }
+    function bookmarkButtonHTML(word,reading,deckId){
+      const saved=isVocabSaved(word,reading);
+      return `<button type="button" class="vocab-bookmark-button${saved?' is-saved':''}" data-vocab-bookmark data-word="${escapeHTML(word)}" data-reading="${escapeHTML(reading)}" data-deck="${Number(deckId)}" aria-pressed="${saved}" aria-label="${escapeHTML(T(saved?word+' 북마크 해제':word+' 북마크 저장',saved?word+'の保存を解除':word+'を保存'))}" title="${escapeHTML(T(saved?'북마크 해제':'북마크 저장',saved?'保存を解除':'ブックマークに保存'))}">${saved?'★':'☆'}</button>`;
+    }
+    function updateBookmarkButtons(){
+      document.querySelectorAll('[data-vocab-bookmark]').forEach(button=>{
+        const saved=isVocabSaved(button.dataset.word,button.dataset.reading);
+        button.classList.toggle('is-saved',saved);
+        button.textContent=saved?'★':'☆';
+        button.setAttribute('aria-pressed',String(saved));
+        button.setAttribute('aria-label',T(`${button.dataset.word} 북마크 ${saved?'해제':'저장'}`,`${button.dataset.word}を${saved?'保存から削除':'保存'}`));
+        button.title=T(saved?'북마크 해제':'북마크 저장',saved?'保存を解除':'ブックマークに保存');
+      });
+    }
+    function toggleVocabBookmark(word,reading,deckId){
+      const existing=vocabBookmarks.findIndex(x=>vocabKey(x.word,x.reading)===vocabKey(word,reading));
+      if(existing>=0)vocabBookmarks.splice(existing,1);
+      else vocabBookmarks.unshift({word,reading,deckId:Number(deckId)});
+      saveVocabBookmarks();
+      updateBookmarkButtons();
+      renderSavedVocab();
+      notify(existing>=0?T(`${word} 북마크를 해제했어요.`,`${word}の保存を解除しました。`):T(`${word} 북마크를 저장했어요.`,`${word}をブックマークしました。`));
+    }
+    function savedVocabEntry(item){
+      const from=wakaDatabase.find(w=>w.deckId===Number(item.deckId))||null;
+      if(from){
+        const entry=kanjiEntriesFor(from).find(row=>row.word===item.word && row.reading===item.reading);
+        if(entry)return {...entry,deckId:from.deckId,author:from.author};
+      }
+      for(const w of wakaDatabase){
+        const entry=kanjiEntriesFor(w).find(row=>row.word===item.word && row.reading===item.reading);
+        if(entry)return {...entry,deckId:w.deckId,author:w.author};
+      }
+      return null;
+    }
+    function renderStudyLanguage(){
+      document.querySelectorAll('[data-study-ko][data-study-ja]').forEach(el=>{
+        el.textContent=T(el.dataset.studyKo,el.dataset.studyJa);
+      });
+      const search=document.getElementById('study-search');
+      if(search)search.placeholder=T('한자·읽기·뜻 검색','漢字・読み方・意味で検索');
+      const hide=document.getElementById('study-hide-toggle');
+      if(hide){
+        hide.textContent=studyHideMeanings?T('뜻 보이기','意味を表示'):T('뜻 가리기','意味を隠す');
+        hide.setAttribute('aria-pressed',String(studyHideMeanings));
+      }
+      document.querySelectorAll('.vocab-bookmark-hint').forEach(el=>{
+        el.textContent=T('☆을 누르면 학습하기에 저장돼요.','☆を押すと、学習ページに保存されます。');
+      });
+    }
+    function renderSavedVocab(){
+      const grid=document.getElementById('study-results');
+      if(!grid)return;
+      renderStudyLanguage();
+      document.getElementById('study-count').textContent=T(`${vocabBookmarks.length}개 저장`,`${vocabBookmarks.length}語保存`);
+      const entries=vocabBookmarks.map(savedVocabEntry).filter(Boolean);
+      const query=studySearchText.trim().toLocaleLowerCase();
+      const filtered=entries.filter(e=>!query||[e.word,e.reading,e.ko,e.ja,e.author,String(e.deckId)].some(t=>String(t).toLocaleLowerCase().includes(query)));
+      grid.classList.toggle('hide-meanings',studyHideMeanings);
+      grid.innerHTML=filtered.map(e=>{
+        const label=T('북마크 해제','保存を解除');
+        return `<article class="waka-study-card"><div class="vocab-word"><ruby>${escapeHTML(e.word)}<rp>（</rp><rt>${escapeHTML(e.reading)}</rt><rp>）</rp></ruby></div>`+
+        bookmarkButtonHTML(e.word,e.reading,e.deckId)+
+        `<div class="vocab-meaning">${escapeHTML(T(e.ko,e.ja))}</div>`+
+        `<div class="waka-study-origin">${escapeHTML(T('와카','和歌'))} NO. ${String(e.deckId).padStart(3,'0')} · ${escapeHTML(e.author)}</div></article>`;
+      }).join('');
+      const empty=document.getElementById('study-empty');
+      empty.hidden=filtered.length>0;
+      document.getElementById('study-empty-title').textContent=vocabBookmarks.length?T('검색 결과가 없어요.','検索結果がありません。'):T('아직 저장한 단어가 없어요.','まだ保存した語彙がありません。');
+      document.getElementById('study-empty-desc').textContent=vocabBookmarks.length?T('검색어를 바꿔보세요.','検索語を変えてみてください。'):T('와카를 뽑아 한자·고전어 풀이의 ☆을 눌러보세요.','和歌を引いて、漢字・古語の解説にある☆を押してください。');
+    }
+    document.addEventListener('click',event=>{
+      const button=event.target.closest?.('[data-vocab-bookmark]');
+      if(!button)return;
+      event.preventDefault();
+      toggleVocabBookmark(button.dataset.word,button.dataset.reading,button.dataset.deck);
+    });
+    document.getElementById('study-search').addEventListener('input',event=>{
+      studySearchText=event.target.value;
+      renderSavedVocab();
+    });
+    document.getElementById('study-hide-toggle').addEventListener('click',()=>{
+      studyHideMeanings=!studyHideMeanings;
+      renderSavedVocab();
+    });
+
     function rubyPoemHTML(w){
       return w.original.replace(/[一-龯々]+/g,word=>{
         const row=WAKA_KANJI_LEXICON[word];
@@ -1365,6 +1544,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       const entries=kanjiEntriesFor(w);
       document.getElementById(elementId).innerHTML=entries.map(({word,reading,ko,ja})=>
         `<div class="vocab-entry"><div class="vocab-word"><ruby>${escapeHTML(word)}<rp>（</rp><rt>${escapeHTML(reading)}</rt><rp>）</rp></ruby></div>`+
+        bookmarkButtonHTML(word,reading,w.deckId)+
         `<div class="vocab-meaning">${escapeHTML(T(ko,ja))}</div></div>`
       ).join('');
       const note=WAKA_CLASSICAL_NOTES[w.deckId-1];
@@ -1510,7 +1690,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       try{localStorage.setItem(LANGUAGE_KEY,currentLang)}catch(e){}
       repaintStaticLanguage();
       $('#open-waka-ar').textContent=T('✧ 나만의 와카 AR로 기록하기','✧ 自分だけの和歌をARで記録する');
-      updateStats();renderEntries();renderArchive();renderCommunity();
+      updateStats();renderEntries();renderArchive();renderCommunity();renderSavedVocab();updateBookmarkButtons();
       document.querySelector('#today-label').textContent=dateLong(new Date());
       if(currentMood){
         document.querySelector('#selected-mood').textContent=MOOD_EMOJI[currentMood]+' '+moodLabel(currentMood);
@@ -1662,7 +1842,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     }
     function switchTab(tab){
       if(document.body.classList.contains('ritual-open'))closeRitual();
-      const target=['presentation','demo','community','collection'].includes(tab)?tab:'presentation';
+      const target=['presentation','demo','community','collection','study'].includes(tab)?tab:'presentation';
       $$('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+target));
       $$('.nav-btn').forEach(el=>{
         const active=el.dataset.goto===target;
@@ -1670,6 +1850,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
         active?el.setAttribute('aria-current','page'):el.removeAttribute('aria-current');
       });
       if(target==='collection')renderArchive();
+      if(target==='study')renderSavedVocab();
       if(target==='community')renderCommunity();
       window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
     }
@@ -2916,12 +3097,10 @@ body:has(#view-presentation.active)::before{opacity:.032}
 </script>
 
 <script>
-  document.getElementById('fantasy-study')?.addEventListener('click',()=>{
-    document.getElementById('how-it-works')?.scrollIntoView({behavior:'smooth',block:'start'});
-  });
+  // The study shortcut is handled by the shared [data-goto] page router.
   const fantasyLabels={
-    ko:['와카 오라클에서 할 수 있는 것','와카 수집','80편의 와카','학습하기','어휘·한자 해설','마음 기록','시·다짐 작성','AR로 기록','나만의 와카 사진'],
-    ja:['和歌オラクルでできること','和歌を集める','80首の和歌','和歌を学ぶ','語彙・漢字の解説','心を記す','詩・決意を書く','ARで記録','私だけの和歌写真']
+    ko:['와카 오라클에서 할 수 있는 것','와카 수집','80편의 와카','학습하기','북마크한 어휘 복습','마음 기록','시·다짐 작성','AR로 기록','나만의 와카 사진'],
+    ja:['和歌オラクルでできること','和歌を集める','80首の和歌','和歌を学ぶ','保存した語彙を復習','心を記す','詩・決意を書く','ARで記録','私だけの和歌写真']
   };
   function refreshFantasyLabels(){
     const labels=fantasyLabels[document.documentElement.lang==='ja'?'ja':'ko'];
