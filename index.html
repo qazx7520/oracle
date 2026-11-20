@@ -985,6 +985,28 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
 @media(max-width:560px){.waka-study-shell{padding-top:17px;padding-bottom:65px}.waka-study-header{padding:19px 16px;flex-direction:column;align-items:stretch;gap:15px}.waka-study-header p{font-size:12px}.waka-study-back{align-self:flex-start}.waka-study-tools{gap:8px;padding:12px}.waka-study-count{width:100%}.waka-study-search-label{min-width:0;flex:1}.waka-study-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.waka-study-card{padding:12px 10px;min-height:146px}.waka-study-card .vocab-word{font-size:17px;padding-right:25px}.waka-study-card .vocab-meaning{font-size:11px}.vocab-entry>.vocab-word{padding-right:25px}.vocab-bookmark-button{width:29px;height:29px;font-size:20px}}
 @media(max-width:360px){.waka-study-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="waka-bookmark-refinement-20261120">
+/* Navigation: always keep the bookmark immediately after the collection tab. */
+.site-header .nav{display:flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:4px}
+.site-header .nav .nav-bookmark-link{display:inline-flex!important;align-items:center;justify-content:center;visibility:visible!important;opacity:1!important;color:#994c6d;border:1px solid #e8b8ca;background:linear-gradient(160deg,#fff8fa,#fbe9ef);border-radius:999px;padding:9px 15px;min-width:70px;box-shadow:0 2px 9px #9e45651a;font-weight:700}
+.site-header .nav .nav-bookmark-link:hover{background:#f8e2eb;border-color:#d58ba7}
+.site-header .nav .nav-bookmark-link.active{background:linear-gradient(125deg,#c86789,#9b3d60);color:#fff;border-color:#e4a8bd}
+@media(max-width:730px){.site-header .nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;gap:3px}.site-header .nav .nav-bookmark-link{padding:8px 1px;min-width:0;border-radius:12px;font-size:clamp(9px,2.35vw,11px)}}
+/* Compact refined bookmark ribbon with tactile hover/selected states. */
+.vocab-entry{position:relative}
+.vocab-entry>.vocab-word{padding-right:43px}
+.vocab-bookmark-button{position:absolute;top:8px;right:8px;width:35px;height:35px;border:1px solid #e7cbd3;border-radius:12px;background:linear-gradient(145deg,#fffefd,#fff2f6);box-shadow:0 2px 7px #955b7417;color:#ad708a;display:grid;place-items:center;padding:7px;cursor:pointer;transition:transform .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease;z-index:2}
+.vocab-bookmark-button .bookmark-glyph{display:block;width:20px;height:20px;overflow:visible}
+.vocab-bookmark-button .bookmark-glyph path{stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:transparent;transition:fill .18s ease}
+.vocab-bookmark-button:hover{transform:translateY(-2px);border-color:#c7839e;color:#9d496d;box-shadow:0 5px 13px #955b742b}
+.vocab-bookmark-button:focus-visible{outline:3px solid #d58da7;outline-offset:3px}
+.vocab-bookmark-button.is-saved{background:linear-gradient(145deg,#fff7db,#ffe9b7);color:#ae7b30;border-color:#e5c58a;box-shadow:0 3px 11px #c9953933}
+.vocab-bookmark-button.is-saved .bookmark-glyph path{fill:#d9a553;stroke:#a87828}
+.waka-study-card .vocab-bookmark-button{top:9px;right:9px}
+@media(max-width:560px){.vocab-bookmark-button{width:32px;height:32px;border-radius:10px;padding:6px}.vocab-entry>.vocab-word{padding-right:39px}.waka-study-card .vocab-word{padding-right:32px}}
+@media(prefers-reduced-motion:reduce){.vocab-bookmark-button{transition:none}}
+</style>
 </head>
 <body>
 
@@ -1041,7 +1063,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       </button>
       <nav class="nav" aria-label="화면 선택">
         <button id="tab-btn-presentation" class="nav-btn active" type="button" data-goto="presentation" aria-current="page">아이디어 소개</button>
-        <button id="tab-btn-demo" class="nav-btn" type="button" data-goto="demo">와카 뽑기</button><button id="tab-btn-community" class="nav-btn" type="button" data-goto="community">마음 광장</button><button id="tab-btn-collection" class="nav-btn" type="button" data-goto="collection">나의 도감</button>
+        <button id="tab-btn-demo" class="nav-btn" type="button" data-goto="demo">와카 뽑기</button><button id="tab-btn-community" class="nav-btn" type="button" data-goto="community">마음 광장</button><button id="tab-btn-collection" class="nav-btn" type="button" data-goto="collection">나의 도감</button><button id="tab-btn-study" class="nav-btn nav-bookmark-link" type="button" data-goto="study" aria-label="북마크 학습 페이지">북마크</button>
       </nav>
       <div class="site-controls" aria-label="언어 및 음악 / 言語・音楽">
         <div class="language-switch" role="group" aria-label="언어 선택 / 言語選択"><button type="button" class="language-choice selected" data-select-lang="ko" aria-pressed="true">한국어</button><button type="button" class="language-choice" data-select-lang="ja" aria-pressed="false">日本語</button></div>
@@ -1171,7 +1193,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
               <p class="poem-original waka-with-ruby" id="poem-original"></p><p class="translated" id="poem-translation"></p>
               <p class="interpret-notice">※ 우리말은 뜻을 이해하기 위한 의역입니다. 감정 분류는 현대적 감상으로, 시인의 원래 의도를 단정하지 않습니다.</p>
               <div class="poetry-explainer">
-                <div class="explainer-block"><span class="explainer-index">01 · WORD & ORIGIN</span><h4>시 속 한자·고전어 전체 풀이</h4><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><p class="vocab-bookmark-hint">☆을 누르면 학습하기에 저장돼요.</p><div class="vocab-list" id="poem-vocab"></div><div class="classical-note" id="poem-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div class="term-chip" id="poem-term"></div><p id="poem-usage"></p></div></div>
+                <div class="explainer-block"><span class="explainer-index">01 · WORD & ORIGIN</span><h4>시 속 한자·고전어 전체 풀이</h4><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><p class="vocab-bookmark-hint">오른쪽 북마크를 누르면 학습하기에 저장돼요.</p><div class="vocab-list" id="poem-vocab"></div><div class="classical-note" id="poem-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div class="term-chip" id="poem-term"></div><p id="poem-usage"></p></div></div>
                 <div class="explainer-block"><span class="explainer-index">02 · HISTORICAL CONTEXT</span><h4>와카에 담긴 시대와 배경</h4><p id="poem-background"></p></div>
               </div>
               <div class="advice"><strong>✦ 오늘의 마음과 연결하기</strong><span id="poem-advice"></span></div>
@@ -1282,7 +1304,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     </section>
   </main>
 
-  <dialog id="card-detail-dialog" class="detail-dialog" aria-label="수집한 와카 상세 보기"><div class="detail-close-bar"><button type="button" id="detail-close">닫기 ✕</button></div><div class="detail-inner"><img id="detail-img" class="detail-img" alt="수집한 카드 일러스트"><div class="detail-info"><span id="detail-number" class="detail-number"></span><h3 id="detail-author"></h3><div class="poem-study-toolbar"><span class="poem-study-label">✦ 원문 읽기 도움</span><button type="button" class="ruby-switch" data-furigana-toggle aria-pressed="false" aria-label="와카 원문의 후리가나 켜기">후리가나 OFF</button></div><p id="detail-poem" class="detail-original waka-with-ruby"></p><p id="detail-translation"></p><section class="detail-lexicon"><strong>시 속 한자·고전어 전체 풀이</strong><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><p class="vocab-bookmark-hint">☆을 누르면 학습하기에 저장돼요.</p><div class="vocab-list" id="detail-vocab"></div><div class="classical-note" id="detail-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div id="detail-term"></div></div></section><p><strong>시대적 배경</strong><br><span id="detail-background"></span></p><p><strong>오늘의 운세</strong><br><span id="detail-fortune"></span></p><p><strong>행운 아이템 · 색상</strong><br><span id="detail-item"></span></p><div class="detail-save-wrap"><button type="button" class="btn btn-small btn-primary" id="archive-to-ar">✧ 이 와카로 사진 꾸미기 (AR)</button><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-detail-card">↓ 이 카드 이미지 저장</button></div><div class="detail-footer"><p class="detail-meta"><strong>획득일</strong> · <span id="detail-date"></span></p><p class="detail-meta"><strong>그날의 마음</strong> · <span id="detail-note"></span></p></div></div></div></dialog>
+  <dialog id="card-detail-dialog" class="detail-dialog" aria-label="수집한 와카 상세 보기"><div class="detail-close-bar"><button type="button" id="detail-close">닫기 ✕</button></div><div class="detail-inner"><img id="detail-img" class="detail-img" alt="수집한 카드 일러스트"><div class="detail-info"><span id="detail-number" class="detail-number"></span><h3 id="detail-author"></h3><div class="poem-study-toolbar"><span class="poem-study-label">✦ 원문 읽기 도움</span><button type="button" class="ruby-switch" data-furigana-toggle aria-pressed="false" aria-label="와카 원문의 후리가나 켜기">후리가나 OFF</button></div><p id="detail-poem" class="detail-original waka-with-ruby"></p><p id="detail-translation"></p><section class="detail-lexicon"><strong>시 속 한자·고전어 전체 풀이</strong><p class="vocab-intro">원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.</p><p class="vocab-bookmark-hint">오른쪽 북마크를 누르면 학습하기에 저장돼요.</p><div class="vocab-list" id="detail-vocab"></div><div class="classical-note" id="detail-classical-note"></div><div class="core-expression"><strong class="core-expression-heading">✿ 작품의 핵심 표현</strong><div id="detail-term"></div></div></section><p><strong>시대적 배경</strong><br><span id="detail-background"></span></p><p><strong>오늘의 운세</strong><br><span id="detail-fortune"></span></p><p><strong>행운 아이템 · 색상</strong><br><span id="detail-item"></span></p><div class="detail-save-wrap"><button type="button" class="btn btn-small btn-primary" id="archive-to-ar">✧ 이 와카로 사진 꾸미기 (AR)</button><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-detail-card">↓ 이 카드 이미지 저장</button></div><div class="detail-footer"><p class="detail-meta"><strong>획득일</strong> · <span id="detail-date"></span></p><p class="detail-meta"><strong>그날의 마음</strong> · <span id="detail-note"></span></p></div></div></div></dialog>
   <footer><div class="shell footer-inner"><span class="footer-brand">和 · 오늘의 와카 오라클</span><span>일본 고전 문학 × 감정 기록 · 경진대회 시연용 웹앱</span><span>Made with a little poetry ✿</span></div></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1433,13 +1455,13 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     }
     function bookmarkButtonHTML(word,reading,deckId){
       const saved=isVocabSaved(word,reading);
-      return `<button type="button" class="vocab-bookmark-button${saved?' is-saved':''}" data-vocab-bookmark data-word="${escapeHTML(word)}" data-reading="${escapeHTML(reading)}" data-deck="${Number(deckId)}" aria-pressed="${saved}" aria-label="${escapeHTML(T(saved?word+' 북마크 해제':word+' 북마크 저장',saved?word+'の保存を解除':word+'を保存'))}" title="${escapeHTML(T(saved?'북마크 해제':'북마크 저장',saved?'保存を解除':'ブックマークに保存'))}">${saved?'★':'☆'}</button>`;
+      return `<button type="button" class="vocab-bookmark-button${saved?' is-saved':''}" data-vocab-bookmark data-word="${escapeHTML(word)}" data-reading="${escapeHTML(reading)}" data-deck="${Number(deckId)}" aria-pressed="${saved}" aria-label="${escapeHTML(T(saved?word+' 북마크 해제':word+' 북마크 저장',saved?word+'の保存を解除':word+'を保存'))}" title="${escapeHTML(T(saved?'북마크 해제':'북마크 저장',saved?'保存を解除':'ブックマークに保存'))}"><svg class="bookmark-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.75 4.25h10.5a1.5 1.5 0 0 1 1.5 1.5v14.1L12 15.6l-6.75 4.25V5.75a1.5 1.5 0 0 1 1.5-1.5Z"/></svg></button>`;
     }
     function updateBookmarkButtons(){
       document.querySelectorAll('[data-vocab-bookmark]').forEach(button=>{
         const saved=isVocabSaved(button.dataset.word,button.dataset.reading);
         button.classList.toggle('is-saved',saved);
-        button.textContent=saved?'★':'☆';
+        // Keep the decorative SVG in place; saved state is styled via .is-saved.
         button.setAttribute('aria-pressed',String(saved));
         button.setAttribute('aria-label',T(`${button.dataset.word} 북마크 ${saved?'해제':'저장'}`,`${button.dataset.word}を${saved?'保存から削除':'保存'}`));
         button.title=T(saved?'북마크 해제':'북마크 저장',saved?'保存を解除':'ブックマークに保存');
@@ -1478,7 +1500,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
         hide.setAttribute('aria-pressed',String(studyHideMeanings));
       }
       document.querySelectorAll('.vocab-bookmark-hint').forEach(el=>{
-        el.textContent=T('☆을 누르면 학습하기에 저장돼요.','☆を押すと、学習ページに保存されます。');
+        el.textContent=T('오른쪽 북마크를 누르면 학습하기에 저장돼요.','☆を押すと、学習ページに保存されます。');
       });
     }
     function renderSavedVocab(){
@@ -1572,6 +1594,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     const resetFurigana=()=>{furiganaVisible=false;syncFuriganaUI()};
     // Dynamic bilingual headings; card imagery still contains printed text.
     Object.assign(JP_STATIC,{
+      '북마크':'ブックマーク',
       '✦ 원문 읽기 도움':'✦ 原文の読み方',
       '시 속 한자·고전어 전체 풀이':'歌の漢字・古語をすべて解説',
       '원문에 등장하는 한자와 주요 고전 표현을 차례대로 살펴보세요.':'原文に出てくる漢字と古語を順に解説します。',
@@ -3316,6 +3339,54 @@ body.waka-guide-open{overflow:hidden!important}
 @media(max-height:520px) and (min-width:701px){.waka-guide-dialog{max-height:96dvh}.waka-guide-top{padding-top:13px;padding-bottom:10px}.waka-guide-content{padding-top:10px;padding-bottom:10px}.waka-guide-footer{padding:10px 24px}}
 @media(prefers-reduced-motion:reduce){.waka-guide-close{transition:none}}
 </style>
+
+<style id="waka-nav-bookmark-featured-spacing-20261119">
+/* 5 site tabs, with the existing data-goto=study route and bilingual label. */
+.site-header .nav{gap:3px;padding:4px}
+.site-header .nav-btn{min-width:0;padding:10px 12px;white-space:nowrap}
+@media (min-width:731px) and (max-width:1120px){
+  .site-header .header-inner{flex-wrap:wrap;justify-content:center;gap:10px 18px;padding-top:10px;padding-bottom:10px}
+  .site-header .nav{order:2}
+  .site-header .site-controls{order:3}
+}
+@media(max-width:730px){
+  .site-header .nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;gap:2px;padding:4px}
+  .site-header .nav-btn{min-height:42px;padding:9px 2px;font-size:clamp(9px,2.35vw,11px);line-height:1.25;white-space:normal;word-break:keep-all;overflow-wrap:normal}
+  html[lang="ja"] .site-header .nav-btn{font-size:clamp(9px,2.3vw,10.5px);white-space:normal;word-break:normal;overflow-wrap:anywhere}
+}
+/* The home 'Words that bloom' section now stays centered with room on both sides. */
+#view-presentation .featured-writings.shell{
+  width:min(940px,calc(100% - 100px));
+  max-width:940px;
+  margin-left:auto;margin-right:auto;
+  padding:30px 38px 28px;
+  border-radius:22px;
+}
+#view-presentation .featured-head{align-items:center;column-gap:24px;row-gap:13px}
+#view-presentation .featured-head>div{flex:1 1 310px;min-width:0}
+#view-presentation .featured-head h2{font-size:clamp(23px,2.5vw,30px);line-height:1.38;letter-spacing:-.025em;word-break:keep-all;margin:5px 0 9px}
+#view-presentation .featured-head p{max-width:48ch;font-size:13px;line-height:1.7;word-break:keep-all;margin:0}
+#view-presentation .featured-head>.btn{margin-left:auto;flex-shrink:0}
+#view-presentation .featured-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:22px}
+#view-presentation .featured-grid>.writing-card{flex:1 1 245px;max-width:340px;min-width:0}
+#view-presentation .featured-grid>.featured-empty{flex:1 1 100%;max-width:none}
+#view-presentation .featured-grid .writing-body{line-height:1.75}
+#view-presentation .featured-note{line-height:1.65;word-break:keep-all}
+@media(max-width:730px){
+  #view-presentation .featured-writings.shell{width:calc(100% - 36px);max-width:none;padding:24px 22px 22px;border-radius:19px}
+  #view-presentation .featured-head{gap:12px}
+  #view-presentation .featured-head>div{flex:1 1 100%}
+  #view-presentation .featured-head h2{font-size:clamp(22px,5.6vw,27px);line-height:1.4}
+  #view-presentation .featured-head p{font-size:12px;line-height:1.7}
+  #view-presentation .featured-head>.btn{margin-left:0;min-height:38px;max-width:100%;font-size:12px;padding:8px 13px}
+  #view-presentation .featured-grid{gap:12px;margin-top:18px}
+  #view-presentation .featured-grid>.writing-card{flex-basis:100%;max-width:100%}
+}
+@media(max-width:380px){
+  #view-presentation .featured-writings.shell{width:calc(100% - 28px);padding:21px 16px}
+}
+</style>
+
 <script id="waka-guide-script">
 (function(){
   'use strict';
