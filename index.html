@@ -2008,6 +2008,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       $('#interpretation').classList.remove('visible');
       $('#oracle-placeholder').hidden=false;
       $('#oracle-card').classList.remove('flipped');
+      $('#card-scene').classList.add('card-initial-arrival');
       $('#card-scene').setAttribute('aria-pressed','false');
       $('#card-scene').setAttribute('aria-label',T('도착한 와카 카드 뒤집기','届いた和歌カードをめくる'));
       $('#card-scene').focus({preventScroll:true});
@@ -2033,6 +2034,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
     function setFlip(flip){
       if(!currentWaka)return;
       clearTimeout(revealTimer);
+      $('#card-scene').classList.remove('card-initial-arrival');
       $('#oracle-card').classList.toggle('flipped',flip);
       $('#card-scene').setAttribute('aria-pressed',String(flip));
       $('#card-scene').setAttribute('aria-label',flip?T('와카 카드 뒷면으로 돌리기','カードを裏面に戻す'):T('와카 카드 뒤집기','和歌カードをめくる'));
@@ -2052,7 +2054,7 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       $('#flip-hint').textContent=T('✧ 카드를 다시 누르면 뒷면으로 돌아가요','✧ もう一度タップすると裏面に戻ります');
       $('#oracle-placeholder').hidden=true;
       playBgm(currentWaka.tag); // invoked directly during card flip so browsers permit audio
-      const delay=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:900;
+      const delay=window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:1150;
       revealTimer=setTimeout(()=>{
         if(!$('#oracle-card').classList.contains('flipped')||$('#ritual-page').hidden)return;
         resetFurigana();
@@ -3554,7 +3556,7 @@ body.waka-guide-open{overflow:hidden!important}
 #view-demo .mood-btn.selected{background:linear-gradient(145deg,#fce9e8,#f8d5df);border-color:#b65c7f;box-shadow:0 6px 16px #a3556b29}
 #view-demo .mood-btn:focus-visible{outline:3px solid #d98ca2;outline-offset:3px}
 .ritual-page.arrived .card-scene{filter:drop-shadow(0 0 34px #ffe9aee8) drop-shadow(0 0 75px #efb9e2a4)!important}
-.ritual-page .oracle-card{transition:transform 1.12s cubic-bezier(.17,.75,.24,1),filter .25s!important}
+.ritual-page .oracle-card{transition:transform 1.08s cubic-bezier(.42,0,.58,1)!important}
 /* Preserve the 3D card faces: a filter on this element flattens preserve-3d. */
 .ritual-page .oracle-card.flipped{filter:none!important;transform-style:preserve-3d!important}
 .ritual-page .card-face{backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
@@ -3648,19 +3650,16 @@ body.waka-guide-open{overflow:hidden!important}
 .ritual-page .card-front {
   transform: rotateY(180deg) translateZ(.5px) !important;
 }
-/* A second, independent visibility guard makes the correct face appear even
-   if a particular browser composites the 3D layers incorrectly. The guard
-   switches only halfway through the existing flip animation. */
+/* 3D backface culling handles both sides continuously.  A forced visibility
+   switch here caused the artwork to appear suddenly halfway through the turn. */
 .ritual-page .oracle-card > .card-face {
-  transition: visibility 0s linear .56s;
+  visibility: visible;
+  transition: none;
 }
-.ritual-page .oracle-card:not(.flipped) > .card-back,
-.ritual-page .oracle-card.flipped > .card-front {
-  visibility: visible !important;
-}
-.ritual-page .oracle-card:not(.flipped) > .card-front,
-.ritual-page .oracle-card.flipped > .card-back {
-  visibility: hidden !important;
+/* The entrance animation runs only on the first draw; it must not restart
+   when the visitor flips the card back to its reverse side. */
+.ritual-page.arrived .card-scene:not(.card-initial-arrival) {
+  animation: none !important;
 }
 /* The source webp already has the original poem, author and Korean translation.
    Do not obscure the art with a duplicate gradient or caption. */
@@ -3673,7 +3672,7 @@ body.waka-guide-open{overflow:hidden!important}
   object-fit: cover;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ritual-page .oracle-card > .card-face {transition: none !important;}
+  .ritual-page .oracle-card { transition: none !important; }
 }
 </style>
 
