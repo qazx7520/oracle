@@ -1983,7 +1983,19 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
       $('#duplicate-card-badge').hidden=true;
       $('#card-illustration').src=currentWaka.image;
       $('#card-illustration').alt=T(`${currentWaka.tag} · 와카 ${currentWaka.deckId}번 타로풍 일러스트`,`${moodLabel(currentWaka.tag)} · 和歌カード${currentWaka.deckId}番`);
-      $('#card-illustration').onerror=()=>{$('#card-illustration').alt=T('카드 이미지 파일을 찾지 못했어요. cards 폴더를 함께 업로드해 주세요.','カード画像が見つかりません。cardsフォルダーをアップロードしてください。')};
+      // If a relative asset fails on a nested or cached page, retry the same file
+      // against this project's canonical GitHub Pages path, without changing
+      // the chosen number or substituting an unrelated image.
+      $('#card-illustration').onerror=()=>{
+        const picture=$('#card-illustration');
+        if(!picture.dataset.absoluteRetry){
+          picture.dataset.absoluteRetry='1';
+          picture.src='https://qazx7520.github.io/oracle/'+currentWaka.image;
+          return;
+        }
+        picture.alt=T('카드 이미지를 불러오지 못했어요. GitHub의 cards 폴더와 파일명을 확인해 주세요.','カード画像を読み込めませんでした。cardsフォルダーを確認してください。');
+      };
+      $('#card-illustration').dataset.absoluteRetry='';
       $('#card-overlay-title').textContent=MOOD_EMOJI[currentMood]+' '+moodLabel(currentMood);
       $('#card-overlay-author').textContent=`NO. ${String(currentWaka.deckId).padStart(3,'0')} · ${currentWaka.author}`;
       $('#ritual-ready').hidden=true;$('#ritual-result').hidden=false;
@@ -3604,6 +3616,65 @@ body.waka-guide-open{overflow:hidden!important}
 @media(max-width:730px){.site-header .nav{grid-template-columns:repeat(3,minmax(0,1fr))!important}.site-header .nav-btn{font-size:11px!important;min-width:0;min-height:41px}.site-controls{margin-left:0}.song-recommendation{padding:19px 16px}.song-content{gap:13px;align-items:flex-start}.song-disc{flex-basis:72px;width:72px;height:72px}.song-disc div{width:27px;height:27px}.song-info h4{font-size:20px!important}.song-reason{font-size:11px!important}.story-block h4{font-size:17px!important}.ritual-page .interpretation{padding:22px 17px!important}}
 @media(max-width:390px){.song-content{gap:10px}.song-disc{flex-basis:58px;width:58px;height:58px}.song-disc div{width:23px;height:23px}.song-info h4{font-size:18px!important}}
 @media(prefers-reduced-motion:reduce){.song-disc{animation:none!important}}
+</style>
+
+
+<!-- Presentation repair: isolate glow from the 3D flip, keep all 80 original artworks unchanged. -->
+<style id="waka-card-front-repair-20261122">
+/* A CSS filter or isolation on the scene flattens a 3D card in Chromium.  The
+   illuminated halo is already drawn by .ritual-result::before and the scene
+   pseudo-element, so it must never be applied to the 3D scene itself. */
+.ritual-page .card-scene,
+.ritual-page.arrived .card-scene,
+.ritual-page.reading .card-scene {
+  filter: none !important;
+  -webkit-filter: none !important;
+  isolation: auto !important;
+}
+.ritual-page .oracle-card,
+.ritual-page .oracle-card.flipped {
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+.ritual-page .card-face {
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+.ritual-page .card-back {
+  transform: rotateY(0deg) translateZ(.5px) !important;
+}
+.ritual-page .card-front {
+  transform: rotateY(180deg) translateZ(.5px) !important;
+}
+/* A second, independent visibility guard makes the correct face appear even
+   if a particular browser composites the 3D layers incorrectly. The guard
+   switches only halfway through the existing flip animation. */
+.ritual-page .oracle-card > .card-face {
+  transition: visibility 0s linear .56s;
+}
+.ritual-page .oracle-card:not(.flipped) > .card-back,
+.ritual-page .oracle-card.flipped > .card-front {
+  visibility: visible !important;
+}
+.ritual-page .oracle-card:not(.flipped) > .card-front,
+.ritual-page .oracle-card.flipped > .card-back {
+  visibility: hidden !important;
+}
+/* The source webp already has the original poem, author and Korean translation.
+   Do not obscure the art with a duplicate gradient or caption. */
+.ritual-page .front-illustration::after,
+.ritual-page .card-overlay-caption { display: none !important; }
+.ritual-page .front-illustration img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ritual-page .oracle-card > .card-face {transition: none !important;}
+}
 </style>
 
 <script id="waka-professor-logic-20261122">
