@@ -3543,7 +3543,11 @@ body.waka-guide-open{overflow:hidden!important}
 #view-demo .mood-btn:focus-visible{outline:3px solid #d98ca2;outline-offset:3px}
 .ritual-page.arrived .card-scene{filter:drop-shadow(0 0 34px #ffe9aee8) drop-shadow(0 0 75px #efb9e2a4)!important}
 .ritual-page .oracle-card{transition:transform 1.12s cubic-bezier(.17,.75,.24,1),filter .25s!important}
-.ritual-page .oracle-card.flipped{filter:drop-shadow(0 0 20px #efab8a)}
+/* Preserve the 3D card faces: a filter on this element flattens preserve-3d. */
+.ritual-page .oracle-card.flipped{filter:none!important;transform-style:preserve-3d!important}
+.ritual-page .card-face{backface-visibility:hidden!important;-webkit-backface-visibility:hidden!important}
+.ritual-page .card-front{transform:rotateY(180deg)!important}
+.ritual-page .card-back{transform:rotateY(0deg)!important}
 .ritual-page .flip-hint{font-size:14px!important;letter-spacing:.02em}
 .card-scene{isolation:isolate}
 .waka-flip-particles{position:absolute;inset:-70px;z-index:4;pointer-events:none;overflow:visible}
