@@ -1326,8 +1326,8 @@ html[lang="ja"] button,html[lang="ja"] input,html[lang="ja"] textarea,html[lang=
               <section class="lucky-ar-callout"><div class="lucky-ar-kicker">✿ WAKA × AR</div><strong id="lucky-ar-title">뽑은 와카를 풍경 속에 남겨 보세요</strong><p id="lucky-ar-desc">카메라로 촬영하거나 앨범에서 사진을 골라, 방금 뽑은 와카를 나만의 작품으로 기록할 수 있어요.</p><button type="button" class="btn btn-small btn-primary waka-ar-btn" id="open-waka-ar">✧ 나만의 와카 AR로 기록하기</button></section>
               <p class="collection-added" id="collected-message" aria-live="polite"></p><p class="repeat-badge" id="duplicate-card-badge" hidden>✧ 다시 만난 와카 · 이미 수집한 카드예요</p>
               <p class="interpret-notice" id="emotion-note-result"></p>
-              <div class="result-actions"><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-current-card">↓ 카드 이미지 저장</button><button type="button" class="btn btn-small btn-outline" id="result-to-collection" data-goto="collection">도감으로 이동</button><button type="button" class="btn btn-small btn-light" id="write-diary">이 마음 일기로 남기기 ↗</button></div>
-              <div class="share-invitation"><strong>✿ 오늘의 한 줄이 누군가에게 위로가 될지도 몰라요</strong><p>오늘의 다짐이나 감상을 시 또는 짧은 글로 남기고 서로 응원해 보세요.</p><button type="button" class="btn btn-primary" id="write-community">시·다짐 남기기 ↗</button></div><button type="button" class="btn btn-outline return-to-moods" id="another-mood-btn">✿ 다른 마음 고르기</button>
+              <div class="result-actions"><button type="button" class="btn btn-small btn-primary card-download-btn" id="download-current-card">↓ 카드 이미지 저장</button><button type="button" class="btn btn-small btn-outline" id="result-to-collection" data-goto="collection">도감으로 이동</button><button type="button" class="btn btn-small btn-light" id="write-diary">이 마음 일기로 남기기 ↗</button><button type="button" class="btn btn-outline return-to-moods" id="another-mood-btn">✿ 다른 마음 고르기</button></div>
+              <div class="share-invitation"><strong>✿ 오늘의 한 줄이 누군가에게 위로가 될지도 몰라요</strong><p>오늘의 다짐이나 감상을 시 또는 짧은 글로 남기고 서로 응원해 보세요.</p><button type="button" class="btn btn-primary" id="write-community">시·다짐 남기기 ↗</button></div>
             </div>
           </section>
 
@@ -5262,6 +5262,51 @@ html[lang="ja"] #view-demo .control-panel h3{font-size:clamp(22px,5.5vw,31px)}
     font-size:10px!important;line-height:1.52!important;
   }
   .fortune-panel .lucky-media-cell .lucky-media-title{font-size:11px!important;line-height:1.45!important}
+}
+</style>
+<style id="waka-result-readability-final">
+/* Preserve desktop media cards; fix only recommendation legibility and result actions. */
+#ritual-page #interpretation #song-reason{
+  color:#fff5ec!important;-webkit-text-fill-color:#fff5ec!important;
+  opacity:1!important;text-shadow:none!important;
+}
+#ritual-page #interpretation .result-actions{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;gap:10px!important;width:100%;max-width:100%;
+  margin:16px 0 0!important;padding:0!important;
+}
+#ritual-page #interpretation .result-actions > :is(#download-current-card,#result-to-collection,#another-mood-btn){
+  display:flex!important;align-items:center;justify-content:center;
+  box-sizing:border-box;width:100%!important;min-width:0;min-height:50px!important;
+  height:100%;padding:11px 8px!important;margin:0!important;
+  font-size:13px!important;line-height:1.5!important;white-space:normal!important;
+  overflow-wrap:anywhere;text-align:center;border-radius:11px!important;
+}
+#ritual-page #interpretation #another-mood-btn{align-self:stretch;}
+@media(max-width:730px){
+  /* Retain the two small lucky tiles, give longer recommendations their own row. */
+  #ritual-page #interpretation .fortune-panel .lucky-media-grid{
+    grid-template-columns:minmax(0,1fr)!important;gap:12px!important;margin:12px 0!important;
+  }
+  #ritual-page #interpretation .fortune-panel .lucky-media-cell{padding:10px!important;}
+  #ritual-page #interpretation .fortune-panel .lucky-media-cell .lucky-media-title{
+    font-size:14px!important;line-height:1.5!important;margin-bottom:9px!important;
+  }
+  #ritual-page #interpretation .fortune-panel :is(.song-recommendation,.lucky-movie){padding:14px 12px!important;}
+  #ritual-page #interpretation .fortune-panel :is(#song-title,#lucky-movie-name){font-size:19px!important;line-height:1.5!important;}
+  #ritual-page #interpretation .fortune-panel #song-artist{font-size:16px!important;line-height:1.5!important;}
+  #ritual-page #interpretation .fortune-panel .song-eyebrow{font-size:10px!important;line-height:1.5!important;}
+  #ritual-page #interpretation .fortune-panel :is(#song-reason,#lucky-movie-reason){
+    font-size:14px!important;line-height:1.8!important;word-break:normal!important;
+    overflow-wrap:anywhere!important;margin:9px 0 14px!important;
+  }
+  #ritual-page #interpretation .fortune-panel :is(#song-link,#lucky-movie-link){
+    font-size:13px!important;line-height:1.5!important;min-height:44px!important;
+    display:flex;align-items:center;justify-content:center;padding:10px 8px!important;
+  }
+  #ritual-page #interpretation .result-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;margin-top:12px!important;}
+  #ritual-page #interpretation .result-actions > :is(#download-current-card,#result-to-collection,#another-mood-btn){min-height:64px!important;}
+  #ritual-page #interpretation .result-actions #another-mood-btn{grid-column:1/-1;}
 }
 </style>
 </body>
